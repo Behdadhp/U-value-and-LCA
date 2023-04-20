@@ -1,3 +1,11 @@
 from django.db import models
 
-# Create your models here.
+
+class Building(models.Model):
+    """ORM representation of the Projects"""
+
+    name = models.CharField(max_length=64, blank=False, null=False)
+    project = models.JSONField()
+
+    def __str__(self):
+        return self.name
