@@ -4,8 +4,8 @@ from . import models
 
 
 class BuildingTable(tables.Table):
-    name = tables.Column
-    project = tables.Column
+    name = tables.Column()
+    project = tables.Column()
 
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
