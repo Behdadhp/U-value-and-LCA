@@ -8,6 +8,9 @@ class BuildingTable(tables.Table):
 
     name = tables.Column()
     project = tables.Column()
+    # wall = tables.Column()
+    # roof = tables.Column()
+    # floor = tables.Column()
 
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
