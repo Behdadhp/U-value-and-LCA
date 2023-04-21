@@ -4,6 +4,8 @@ from . import models
 
 
 class BuildingTable(tables.Table):
+    """Table for building model"""
+
     name = tables.Column()
     project = tables.Column()
 
