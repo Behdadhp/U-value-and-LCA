@@ -6,11 +6,7 @@ from . import models
 class BuildingTable(tables.Table):
     """Table for building model"""
 
-    name = tables.Column()
-    project = tables.Column()
-    # wall = tables.Column()
-    # roof = tables.Column()
-    # floor = tables.Column()
+    project = tables.JSONColumn()
 
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
