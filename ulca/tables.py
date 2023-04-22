@@ -14,3 +14,16 @@ class BuildingTable(tables.Table):
         template_name = "django_tables2/bootstrap4.html"
         model = models.Building
         exclude = ("wallUvalue", "roofUvalue", "floorUvalue")
+
+
+class BuildingDetail(tables.Table):
+    """Table for building details"""
+
+    wallUvalue = tables.Column(verbose_name="Wall U-value")
+    roofUvalue = tables.Column(verbose_name="Roof U-value")
+    floorUvalue = tables.Column(verbose_name="Floor U-value")
+
+    class Meta:
+        template_name = "django_tables2/bootstrap4.html"
+        model = models.Building
+        fields = ("wallUvalue", "roofUvalue", "floorUvalue")
