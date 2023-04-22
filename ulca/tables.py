@@ -13,3 +13,4 @@ class BuildingTable(tables.Table):
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
         model = models.Building
+        exclude = ("wallUvalue", "roofUvalue", "floorUvalue")
