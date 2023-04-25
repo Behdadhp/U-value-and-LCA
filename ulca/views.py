@@ -1,6 +1,9 @@
+from django.urls import reverse_lazy
 from django_tables2 import SingleTableView, MultiTableMixin
 from . import models, tables
 from django.views import generic
+
+from .forms import CreateBuilding
 
 
 class BuildingList(SingleTableView):
@@ -29,3 +32,15 @@ class BuildingDetails(generic.DetailView, MultiTableMixin):
         context = super().get_context_data(**kwargs)
         context["table"] = tables.BuildingDetail(self.create_data_query())
         return context
+
+
+class BuildingCreate(generic.CreateView):
+    template_name = "building_form.html"
+    model = models.Building
+    form_class = CreateBuilding
+    success_url = reverse_lazy("building:buildings")
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        return super().form_valid(form)

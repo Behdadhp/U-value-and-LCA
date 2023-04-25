@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% load bootstrap4 %}
+ {% block content %}
+
+<div class="container">
+  <div class="row text-center">
+    <div class="col-sm-6">
+      <h1>Create New Portfolio</h1>
+    </div>
+    <div class="col-sm-6">
+      <form action="{% url 'building:create' %}" method="post">
+        {% csrf_token %} {% bootstrap_form form %} {% buttons %} <br />
+        <button type="submit" class="btn btn-primary">Create</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endbuttons %} {% endblock %}
