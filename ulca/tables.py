@@ -9,6 +9,13 @@ class BuildingTable(tables.Table):
 
     project = tables.JSONColumn()
     generate = tables.LinkColumn("building:details", args=[A("pk")], text="Generate")
+    Delete = tables.LinkColumn(
+        "building:delete",
+        args=[A("pk")],
+        text="Delete",
+        verbose_name="",
+        attrs={"a": {"style": "color: red;"}},
+    )
 
     class Meta:
         template_name = "django_tables2/bootstrap4.html"

@@ -35,7 +35,9 @@ class BuildingDetails(generic.DetailView, MultiTableMixin):
 
 
 class BuildingCreate(generic.CreateView):
-    template_name = "building_form.html"
+    """View for creating new project"""
+
+    template_name = "building_details.html"
     model = models.Building
     form_class = CreateBuilding
     success_url = reverse_lazy("building:buildings")
@@ -44,3 +46,11 @@ class BuildingCreate(generic.CreateView):
         self.object = form.save(commit=False)
         self.object.save()
         return super().form_valid(form)
+
+
+class BuildingDelete(generic.DeleteView):
+    """View for deleting existing project"""
+
+    template_name = "building_confirm_delete.html"
+    model = models.Building
+    success_url = reverse_lazy("building:buildings")
