@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="text-center">
+        <div class="d-block">
+            <h1>U-value and LCA</h1>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <div class="d-block">
+            <h4>This website makes it possible to give a Revit model as JSON
+                and it will automaticly calculate the U-Value and LCA for the
+                building. To start click
+                <a href="{% url 'building:create' %}"
+                   class="btn btn-secondary"
+                >here</a
+                >
+            </h4>
+        </div>
+    </div>
+
+{% endblock %}
