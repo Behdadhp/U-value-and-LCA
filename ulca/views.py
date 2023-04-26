@@ -41,7 +41,7 @@ class BuildingDetails(generic.DetailView, MultiTableMixin):
 class BuildingCreate(generic.CreateView):
     """View for creating new project"""
 
-    template_name = "building_details.html"
+    template_name = "building_form.html"
     model = models.Building
     form_class = CreateBuilding
     success_url = reverse_lazy("building:buildings")
