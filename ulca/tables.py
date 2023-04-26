@@ -8,7 +8,9 @@ class BuildingTable(tables.Table):
     """Table for building model"""
 
     project = tables.JSONColumn()
-    generate = tables.LinkColumn("building:details", args=[A("pk")], text="Generate")
+    generate = tables.LinkColumn(
+        "building:details", args=[A("pk")], verbose_name="", text="Generate"
+    )
     Delete = tables.LinkColumn(
         "building:delete",
         args=[A("pk")],
