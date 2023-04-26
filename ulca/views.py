@@ -1,18 +1,22 @@
 from django.urls import reverse_lazy
+from django_filters.views import FilterView
 from django_tables2 import SingleTableView, MultiTableMixin
 from . import models, tables
 from django.views import generic
 
+from .filters import BuildingFilter
 from .forms import CreateBuilding
 
 
-class BuildingList(SingleTableView):
+class BuildingList(FilterView, SingleTableView):
     """View for listing all buildings"""
 
     table_class = tables.BuildingTable
-    table_pagination = {"per_page": 30}
-    queryset = models.Building.objects.all()
+    table_pagination = {"per_page": 5}
+    model = models.Building
     template_name = "building_list.html"
+
+    filterset_class = BuildingFilter
 
 
 class BuildingDetails(generic.DetailView, MultiTableMixin):
