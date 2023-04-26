@@ -22,16 +22,31 @@
     <!-- CSS -->
     <link
             rel="stylesheet"
-            href="{% static 'crypto_website/css/master.css' %}"
+            href="{% static "master.css" %}"
     />
 
-    <link
-            rel="stylesheet"
-            href="path/to/font-awesome/css/font-awesome.min.css"
-    />
+
 </head>
 <body id="my-font">
-
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href={% url "index" %}>Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href={% url "building:buildings" %}>Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href={% url "building:create" %}>New project</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 </body>
 </html>
 

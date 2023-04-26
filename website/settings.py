@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "bootstrap3",
     "django_tables2",
     "ulca",
+    "django_bootstrap5",
 ]
 
 MIDDLEWARE = [
