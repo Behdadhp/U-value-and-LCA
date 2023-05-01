@@ -4,26 +4,27 @@ from .calculation.uvalue import UValue
 
 def jsonfield_default_value():
     return {
-        "wall": {
-            "Kalkputz": {"thickness": 0.02},
-            "ks-mauerwerk": {"thickness": 0.2},
-            "PUR": {"thickness": 0.1},
-            "Putz": {"thickness": 0.03},
-        },
-        "roof": {
-            "Innenputz": 8,
-            "Dampfsperre": 10,
-            "Dämmung": 10,
-            "Betondecke": 10,
-            "Dachabdichtung": 10,
-        },
         "floor": {
-            "Estrich": 15,
-            "Dämmung": 20,
-            "Abdichtung": 20,
-            "Bodenplatte": 20,
-            "Sauberkeitschict": 20,
-            "Perimeterdämmung": 20,
+            "Stahlbeton": 200,
+            "Estrich": 50,
+            "Sauberkeitsschicht": 50,
+            "Abdichtung": 10,
+            "Dampfsperre": 2,
+            "Schaumglas": 120,
+            "Extrudiertes Polystyrol (XPS)": 120,
+        },
+        "roofbase": {
+            "Stahlbeton": 200,
+            "Abdichtung": 10,
+            "Dampfsperre": 4,
+            "Kies": 50,
+            "Extrudiertes Polystyrol (XPS)": 180,
+        },
+        "wall": {
+            "WDVS Verklebung und Beschichtung": 15,
+            "Steinwolle-Daemmstoff": 140,
+            "KS-Mauerwerk": 175,
+            "Gipsputz": 15,
         },
     }
 
@@ -49,7 +50,7 @@ class Building(models.Model):
 
     def get_roof(self):
         """Get the roof from Project"""
-        return self.project["roof"]
+        return self.project["roofbase"]
 
     def get_floor(self):
         """Get the floor from Project"""
