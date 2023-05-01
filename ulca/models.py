@@ -79,7 +79,7 @@ class Building(models.Model):
         self.wallUvalue = self.get_uvalue("wall")
 
         # get the u-value for roof
-        self.roofUvalue = self.get_uvalue("roof")
+        self.roofUvalue = self.get_uvalue("roofbase")
 
         # get the u-value for floor
         self.floorUvalue = self.get_uvalue("floor")
