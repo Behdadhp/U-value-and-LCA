@@ -51,7 +51,8 @@ class UValue:
         for item in values:
             if isinstance(item, dict):
                 try:
-                    rt += item["thickness"] / item["lambda"]
+                    # input is in mm, it needs to convert to m
+                    rt += (item["thickness"] / 1000) / item["lambda"]
                 except:
                     pass
         rt += project_data["Rsi"] + project_data["Rse"]
