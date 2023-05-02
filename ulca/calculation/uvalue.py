@@ -31,7 +31,9 @@ class UValue:
                 ]
                 project["wall"]["Rse"] = data.heat_transfer_resistance["Rse"]
             elif el == "roofbase":
-                project["roofbase"]["Rsi"] = data.heat_transfer_resistance["Rsi"]["upward"]
+                project["roofbase"]["Rsi"] = data.heat_transfer_resistance["Rsi"][
+                    "upward"
+                ]
                 project["roofbase"]["Rse"] = data.heat_transfer_resistance["Rse"]
             else:
                 project["floor"]["Rsi"] = data.heat_transfer_resistance["Rsi"][
@@ -48,7 +50,10 @@ class UValue:
         values = project_data.values()
         for item in values:
             if isinstance(item, dict):
-                rt += item["thickness"] / item["lambda"]
+                try:
+                    rt += item["thickness"] / item["lambda"]
+                except:
+                    pass
         rt += project_data["Rsi"] + project_data["Rse"]
 
         return rt
