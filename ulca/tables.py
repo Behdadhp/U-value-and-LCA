@@ -11,6 +11,9 @@ class BuildingTable(tables.Table):
     generate = tables.LinkColumn(
         "building:details", args=[A("pk")], verbose_name="", text="Generate"
     )
+    update = tables.LinkColumn(
+        "building:update", args=[A("pk")], verbose_name="", text="Update"
+    )
     Delete = tables.LinkColumn(
         "building:delete",
         args=[A("pk")],

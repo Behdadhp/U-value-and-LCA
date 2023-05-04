@@ -4,6 +4,7 @@ from django_tables2 import SingleTableView, MultiTableMixin
 from . import models, tables
 from django.views import generic
 
+from .calculation.uvalue import UValue
 from .filters import BuildingFilter
 from .forms import CreateBuilding
 
@@ -58,3 +59,31 @@ class BuildingDelete(generic.DeleteView):
     template_name = "building_confirm_delete.html"
     model = models.Building
     success_url = reverse_lazy("building:buildings")
+
+
+class BuildingUpdate(generic.UpdateView):
+    model = models.Building
+    fields = {"name", "project"}
+    template_name = "building_update.html"
+    success_url = reverse_lazy("building:buildings")
+
+    def form_valid(self, form):
+        # get the updated project data
+        project_data = form.cleaned_data["project"]
+
+        # update the remaining fields of the Building model
+        building = form.save(commit=False)
+        building.wall = project_data.get("wall")
+        building.roof = project_data.get("roof")
+        building.floor = project_data.get("floor")
+        building.wallUvalue = self.get_uvalue(project_data, "wall")
+        building.roofUvalue = self.get_uvalue(project_data, "roofbase")
+        building.floorUvalue = self.get_uvalue(project_data, "floor")
+        building.save()
+
+        return super().form_valid(form)
+
+    @staticmethod
+    def get_uvalue(project: models.Building, component: str):
+        instance = UValue(project)
+        return instance.calc_u(component)
