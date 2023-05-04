@@ -10,13 +10,10 @@ class UValue:
 
         for key in data.material:
             if key in self.project["wall"]:
-                self.project["wall"][key]["rho"] = data.material[key]["rho"]
                 self.project["wall"][key]["lambda"] = data.material[key]["lambda"]
             elif key in self.project["roofbase"]:
-                self.project["roofbase"][key]["rho"] = data.material[key]["rho"]
                 self.project["roofbase"][key]["lambda"] = data.material[key]["lambda"]
             elif key in self.project["floor"]:
-                self.project["floor"][key]["rho"] = data.material[key]["rho"]
                 self.project["floor"][key]["lambda"] = data.material[key]["lambda"]
 
         return project
@@ -60,4 +57,4 @@ class UValue:
         return rt
 
     def calc_u(self, component):
-        return 1 / self.calc_rt(component)
+        return round(1 / self.calc_rt(component), 3)
