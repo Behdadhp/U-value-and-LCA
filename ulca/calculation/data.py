@@ -12,7 +12,6 @@ material = {
     "Kies": {"lambda": 0.7},
     "Expandierter Polystyrolschaum (EPS)": {"lambda": 0.035},
     "Schaumglas": {"lambda": 0.035},
-
 }
 
 heat_transfer_resistance = {
