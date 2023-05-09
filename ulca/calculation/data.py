@@ -46,3 +46,12 @@ def jsonfield_default_value():
             "Gipsputz": 15,
         },
     }
+
+def material_default_value():
+
+    return {
+        "Herstellungsphase":0,
+        "Erneuerung":0,
+        "Energiebedarf" : 0,
+        "Lebensendphase": 0
+    }

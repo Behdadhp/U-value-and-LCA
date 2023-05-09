@@ -1,6 +1,6 @@
 from django.db import models
 
-from .calculation.data import jsonfield_default_value
+from .calculation.data import jsonfield_default_value, material_default_value
 from .calculation.uvalue import UValue
 
 
@@ -60,3 +60,45 @@ class Building(models.Model):
         self.floorUvalue = self.get_uvalue("floor")
 
         super().save(force_insert, force_update, using, update_fields)
+
+
+class Material(models.Model):
+    """ORM represntation of the materials"""
+
+    name = models.CharField(max_length=64, blank=False, null=False)
+    rho = models.FloatField(max_length=8)
+    lamb = models.FloatField(max_length=8, blank=False, null=False)
+    GWD = models.JSONField(
+        default=material_default_value,
+        blank=True,
+        null=True,
+        help_text="Global warming potential",
+    )
+    ODP = models.JSONField(
+        default=material_default_value,
+        blank=True,
+        null=True,
+        help_text="Ozone layer depletion potential",
+    )
+    POCP = models.JSONField(
+        default=material_default_value,
+        blank=True,
+        null=True,
+        help_text="Ozone creation potential",
+    )
+    AP = models.JSONField(
+        default=material_default_value,
+        blank=True,
+        null=True,
+        help_text="Acidification potential",
+    )
+    EP = models.JSONField(
+        default=material_default_value,
+        blank=True,
+        null=True,
+        help_text="Fertilization potential",
+    )
+    url_to_oekobaudat = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
