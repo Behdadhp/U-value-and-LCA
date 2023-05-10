@@ -41,7 +41,13 @@
                     <a class="nav-link active" aria-current="page" href={% url "building:buildings" %}>Projects</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href={% url "building:create" %}>New project</a>
+                    <a class="nav-link" href={% url "building:createProject" %}>New project</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href={% url "building:materials" %}>Materials</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href={% url "building:createMaterial" %}>New material</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href={% url "admin:index" %}>Admin</a>

@@ -6,7 +6,7 @@ from django.views import generic
 
 from .calculation.uvalue import UValue
 from . import filters
-from .forms import CreateBuilding
+from . import forms
 
 
 class BuildingList(FilterView, SingleTableView):
@@ -44,7 +44,7 @@ class BuildingCreate(generic.CreateView):
 
     template_name = "building_form.html"
     model = models.Building
-    form_class = CreateBuilding
+    form_class = forms.CreateBuilding
     success_url = reverse_lazy("building:buildings")
 
     def form_valid(self, form):
@@ -98,3 +98,15 @@ class MateriaList(FilterView, SingleTableView):
     template_name = "material_list.html"
 
     filterset_class = filters.MaterialFilter
+
+
+class MaterialCreate(generic.CreateView):
+    template_name = "material_form.html"
+    models = models.Material
+    form_class = forms.CreateMaterial
+    success_url = reverse_lazy("building:materials")
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        return super().form_valid(form)
