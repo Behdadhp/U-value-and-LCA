@@ -42,6 +42,8 @@ class BuildingDetail(tables.Table):
 
 
 class MaterialTable(tables.Table):
+    """Table for material model"""
+
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
         model = models.Material
