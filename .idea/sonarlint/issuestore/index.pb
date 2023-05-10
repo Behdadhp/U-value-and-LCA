@@ -5,8 +5,6 @@ T
 $ulca/templates/building_details.html,7\2\72d0d51098d5554a13343e97b7421e666168345b
 Q
 !ulca/templates/building_form.html,1\8\18c2289fca1432745a571038f8cc6d63fdcbc774
-Q
-!ulca/templates/building_list.html,c\5\c53983982acaebefc14fe19616da3491ddeef591
 S
 #ulca/templates/building_update.html,4\5\4555245bbac00bc4bcbfc682b084e8a41c5c1b92
 @

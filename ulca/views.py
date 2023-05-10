@@ -5,7 +5,7 @@ from . import models, tables
 from django.views import generic
 
 from .calculation.uvalue import UValue
-from .filters import BuildingFilter
+from . import filters
 from .forms import CreateBuilding
 
 
@@ -17,7 +17,7 @@ class BuildingList(FilterView, SingleTableView):
     model = models.Building
     template_name = "building_list.html"
 
-    filterset_class = BuildingFilter
+    filterset_class = filters.BuildingFilter
 
 
 class BuildingDetails(generic.DetailView, MultiTableMixin):
@@ -87,3 +87,14 @@ class BuildingUpdate(generic.UpdateView):
     def get_uvalue(project: models.Building, component: str):
         instance = UValue(project)
         return instance.calc_u(component)
+
+
+class MateriaList(FilterView, SingleTableView):
+    """View for showing the materials"""
+
+    table_class = tables.MaterialTable
+    table_pagination = {"per_page": 10}
+    models = models.Material
+    template_name = "material_list.html"
+
+    filterset_class = filters.MaterialFilter

@@ -39,3 +39,10 @@ class BuildingDetail(tables.Table):
         template_name = "django_tables2/bootstrap4.html"
         model = models.Building
         fields = ("wallUvalue", "roofUvalue", "floorUvalue")
+
+
+class MaterialTable(tables.Table):
+    class Meta:
+        template_name = "django_tables2/bootstrap4.html"
+        model = models.Material
+        exclude = ("id",)

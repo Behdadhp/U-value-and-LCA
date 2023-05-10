@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load django_tables2 %}
+
+{% block content %}
+
+    {% bootstrap_css %}
+    <div class="row">
+        <div class="col-sm-10">
+            {% if filter %}
+                <form action="" method="get" class="form form-inline">
+                    {% bootstrap_form filter.form layout='inline' %}
+                    {% bootstrap_button 'filter' %}
+                </form>
+            {% endif %}
+        </div>
+        <div class="col-sm-10">
+            {% render_table table %}
+        </div>
+    </div>
+
+{% endblock %}
