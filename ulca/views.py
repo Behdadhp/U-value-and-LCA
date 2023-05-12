@@ -62,6 +62,8 @@ class BuildingDelete(generic.DeleteView):
 
 
 class BuildingUpdate(generic.UpdateView):
+    """Update existing buildings"""
+
     model = models.Building
     fields = {"name", "project"}
     template_name = "building_update.html"
@@ -94,10 +96,12 @@ class MateriaList(FilterView, SingleTableView):
 
     table_class = tables.MaterialTable
     table_pagination = {"per_page": 10}
-    models = models.Material
     template_name = "material_list.html"
 
     filterset_class = filters.MaterialFilter
+
+    def get_queryset(self):
+        return models.Material.objects.all()
 
 
 class MaterialCreate(generic.CreateView):
@@ -110,3 +114,12 @@ class MaterialCreate(generic.CreateView):
         self.object = form.save(commit=False)
         self.object.save()
         return super().form_valid(form)
+
+
+class MaterialUpdate(generic.UpdateView):
+    """Update existing materials"""
+
+    model = models.Material
+    fields = "__all__"
+    template_name = "material_update.html"
+    success_url = reverse_lazy("building:materials")

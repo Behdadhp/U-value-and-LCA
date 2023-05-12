@@ -12,7 +12,7 @@ class BuildingTable(tables.Table):
         "building:details", args=[A("pk")], verbose_name="", text="Generate"
     )
     update = tables.LinkColumn(
-        "building:update", args=[A("pk")], verbose_name="", text="Update"
+        "building:updateBuilding", args=[A("pk")], verbose_name="", text="Update"
     )
     Delete = tables.LinkColumn(
         "building:delete",
@@ -43,6 +43,10 @@ class BuildingDetail(tables.Table):
 
 class MaterialTable(tables.Table):
     """Table for material model"""
+
+    update = tables.LinkColumn(
+        "building:updateMaterial", args=[A("pk")], verbose_name="", text="Update"
+    )
 
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
