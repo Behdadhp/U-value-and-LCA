@@ -1,5 +1,7 @@
+import ast
+
 import django_tables2 as tables
-from django.utils.html import format_html, format_html_join, escape
+from django.utils.html import format_html, format_html_join
 from django_tables2 import A
 
 from . import models
@@ -8,7 +10,6 @@ from . import models
 class BuildingTable(tables.Table):
     """Table for building model"""
 
-    project = tables.JSONColumn()
     generate = tables.LinkColumn(
         "building:details", args=[A("pk")], verbose_name="", text="Generate"
     )
@@ -23,10 +24,31 @@ class BuildingTable(tables.Table):
         attrs={"a": {"style": "color: red;"}},
     )
 
+    wall = tables.Column(verbose_name="Wall components")
+    roof = tables.Column(verbose_name="Roof components")
+    floor = tables.Column(verbose_name="Floor components")
+
+    def render_wall(self, value):
+        return self.render_components(value)
+
+    def render_roof(self, value):
+        return self.render_components(value)
+
+    def render_floor(self, value):
+        return self.render_components(value)
+
+    @staticmethod
+    def render_components(value):
+        return format_html_join(
+            "",
+            "<p> {} </p>",
+            ((k,) for k, v in ast.literal_eval(value).items() if isinstance(v, dict)),
+        )
+
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
         model = models.Building
-        exclude = ("wallUvalue", "roofUvalue", "floorUvalue")
+        exclude = ("project", "wallUvalue", "roofUvalue", "floorUvalue")
 
 
 class BuildingDetail(tables.Table):
@@ -64,7 +86,8 @@ class MaterialTable(tables.Table):
     EP = tables.Column()
     url_to_oekobaudat = tables.Column(verbose_name="Link")
 
-    def render_items(self):
+    @staticmethod
+    def render_items():
         items = [
             "Herstellungsphase",
             "Erneuerung",
@@ -73,7 +96,8 @@ class MaterialTable(tables.Table):
         ]
         return format_html_join("\n", "<p>{}: </p>", ((key,) for key in items))
 
-    def render_url_to_oekobaudat(self, value):
+    @staticmethod
+    def render_url_to_oekobaudat(value):
         return format_html(
             "<a href={} target=_blank>{}</a>", value, "Link to Ökobaudat"
         )
