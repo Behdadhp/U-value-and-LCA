@@ -54,7 +54,7 @@ class BuildingCreate(generic.CreateView):
 
 
 class BuildingDelete(generic.DeleteView):
-    """View for deleting existing project"""
+    """Delete an existing building"""
 
     template_name = "building_confirm_delete.html"
     model = models.Building
@@ -116,8 +116,16 @@ class MaterialCreate(generic.CreateView):
         return super().form_valid(form)
 
 
+class MaterialDelete(generic.DeleteView):
+    """Delete an existing material"""
+
+    template_name = "building_confirm_delete.html"
+    model = models.Material
+    success_url = reverse_lazy("building:materials")
+
+
 class MaterialUpdate(generic.UpdateView):
-    """Update existing materials"""
+    """Update existing material"""
 
     model = models.Material
     fields = "__all__"

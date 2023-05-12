@@ -7,7 +7,11 @@ urlpatterns = [
     path("buildings/", views.BuildingList.as_view(), name="buildings"),
     path("buildings/<int:pk>", views.BuildingDetails.as_view(), name="details"),
     path("buildings/new/", views.BuildingCreate.as_view(), name="createProject"),
-    path("buildings/delete/<int:pk>", views.BuildingDelete.as_view(), name="delete"),
+    path(
+        "buildings/delete/<int:pk>",
+        views.BuildingDelete.as_view(),
+        name="deleteBuilding",
+    ),
     path(
         "buildings/update/<int:pk>",
         views.BuildingUpdate.as_view(),
@@ -19,5 +23,10 @@ urlpatterns = [
         "materials/update/<int:pk>",
         views.MaterialUpdate.as_view(),
         name="updateMaterial",
+    ),
+    path(
+        "materials/delete/<int:pk>",
+        views.MaterialDelete.as_view(),
+        name="deleteMaterial",
     ),
 ]

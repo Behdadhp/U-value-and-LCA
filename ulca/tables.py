@@ -15,7 +15,7 @@ class BuildingTable(tables.Table):
         "building:updateBuilding", args=[A("pk")], verbose_name="", text="Update"
     )
     Delete = tables.LinkColumn(
-        "building:delete",
+        "building:deleteBuilding",
         args=[A("pk")],
         text="Delete",
         verbose_name="",
@@ -46,6 +46,13 @@ class MaterialTable(tables.Table):
 
     update = tables.LinkColumn(
         "building:updateMaterial", args=[A("pk")], verbose_name="", text="Update"
+    )
+    Delete = tables.LinkColumn(
+        "building:deleteMaterial",
+        args=[A("pk")],
+        text="Delete",
+        verbose_name="",
+        attrs={"a": {"style": "color: red;"}},
     )
 
     class Meta:
