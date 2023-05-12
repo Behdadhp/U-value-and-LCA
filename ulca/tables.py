@@ -1,4 +1,5 @@
 import django_tables2 as tables
+from django.utils.html import format_html, format_html_join, escape
 from django_tables2 import A
 
 from . import models
@@ -54,8 +55,60 @@ class MaterialTable(tables.Table):
         verbose_name="",
         attrs={"a": {"style": "color: red;"}},
     )
+    items = tables.Column(empty_values=(), verbose_name="")
+
+    GWD = tables.Column()
+    ODP = tables.Column()
+    POCP = tables.Column()
+    AP = tables.Column()
+    EP = tables.Column()
+    url_to_oekobaudat = tables.Column(verbose_name="Link")
+
+    def render_items(self):
+        items = [
+            "Herstellungsphase",
+            "Erneuerung",
+            "Energiebedarf",
+            "Lebensendphase",
+        ]
+        return format_html_join("\n", "<p>{}: </p>", ((key,) for key in items))
+
+    def render_url_to_oekobaudat(self, value):
+        return format_html(
+            "<a href={} target=_blank>{}</a>", value, "Link to Ökobaudat"
+        )
+
+    @staticmethod
+    def render_GWD(record):
+        return format_html_join(
+            "\n", "<p>{} </p>", ((item,) for item in record.GWD.values())
+        )
+
+    @staticmethod
+    def render_ODP(record):
+        return format_html_join(
+            "\n", "<p>{} </p>", ((item,) for item in record.ODP.values())
+        )
+
+    @staticmethod
+    def render_POCP(record):
+        return format_html_join(
+            "\n", "<p>{} </p>", ((item,) for item in record.POCP.values())
+        )
+
+    @staticmethod
+    def render_AP(record):
+        return format_html_join(
+            "\n", "<p>{} </p>", ((item,) for item in record.AP.values())
+        )
+
+    def render_EP(self, record):
+        return format_html_join(
+            "\n", "<p>{} </p>", ((item,) for item in record.EP.values())
+        )
 
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
         model = models.Material
         exclude = ("id",)
+        sequence = ("name", "rho", "lamb", "items")
