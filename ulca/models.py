@@ -1,6 +1,6 @@
 from django.db import models
 
-from .calculation.data import jsonfield_default_value, material_default_value
+from .calculation.data import building_default_value, material_default_value
 from .calculation.uvalue import UValue
 
 
@@ -8,7 +8,7 @@ class Building(models.Model):
     """ORM representation of the Projects"""
 
     name = models.CharField(max_length=64, blank=False, null=False)
-    project = models.JSONField(default=jsonfield_default_value, blank=False, null=False)
+    project = models.JSONField(default=building_default_value, blank=False, null=False)
     wall = models.CharField(max_length=128, blank=True)
     roof = models.CharField(max_length=128, blank=True)
     floor = models.CharField(max_length=128, blank=True)

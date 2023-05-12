@@ -21,7 +21,7 @@ heat_transfer_resistance = {
 }
 
 
-def jsonfield_default_value():
+def building_default_value():
     return {
         "floor": {
             "Stahlbeton": 200,

@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 (
                     "project",
                     models.JSONField(
-                        default=ulca.calculation.data.jsonfield_default_value
+                        default=ulca.calculation.data.building_default_value
                     ),
                 ),
                 ("wall", models.CharField(blank=True, max_length=128)),
