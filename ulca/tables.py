@@ -41,8 +41,12 @@ class BuildingTable(tables.Table):
     def render_components(value):
         return format_html_join(
             "",
-            "<p> {} </p>",
-            ((k,) for k, v in ast.literal_eval(value).items() if isinstance(v, dict)),
+            "<p> {} {}mm</p>",
+            (
+                (k, v["thickness"])
+                for k, v in ast.literal_eval(value).items()
+                if isinstance(v, dict)
+            ),
         )
 
     class Meta:
