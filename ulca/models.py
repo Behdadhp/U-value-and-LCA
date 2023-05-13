@@ -118,8 +118,11 @@ class UValue:
 
         for item in project[component]:
             if isinstance(project[component][item], dict):
-                test = Material.objects.get(name=item)
-                project[component][item]["lambda"] = test.lamb
+                try:
+                    material = Material.objects.get(name=item)
+                    project[component][item]["lambda"] = material.lamb
+                except:
+                    pass
 
         return project[component]
 
