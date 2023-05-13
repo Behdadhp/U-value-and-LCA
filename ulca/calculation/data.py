@@ -1,19 +1,3 @@
-material = {
-    "Gipsputz": {"lambda": 0.52},
-    "KS-Mauerwerk": {"lambda": 0.79},
-    "Steinwolle-Daemmstoff": {"lambda": 0.035},
-    "WDVS Verklebung und Beschichtung": {"lambda": 0.1},
-    "Stahlbeton": {"lambda": 2.5},
-    "Bitumen": {"lambda": 0.23},
-    "Estrich": {"lambda": 1.4},
-    "Extrudierter Polystyrolschaum (XPS)": {"lambda": 0.035},
-    "Dampfsperre": {"lambda": 0.4},
-    "Sauberkeitsschicht": {"lambda": 2.1},
-    "Kies": {"lambda": 0.7},
-    "Expandierter Polystyrolschaum (EPS)": {"lambda": 0.035},
-    "Schaumglas": {"lambda": 0.035},
-}
-
 heat_transfer_resistance = {
     "Rsi": {"upward": 0.10, "horizontal": 0.13, "downward": 0.17},
     "Rse": 0.04,

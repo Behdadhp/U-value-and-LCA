@@ -4,7 +4,6 @@ from django_tables2 import SingleTableView, MultiTableMixin
 from . import models, tables
 from django.views import generic
 
-from .calculation.uvalue import UValue
 from . import filters
 from . import forms
 
@@ -87,7 +86,7 @@ class BuildingUpdate(generic.UpdateView):
 
     @staticmethod
     def get_uvalue(project: models.Building, component: str):
-        instance = UValue(project)
+        instance = models.UValue(project)
         return instance.calc_u(component)
 
 
