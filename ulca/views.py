@@ -118,7 +118,7 @@ class MaterialCreate(generic.CreateView):
 class MaterialDelete(generic.DeleteView):
     """Delete an existing material"""
 
-    template_name = "building_confirm_delete.html"
+    template_name = "material_confirm_delete.html"
     model = models.Material
     success_url = reverse_lazy("building:materials")
 
