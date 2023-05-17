@@ -40,7 +40,7 @@ Data for the each project should be provided in this format:
 ```
 
 # Attention
-This app is not synced with any database yet, so you before creating the project
+This app is not synced with any databases yet, so before creating the project
 you need to provide the infos for material in the app. The name of materials should
 be exactly as same as the material in the project, otherwise it will rais an error.
 
