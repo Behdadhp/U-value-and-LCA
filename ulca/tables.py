@@ -83,7 +83,7 @@ class MaterialTable(tables.Table):
     )
     items = tables.Column(empty_values=(), verbose_name="")
 
-    GWD = tables.Column()
+    GWP = tables.Column()
     ODP = tables.Column()
     POCP = tables.Column()
     AP = tables.Column()
