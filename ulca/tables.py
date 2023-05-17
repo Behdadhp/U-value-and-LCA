@@ -93,10 +93,10 @@ class MaterialTable(tables.Table):
     @staticmethod
     def render_items():
         items = [
-            "Herstellungsphase",
-            "Erneuerung",
-            "Energiebedarf",
-            "Lebensendphase",
+            "Herstellungsphase (A1 to A3)",
+            "Erneuerung (B2 and B4)",
+            "Energiebedarf (B6)",
+            "Lebensendphase (C3 and C4)",
         ]
         return format_html_join("\n", "<p>{}: </p>", ((key,) for key in items))
 
