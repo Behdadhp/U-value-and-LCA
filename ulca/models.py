@@ -68,12 +68,18 @@ class Building(models.Model):
 class Material(models.Model):
     """ORM represntation of the materials"""
 
+    MASS = "mass"
+    VOLUME = "volume"
+    AREA = "area"
+
+    type_choices = ((MASS, "Mass"), (VOLUME, "Volume"), (AREA, "Area"))
+
     name = models.CharField(max_length=64, blank=False, null=False)
     rho = models.FloatField(max_length=8)
     lamb = models.FloatField(
         max_length=8, blank=False, null=False, verbose_name="lambda"
     )
-    GWD = models.JSONField(
+    GWP = models.JSONField(
         default=material_default_value,
         blank=True,
         null=True,
@@ -103,6 +109,7 @@ class Material(models.Model):
         null=True,
         help_text="Fertilization potential",
     )
+    type = models.CharField(max_length=32, choices=type_choices, default=VOLUME)
     url_to_oekobaudat = models.URLField(blank=True, null=True)
 
     def __str__(self):

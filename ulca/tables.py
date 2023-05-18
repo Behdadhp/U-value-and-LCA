@@ -83,7 +83,7 @@ class MaterialTable(tables.Table):
     )
     items = tables.Column(empty_values=(), verbose_name="")
 
-    GWP = tables.Column()
+    # GWP = tables.Column()
     ODP = tables.Column()
     POCP = tables.Column()
     AP = tables.Column()
@@ -107,9 +107,9 @@ class MaterialTable(tables.Table):
         )
 
     @staticmethod
-    def render_GWD(record):
+    def render_GWP(record):
         return format_html_join(
-            "\n", "<p>{} </p>", ((item,) for item in record.GWD.values())
+            "\n", "<p>{} </p>", ((item,) for item in record.GWP.values())
         )
 
     @staticmethod

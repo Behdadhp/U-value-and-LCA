@@ -25,7 +25,7 @@ class MaterialAdmin(admin.ModelAdmin):
         "name",
         "rho",
         "lamb",
-        "GWD",
+        "GWP",
         "ODP",
         "POCP",
         "AP",
