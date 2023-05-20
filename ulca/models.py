@@ -4,8 +4,6 @@ from .calculation.data import building_default_value, material_default_value
 
 from .calculation.calc import UValue
 
-from .calculation import data
-
 
 class Building(models.Model):
     """ORM representation of the Projects"""
