@@ -2,7 +2,7 @@ from django.db import models
 
 from .calculation.data import building_default_value, material_default_value
 
-from .calculation.uvalue import UValue
+from .calculation.calc import UValue
 
 from .calculation import data
 
