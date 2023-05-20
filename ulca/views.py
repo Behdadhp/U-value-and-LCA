@@ -86,7 +86,7 @@ class BuildingUpdate(generic.UpdateView):
 
     @staticmethod
     def get_uvalue(project: models.Building, component: str):
-        instance = models.UValue(project)
+        instance = models.UValue(project, models.Material)
         return instance.calc_u(component)
 
 
