@@ -37,7 +37,7 @@ class CreateProject(Calc):
         """Creates a dictionary for attributes of each layer of requested components"""
 
         project = self.project
-        area = self.get_area_of_component(component)
+        area = float(self.get_area_of_component(component))
 
         for layer in project[component]:
             if isinstance(project[component][layer], dict):
