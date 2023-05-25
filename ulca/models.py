@@ -2,7 +2,7 @@ from django.db import models
 
 from .calculation.data import building_default_value, material_default_value
 
-from .calculation.calc import UValue
+from .calculation import calc
 
 
 class Building(models.Model):
@@ -34,7 +34,7 @@ class Building(models.Model):
 
     def get_uvalue(self, component):
         """Get the value of U"""
-        instance = UValue(self.project, Material)
+        instance = calc.CalcUValue(self.project, Material)
         return instance.calc_u(component)
 
     def save(

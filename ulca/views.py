@@ -6,6 +6,7 @@ from django.views import generic
 
 from . import filters
 from . import forms
+from .calculation import calc
 
 
 class BuildingList(FilterView, SingleTableView):
@@ -86,7 +87,7 @@ class BuildingUpdate(generic.UpdateView):
 
     @staticmethod
     def get_uvalue(project: models.Building, component: str):
-        instance = models.UValue(project, models.Material)
+        instance = calc.CalcUValue(project, models.Material)
         return instance.calc_u(component)
 
 
