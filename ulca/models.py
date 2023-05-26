@@ -16,26 +16,36 @@ class Building(models.Model):
     wallUvalue = models.CharField(max_length=32, blank=True)
     roofUvalue = models.CharField(max_length=32, blank=True)
     floorUvalue = models.CharField(max_length=32, blank=True)
+    lca = models.CharField(max_length=256, blank=True, null=True, default="")
 
     def __str__(self):
         return self.name
 
     def get_wall(self):
-        """Get the wall from Project"""
+        """Gets the wall from Project"""
         return self.project["wall"]
 
     def get_roof(self):
-        """Get the roof from Project"""
+        """Gets the roof from Project"""
         return self.project["roofbase"]
 
     def get_floor(self):
-        """Get the floor from Project"""
+        """Gets the floor from Project"""
         return self.project["floor"]
 
     def get_uvalue(self, component):
-        """Get the value of U"""
+        """Gets the value of U"""
         instance = calc.CalcUValue(self.project, Material)
         return instance.calc_u(component)
+
+    def get_lca(self):
+        """Gets the environmental impact"""
+        project = {}
+        for layer in ["wall", "floor", "roofbase"]:
+            instance = calc.CalcLCA(self.project, Material)
+            dic = instance.calc_lca(layer)
+            project.update(dic[layer])
+        return project
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
@@ -59,6 +69,9 @@ class Building(models.Model):
 
         # get the u-value for floor
         self.floorUvalue = self.get_uvalue("floor")
+
+        # get the environmental impact for all layers
+        self.lca = self.get_lca()
 
         super().save(force_insert, force_update, using, update_fields)
 
