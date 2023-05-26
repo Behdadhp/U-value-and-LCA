@@ -43,15 +43,16 @@ class CreateProject(Calc):
             if isinstance(project[component][layer], dict):
                 material = self.get_material(layer)
                 project[component][layer]["lambda"] = material.lamb
-                project[component][layer]["area"] = area  # m2
-                project[component][layer]["volume"] = (
-                    area * project[component][layer]["thickness"] * 10**-3
+                project[component][layer]["area"] = round(area, 3)  # m2
+                project[component][layer]["volume"] = round(
+                    area * project[component][layer]["thickness"] * 10**-3, 3
                 )  # m2 * mm
-                project[component][layer]["mass"] = (
+                project[component][layer]["mass"] = round(
                     area
                     * project[component][layer]["thickness"]
                     * 10**-3
-                    * material.rho
+                    * material.rho,
+                    3,
                 )  # m2 * mm * rho
 
         return project[component]
