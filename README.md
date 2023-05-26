@@ -21,23 +21,28 @@ Data for the each project should be provided in this format:
     "material2": {
       "thickness": "number in mm"
     },
-    "..."
+    "...",
+    "area": "number in m2"
   },
   "roofbase": {
     "material1": {
       "thickness": "number in mm"
     },
-    "..."
+    "...",
+    "area": "number in m2"
   },
   "wall": {
     "material1": {
       "thickness": "number in mm"
     },
-    "..."
+    "...",
+    "area": "number in m2"
   }
 }
 
 ```
+
+The "area" mentioned above is the total area of each component e.g. wall, floor and roof.
 
 # Attention
 This app is not synced with any databases yet, so before creating the project
