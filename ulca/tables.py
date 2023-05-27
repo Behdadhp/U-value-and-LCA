@@ -198,7 +198,7 @@ class ComponentTable(tables.Table):
 class LCATable(tables.Table):
     """Table for LCA"""
 
-    balance = tables.Column(empty_values=(), verbose_name="Balance")
+    phase = tables.Column(empty_values=())
     layer = tables.Column(empty_values=(), verbose_name="Component (inside to outside)")
     gwp = tables.Column(empty_values=(), verbose_name="GWP")
     odp = tables.Column(empty_values=(), verbose_name="ODP")
@@ -217,7 +217,7 @@ class LCATable(tables.Table):
         )
 
     @staticmethod
-    def render_balance():
+    def render_phase():
         """Crates phases for each layer"""
 
         items = [
@@ -266,4 +266,4 @@ class LCATable(tables.Table):
 
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
-        sequence = ("layer", "balance")
+        sequence = ("layer", "phase")
