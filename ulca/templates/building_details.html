@@ -3,9 +3,44 @@
 {% load django_tables2 %}
 
 {% block content %}
+
     {% bootstrap_css %}
     <div class="col-sm-10">
+        <h1> Table for U-Value</h1>
+        <br>
         {% render_table table %}
+    </div>
+    <div class="col-sm-10">
+        <h1> Table for Wall</h1>
+        <br>
+        {% render_table wall_component %}
+    </div>
+    <div class="col-sm-10">
+        <h1> LCA </h1>
+        <br>
+        {% render_table wall_lca %}
+    </div>
+
+    <div class="col-sm-10">
+        <h1> Table for Floor</h1>
+        <br>
+        {% render_table floor_component %}
+    </div>
+    <div class="col-sm-10">
+        <h1> LCA </h1>
+        <br>
+        {% render_table floor_lca %}
+    </div>
+
+    <div class="col-sm-10">
+        <h1> Table for Roof</h1>
+        <br>
+        {% render_table roofbase_component %}
+    </div>
+    <div class="col-sm-10">
+        <h1> LCA </h1>
+        <br>
+        {% render_table roofbase_lca %}
     </div>
 
 {% endblock %}

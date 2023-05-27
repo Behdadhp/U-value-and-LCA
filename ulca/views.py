@@ -28,14 +28,43 @@ class BuildingDetails(generic.DetailView, MultiTableMixin):
     table_class = tables.BuildingDetail
 
     def get_building_id(self):
+        """Gets the pk of the current page"""
+
         return self.kwargs["pk"]
 
     def create_data_query(self):
+        """Creates query to building"""
+
         return models.Building.objects.filter(id=self.get_building_id())
+
+    def create_building_table(self, component):
+        """Provides data for creating tables"""
+
+        building = self.get_object()
+
+        return [
+            {key: building.project[component][key]}
+            for key in building.project[component].keys()
+            if isinstance(building.project[component][key], dict)
+        ]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["table"] = tables.BuildingDetail(self.create_data_query())
+        context["wall_component"] = tables.ComponentTable(
+            self.create_building_table("wall")
+        )
+        context["wall_lca"] = tables.LCATable(self.create_building_table("wall"))
+        context["floor_component"] = tables.ComponentTable(
+            self.create_building_table("floor")
+        )
+        context["floor_lca"] = tables.LCATable(self.create_building_table("floor"))
+        context["roofbase_component"] = tables.ComponentTable(
+            self.create_building_table("roofbase")
+        )
+        context["roofbase_lca"] = tables.LCATable(
+            self.create_building_table("roofbase")
+        )
         return context
 
 
