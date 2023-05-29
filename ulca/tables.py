@@ -141,6 +141,8 @@ class MaterialTable(tables.Table):
         exclude = ("id",)
         sequence = ("name", "rho", "lamb", "items")
 
+        attrs = {"class": "table table-striped"}
+
 
 class ComponentTable(tables.Table):
     """Tables for components"""
@@ -193,6 +195,8 @@ class ComponentTable(tables.Table):
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
         sequence = ("layer", "thickness", "area", "volume", "mass")
+
+        attrs = {"class": "table table-striped"}
 
 
 class LCATable(tables.Table):
@@ -267,3 +271,5 @@ class LCATable(tables.Table):
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
         sequence = ("layer", "phase")
+
+        attrs = {"class": "table table-striped"}
