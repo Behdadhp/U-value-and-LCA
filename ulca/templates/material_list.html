@@ -5,18 +5,15 @@
 {% block content %}
 
     {% bootstrap_css %}
-    <div class="row">
-        <div class="col-sm-10">
-            {% if filter %}
-                <form action="" method="get" class="form form-inline">
-                    {% bootstrap_form filter.form layout='inline' %}
-                    {% bootstrap_button 'filter' %}
-                </form>
-            {% endif %}
-        </div>
-        <div class="col-sm-10">
-            {% render_table table %}
-        </div>
+    <div class="col-xs-12 col-sm-6 col-md-12">
+        {% if filter %}
+            <form action="" method="get" class="form form-inline">
+                {% bootstrap_form filter.form layout='inline' %}
+                {% bootstrap_button 'filter' %}
+            </form>
+        {% endif %}
+
+        {% render_table table %}
     </div>
 
 {% endblock %}
