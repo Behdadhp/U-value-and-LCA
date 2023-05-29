@@ -65,6 +65,14 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"
 ></script>
-<div class="container shadow-lg p-3 mb-5 bg-body rounded">
-    {% block content %} {% endblock %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-1"></div>
+        <div class="col-xs-12 col-sm-6 col-md-10 shadow-lg ">{% block content %}{% endblock %}</div>
+        <div class="col-xs-12 col-sm-6 col-md-1"></div>
+    </div>
 </div>
+{#<div class="container-fluid shadow-lg ">#}
+{#    {% block content %} {% endblock %}#}
+{#</div>#}

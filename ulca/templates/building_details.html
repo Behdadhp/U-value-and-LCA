@@ -5,40 +5,47 @@
 {% block content %}
 
     {% bootstrap_css %}
-    <div class="col-sm-10">
+    <div class="col-xs-12 col-sm-6 col-md-12">
+        <h2> Generated page for project: {{ building }}</h2>
+        <p>The first table is the calculation of U-Value. Below this table, there are other tables for 3
+            components of the building (Wall, Roof and Floor) and their calculation of LCA.</p>
+    </div>
+
+
+    <div class="col-xs-12 col-sm-6 col-md-12">
         <h1> Table for U-Value</h1>
         <br>
         {% render_table table %}
     </div>
-    <div class="col-sm-10">
-        <h1> Table for Wall</h1>
+    <div class="col-xs-12 col-sm-6 col-md-12">
+        <h1> Tables for Wall</h1>
         <br>
         {% render_table wall_component %}
     </div>
-    <div class="col-sm-10">
-        <h1> LCA </h1>
+    <div class="col-xs-12 col-sm-6 col-md-12">
+        <h3> Life Cycle Assessment table</h3>
         <br>
         {% render_table wall_lca %}
     </div>
 
-    <div class="col-sm-10">
-        <h1> Table for Floor</h1>
+    <div class="col-xs-12 col-sm-6 col-md-12">
+        <h1> Tables for Floor</h1>
         <br>
         {% render_table floor_component %}
     </div>
-    <div class="col-sm-10">
-        <h1> LCA </h1>
+    <div class="col-xs-12 col-sm-6 col-md-12">
+        <h3> Life Cycle Assessment table</h3>
         <br>
         {% render_table floor_lca %}
     </div>
 
-    <div class="col-sm-10">
-        <h1> Table for Roof</h1>
+    <div class="col-xs-12 col-sm-6 col-md-12">
+        <h1> Tables for Roof</h1>
         <br>
         {% render_table roofbase_component %}
     </div>
-    <div class="col-sm-10">
-        <h1> LCA </h1>
+    <div class="col-xs-12 col-sm-6 col-md-12">
+        <h3> Life Cycle Assessment table</h3>
         <br>
         {% render_table roofbase_lca %}
     </div>
