@@ -10,9 +10,9 @@ class Building(models.Model):
 
     name = models.CharField(max_length=64, blank=False, null=False)
     project = models.JSONField(default=building_default_value, blank=False, null=False)
-    wall = models.CharField(max_length=128, blank=True)
-    roof = models.CharField(max_length=128, blank=True)
-    floor = models.CharField(max_length=128, blank=True)
+    wall = models.TextField(blank=True)
+    roof = models.TextField(blank=True)
+    floor = models.TextField(blank=True)
     wallUvalue = models.CharField(max_length=32, blank=True)
     roofUvalue = models.CharField(max_length=32, blank=True)
     floorUvalue = models.CharField(max_length=32, blank=True)

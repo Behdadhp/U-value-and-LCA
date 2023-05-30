@@ -94,28 +94,12 @@ class BuildingUpdate(generic.UpdateView):
     """Update existing buildings"""
 
     model = models.Building
-    fields = {"name", "project"}
+    form_class = forms.UpdateBuilding
     template_name = "building_update.html"
     success_url = reverse_lazy("building:buildings")
 
-    def form_valid(self, form):
-        # get the updated project data
-        project_data = form.cleaned_data["project"]
-
-        # update the remaining fields of the Building model
-        building = form.save(commit=False)
-        building.wall = project_data.get("wall")
-        building.roof = project_data.get("roof")
-        building.floor = project_data.get("floor")
-        building.wallUvalue = self.get_uvalue(project_data, "wall")
-        building.roofUvalue = self.get_uvalue(project_data, "roofbase")
-        building.floorUvalue = self.get_uvalue(project_data, "floor")
-        building.save()
-
-        return super().form_valid(form)
-
     @staticmethod
-    def get_uvalue(project: models.Building, component: str):
+    def get_uvalue(project: dict, component: str):
         instance = calc.CalcUValue(project, models.Material)
         return instance.calc_u(component)
 
