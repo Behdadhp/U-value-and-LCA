@@ -83,13 +83,6 @@ class MaterialTable(tables.Table):
     )
     items = tables.Column(empty_values=(), verbose_name="")
 
-    # GWP = tables.Column()
-    ODP = tables.Column()
-    POCP = tables.Column()
-    AP = tables.Column()
-    EP = tables.Column()
-    url_to_oekobaudat = tables.Column(verbose_name="Link")
-
     @staticmethod
     def render_items():
         items = [
@@ -99,12 +92,6 @@ class MaterialTable(tables.Table):
             "Lebensendphase",
         ]
         return format_html_join("\n", "<p>{}: </p>", ((key,) for key in items))
-
-    @staticmethod
-    def render_url_to_oekobaudat(value):
-        return format_html(
-            "<a href={} target=_blank>{}</a>", value, "Link to Ökobaudat"
-        )
 
     @staticmethod
     def render_GWP(record):
@@ -130,15 +117,22 @@ class MaterialTable(tables.Table):
             "\n", "<p>{} </p>", ((item,) for item in record.AP.values())
         )
 
-    def render_EP(self, record):
+    @staticmethod
+    def render_EP(record):
         return format_html_join(
             "\n", "<p>{} </p>", ((item,) for item in record.EP.values())
+        )
+
+    @staticmethod
+    def render_name(record):
+        return format_html(
+            "<a href={} target=_blank>{}</a>", record.url_to_oekobaudat, record.name
         )
 
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
         model = models.Material
-        exclude = ("id",)
+        exclude = ("id", "type", "url_to_oekobaudat")
         sequence = ("name", "rho", "lamb", "items")
 
         attrs = {"class": "table table-striped"}
