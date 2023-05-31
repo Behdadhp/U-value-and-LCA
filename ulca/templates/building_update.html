@@ -11,7 +11,6 @@
 
 {% block content %}
 
-
     <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-6">
             <h1>Edit the Project</h1>
@@ -19,7 +18,29 @@
         <div class="col-xs-12 col-sm-6 col-md-6">
             <form method="post">
                 {% csrf_token %}
-                {% bootstrap_form form %}
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":4" == "name" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+                <h3>Floor:</h3>
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":5" == "floor" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+                <h3>Wall:</h3>
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":4" == "wall" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+                <h3>Roof:</h3>
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":4" == "roof" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
                 {% buttons %}
                     <br/>
                     <button type="submit" class="btn btn-primary">Save</button>
@@ -27,6 +48,4 @@
             </form>
         </div>
     </div>
-
-
 {% endblock %}
