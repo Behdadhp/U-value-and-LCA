@@ -33,6 +33,7 @@
                     {% bootstrap_field component %}
                 {% endif %}
             {% endfor %}
+            <br>
             <h3>Roof layers:</h3>
 
             {% for component in form.visible_fields %}
@@ -40,6 +41,8 @@
                     {% bootstrap_field component %}
                 {% endif %}
             {% endfor %}
+            <br>
+
             <h3>Floor layers:</h3>
 
             {% for component in form.visible_fields %}
@@ -56,12 +59,16 @@
                     {% bootstrap_field component %}
                 {% endif %}
             {% endfor %}
+            <br>
+
             <h3>Thickness:</h3>
             {% for component in form.visible_fields %}
                 {% if component.name|slice:":4" == "roof" %}
                     {% bootstrap_field component %}
                 {% endif %}
             {% endfor %}
+            <br>
+
             <h3>Thickness:</h3>
             {% for component in form.visible_fields %}
                 {% if component.name|slice:":5" == "floor" %}
