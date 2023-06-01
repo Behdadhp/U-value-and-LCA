@@ -62,10 +62,16 @@ class UpdateBuilding(forms.ModelForm):
             field_label = f"{material}"
             initial[field_name] = thickness
 
+            material_of_layers = f"{material}_{component}"
+
             if isinstance(data[material], dict):
                 self.fields[field_name] = forms.IntegerField(
                     label=field_label,
                     initial=initial[field_name]["thickness"],
+                )
+
+                self.fields[material_of_layers] = forms.CharField(
+                    label=field_label, initial=material
                 )
 
     def save_component(self, component, instance):
@@ -73,12 +79,21 @@ class UpdateBuilding(forms.ModelForm):
         the model should get updated"""
 
         component_data = {}
-        for field_name, thickness in self.cleaned_data.items():
+
+        for field_name, value in self.cleaned_data.items():
+            # Checks if the thickness has been changed.
             if field_name.startswith(f"{component}_"):
                 material = field_name[len(f"{component}_") :]
-                component_data[material] = thickness
+                component_data[material] = value
 
-                instance[material]["thickness"] = thickness
+                instance[material]["thickness"] = value
+
+            # Checks if the material has been changed.
+            elif field_name.endswith(f"{component}"):
+                material = field_name[: -len(f"{component}") - 1]
+                if material != value:
+                    instance[value] = instance[material]
+                    del instance[material]
 
     def save(self, commit=True):
         """Saves the updated fields into model"""
