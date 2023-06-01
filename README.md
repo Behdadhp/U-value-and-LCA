@@ -10,7 +10,7 @@ a JSON. This website belongs to a Master Thesis in civil engineering.
 
 # Data
 
-Data for the each project should be provided in this format:
+Data for each project should be provided in this format:
 
 ```JSON
 {
