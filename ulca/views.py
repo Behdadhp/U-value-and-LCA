@@ -7,6 +7,7 @@ from django.views import generic
 from . import filters
 from . import forms
 from .calculation import calc
+from .utils import sort_project
 
 
 class BuildingList(FilterView, SingleTableView):
@@ -77,29 +78,10 @@ class BuildingCreate(generic.CreateView):
     success_url = reverse_lazy("building:buildings")
 
     def form_valid(self, form):
-        form.instance.project = self.sort_dict(form.instance.project)
+        form.instance.project = sort_project(form.instance.project)
         self.object = form.save(commit=False)
         self.object.save()
         return super().form_valid(form)
-
-    @staticmethod
-    def sort_dict(instance):
-        """Sort the project based on IDs before saving"""
-
-        sorted_dict = {}
-        for component in instance:
-            sorted_test = {
-                key: value
-                for key, value in sorted(
-                    instance[component].items(),
-                    key=lambda x: x[1]["id"]
-                    if isinstance(x[1], dict)
-                    else float("inf"),
-                )
-            }
-            sorted_dict[component] = sorted_test
-
-        return sorted_dict
 
 
 class BuildingDelete(generic.DeleteView):

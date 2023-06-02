@@ -2,6 +2,8 @@ from django import forms
 from . import models
 from django.utils.translation import gettext_lazy as _
 
+from .utils import sort_project
+
 
 class CreateBuilding(forms.ModelForm):
     """Form for creating building"""
@@ -99,12 +101,13 @@ class UpdateBuilding(forms.ModelForm):
         """Saves the updated fields into model"""
 
         building = super().save(commit=False)
-
         self.save_component("floor", building.project["floor"])
         self.save_component("wall", building.project["wall"])
         self.save_component("roof", building.project["roofbase"])
 
         if commit:
+            # Sort the project before saving in database
+            building.project = sort_project(instance=building.project)
             building.save()
 
         return building
