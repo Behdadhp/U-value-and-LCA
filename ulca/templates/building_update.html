@@ -34,7 +34,7 @@
     <div class="row text-center">
     <h1 class=header_color>Wall</h1>
     <div class="col-xs-12 col-sm-6 col-md-1">
-        <h3>Id:</h3>
+        <h3>Layers</h3>
         {% for component in form.visible_fields %}
             {% if component.name|slice:":7" == "id_wall" %}
                 {% bootstrap_field component %}
@@ -43,7 +43,7 @@
     </div>
     <div class="col-xs-12 col-sm-6 col-md-6">
 
-        <h3>Layers:</h3>
+        <h3>Materials</h3>
 
         {% for component in form.visible_fields %}
             {% if component.name|slice:"-4:" == "wall" %}
@@ -53,7 +53,7 @@
     </div>
     <div class="col-xs-12 col-sm-6 col-md-5">
 
-        <h3>Thickness:</h3>
+        <h3>Thickness</h3>
         {% for component in form.visible_fields %}
             {% if component.name|slice:":4" == "wall" %}
                 {% bootstrap_field component %}
@@ -101,7 +101,7 @@
         <h1 class=header_color>Roof</h1>
 
         <div class="col-xs-12 col-sm-6 col-md-1">
-            <h3>Id:</h3>
+            <h3>Layers</h3>
             {% for component in form.visible_fields %}
                 {% if component.name|slice:":7" == "id_roof" %}
                     {% bootstrap_field component %}
@@ -110,7 +110,7 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6">
 
-            <h3>layers:</h3>
+            <h3>Materials</h3>
 
             {% for component in form.visible_fields %}
                 {% if component.name|slice:"-4:" == "roof" %}
@@ -120,7 +120,7 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-5">
 
-            <h3>Thickness:</h3>
+            <h3>Thickness</h3>
             {% for component in form.visible_fields %}
                 {% if component.name|slice:":4" == "roof" %}
                     {% bootstrap_field component %}
@@ -169,7 +169,7 @@
     <h1 class=header_color>Floor</h1>
 
     <div class="col-xs-12 col-sm-6 col-md-1">
-        <h3>Id:</h3>
+        <h3>Layers</h3>
         {% for component in form.visible_fields %}
             {% if component.name|slice:":8" == "id_floor" %}
                 {% bootstrap_field component %}
@@ -178,7 +178,7 @@
     </div>
     <div class="col-xs-12 col-sm-6 col-md-6">
 
-        <h3>Floor layers:</h3>
+        <h3>Materials</h3>
 
         {% for component in form.visible_fields %}
             {% if component.name|slice:"-5:" == "floor" %}
@@ -188,7 +188,7 @@
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4">
 
-        <h3>Thickness:</h3>
+        <h3>Thickness</h3>
         {% for component in form.visible_fields %}
             {% if component.name|slice:":5" == "floor" %}
                 {% bootstrap_field component %}
