@@ -1,0 +1,25 @@
+.image-pos {
+  position: relative;
+  text-align: center;
+  color: white;
+  margin-right: 10px;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* Centered text */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: black;
+  transform: translate(-50%, -50%);
+  word-wrap: break-word;
+}
+
+.header_color {
+  background-color: darkgrey;
+}
