@@ -16,9 +16,11 @@ Data for each project should be provided in this format:
 {
   "floor": {
     "material1": {
+      "id": 1
       "thickness": "number in mm"
     },
     "material2": {
+      "id": 2
       "thickness": "number in mm"
     },
     "...",
@@ -26,6 +28,7 @@ Data for each project should be provided in this format:
   },
   "roofbase": {
     "material1": {
+      "id": 1
       "thickness": "number in mm"
     },
     "...",
@@ -33,6 +36,7 @@ Data for each project should be provided in this format:
   },
   "wall": {
     "material1": {
+      "id": 1
       "thickness": "number in mm"
     },
     "...",
@@ -54,3 +58,7 @@ be exactly as same as the material in the project, otherwise it will rais an err
 The LCA (Life Cycle Assessment) is calculating base on "Assessment system for
 sustainable building". [Click here ](https://www.bnb-nachhaltigesbauen.de/en/assessment-system/office-buildings/)
 for more information.
+
+# Source
+
+Images used for layers in this project are coming from [eLCA](https://www.bauteileditor.de/)
