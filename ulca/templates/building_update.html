@@ -228,11 +228,26 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <br>
-        {% buttons %}
-            <button type="submit" class="btn btn-primary btn-lg">Save</button>
-        {% endbuttons %}
-        </form>
     </div>
+    <br>
+    {% buttons %}
+        <button type="submit" class="btn btn-primary btn-lg">Save</button>
+
+    {% endbuttons %}
+    </form>
+    <button class="btn btn-secondary" id="copy-button">Copy the project to Clipboard</button>
+
+
+    <script>
+        document.getElementById("copy-button").addEventListener("click", function () {
+            var buildingData = ('{{ project_json|escapejs }}');
+            navigator.clipboard.writeText(buildingData).then(function () {
+                alert("Model data copied to clipboard!");
+            })
+                .catch(function (err) {
+                    console.error("Failed to copy model data: ", err);
+                });
+        });
+    </script>
 
 {% endblock %}

@@ -1,3 +1,5 @@
+import json
+
 from django.urls import reverse_lazy
 from django_filters.views import FilterView
 from django_tables2 import SingleTableView, MultiTableMixin
@@ -99,6 +101,14 @@ class BuildingUpdate(generic.UpdateView):
     form_class = forms.UpdateBuilding
     template_name = "building_update.html"
     success_url = reverse_lazy("building:buildings")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Convert the project data to JSON and pass it to the template
+        context["project_json"] = json.dumps(self.object.project)
+
+        return context
 
     @staticmethod
     def get_uvalue(project: dict, component: str):
