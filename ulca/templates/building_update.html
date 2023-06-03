@@ -82,11 +82,16 @@
                 {% if component.name|slice:":4" == "wall" %}
                     {% for id in form.visible_fields %}
                         {% if id.name|slice:"3:" == component.name %}
-                            <div class="image-pos">
-                                <img src="{% static 'material_images/gipsputz.jpg' %}" alt="{{ component.name }}"
-                                     width="{{ component.value }}" height="300">
-                                <div class="centered">{{ id.value }}</div>
-                            </div>
+                            {% with component.name|slice:"5:"|add:'.jpg' as material %}
+                                {% with 'material_images/'|add:material as material_source_image %}
+                                    <div class="image-pos">
+                                        <img src="{% static material_source_image %}"
+                                             alt="{{ component.name|slice:"5:" }}"
+                                             width="{{ component.value }}" height="300">
+                                        <div class="centered">{{ id.value }}</div>
+                                    </div>
+                                {% endwith %}
+                            {% endwith %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
@@ -150,11 +155,16 @@
                     {% if component.name|slice:":4" == "roof" %}
                         {% for id in form.visible_fields %}
                             {% if id.name|slice:"3:" == component.name %}
-                                <div class="image-pos">
-                                    <img src="{% static 'material_images/gipsputz.jpg' %}" alt="{{ component.name }}"
-                                         width="{{ component.value }}" height="300">
-                                    <div class="centered">{{ id.value }}</div>
-                                </div>
+                                {% with component.name|slice:"5:"|add:'.jpg' as material %}
+                                    {% with 'material_images/'|add:material as material_source_image %}
+                                        <div class="image-pos">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ component.name|slice:"5:" }}"
+                                                 width="{{ component.value }}" height="300">
+                                            <div class="centered">{{ id.value }}</div>
+                                        </div>
+                                    {% endwith %}
+                                {% endwith %}
                             {% endif %}
                         {% endfor %}
                     {% endif %}
@@ -218,11 +228,16 @@
                 {% if component.name|slice:":5" == "floor" %}
                     {% for id in form.visible_fields %}
                         {% if id.name|slice:"3:" == component.name %}
-                            <div class="image-pos">
-                                <img src="{% static 'material_images/gipsputz.jpg' %}" alt="{{ component.name }}"
-                                     width="{{ component.value }}" height="300">
-                                <div class="centered">{{ id.value }}</div>
-                            </div>
+                            {% with component.name|slice:"6:"|add:'.jpg' as material %}
+                                {% with 'material_images/'|add:material as material_source_image %}
+                                    <div class="image-pos">
+                                        <img src="{% static material_source_image %}"
+                                             alt="{{ component.name|slice:"5:" }}"
+                                             width="{{ component.value }}" height="300">
+                                        <div class="centered">{{ id.value }}</div>
+                                    </div>
+                                {% endwith %}
+                            {% endwith %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
