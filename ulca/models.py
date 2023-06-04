@@ -8,7 +8,7 @@ from .calculation import calc
 class Building(models.Model):
     """ORM representation of the Projects"""
 
-    name = models.CharField(max_length=64, blank=False, null=False)
+    name = models.CharField(max_length=64, blank=False, null=False, unique=True)
     project = models.JSONField(default=building_default_value, blank=False, null=False)
     wall = models.TextField(blank=True)
     roof = models.TextField(blank=True)
