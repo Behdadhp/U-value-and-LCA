@@ -123,3 +123,10 @@ class UpdateBuilding(forms.ModelForm):
             building.save()
 
         return building
+
+
+class CompareBuildings(forms.Form):
+    """Form to compare buildings"""
+
+    first_building = forms.CharField()
+    second_building = forms.CharField()

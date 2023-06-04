@@ -1,5 +1,6 @@
 import json
 
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django_filters.views import FilterView
 from django_tables2 import SingleTableView, MultiTableMixin
@@ -21,6 +22,24 @@ class BuildingList(FilterView, SingleTableView):
     template_name = "building_list.html"
 
     filterset_class = filters.BuildingFilter
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["compare_form"] = forms.CompareBuildings()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = forms.CompareBuildings(request.POST)
+        if form.is_valid():
+            first_building = form.cleaned_data.get("first_building")
+            second_building = form.cleaned_data.get("second_building")
+            return redirect(
+                "building:compareBuilding",
+                first_project=first_building,
+                second_project=second_building,
+            )
+        else:
+            return self.get(request, *args, **kwargs)
 
 
 class BuildingDetails(generic.DetailView, MultiTableMixin):
@@ -114,6 +133,26 @@ class BuildingUpdate(generic.UpdateView):
     def get_uvalue(project: dict, component: str):
         instance = calc.CalcUValue(project, models.Material)
         return instance.calc_u(component)
+
+
+class BuildingCompare(generic.TemplateView):
+    """Comparing two projects"""
+
+    template_name = "building_compare.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        first_project = models.Building.objects.get(
+            name=self.kwargs.get("first_project")
+        )
+        second_project = models.Building.objects.get(
+            name=self.kwargs.get("second_project")
+        )
+
+        context["first_project"] = first_project
+        context["second_project"] = second_project
+
+        return context
 
 
 class MateriaList(FilterView, SingleTableView):

@@ -17,6 +17,11 @@ urlpatterns = [
         views.BuildingUpdate.as_view(),
         name="updateBuilding",
     ),
+    path(
+        "buildings/compare/<str:first_project>/<str:second_project>",
+        views.BuildingCompare.as_view(),
+        name="compareBuilding",
+    ),
     path("materials/", views.MateriaList.as_view(), name="materials"),
     path("materials/new/", views.MaterialCreate.as_view(), name="createMaterial"),
     path(
