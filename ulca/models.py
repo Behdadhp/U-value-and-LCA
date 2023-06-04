@@ -77,7 +77,7 @@ class Building(models.Model):
 
 
 class Material(models.Model):
-    """ORM represntation of the materials"""
+    """ORM representation of the materials"""
 
     MASS = "mass"
     VOLUME = "volume"
