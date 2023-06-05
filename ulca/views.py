@@ -155,7 +155,7 @@ class BuildingCompare(generic.TemplateView, MultiTableMixin):
         )
 
         context["uvalue_table_second_building"] = tables.BuildingDetail(
-            models.Building.objects.filter(name=self.kwargs.get("first_building"))
+            models.Building.objects.filter(name=self.kwargs.get("second_building"))
         )
 
         context["first_building"] = first_building
