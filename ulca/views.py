@@ -141,6 +141,16 @@ class BuildingCompare(generic.TemplateView, MultiTableMixin):
 
     template_name = "building_compare.html"
 
+    @staticmethod
+    def create_building_table(building, component):
+        """Provides data for creating tables"""
+
+        return [
+            {key: building.project[component][key]}
+            for key in building.project[component].keys()
+            if isinstance(building.project[component][key], dict)
+        ]
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         first_building = models.Building.objects.get(
@@ -150,12 +160,19 @@ class BuildingCompare(generic.TemplateView, MultiTableMixin):
             name=self.kwargs.get("second_building")
         )
 
+        filter_first_building = models.Building.objects.filter(
+            name=self.kwargs.get("first_building")
+        )
+        filter_second_building = models.Building.objects.filter(
+            name=self.kwargs.get("second_building")
+        )
+
         context["uvalue_table_first_building"] = tables.BuildingDetail(
-            models.Building.objects.filter(name=self.kwargs.get("first_building"))
+            filter_first_building
         )
 
         context["uvalue_table_second_building"] = tables.BuildingDetail(
-            models.Building.objects.filter(name=self.kwargs.get("second_building"))
+            filter_second_building
         )
 
         context["first_building"] = first_building
@@ -172,6 +189,27 @@ class BuildingCompare(generic.TemplateView, MultiTableMixin):
         context["floor"] = calc.FilterDifferences(
             first_building, second_building
         ).filter_floor(first_building, second_building)
+
+        context["wall_lca_first_building"] = tables.LCATable(
+            self.create_building_table(first_building, "wall")
+        )
+        context["wall_lca_second_building"] = tables.LCATable(
+            self.create_building_table(second_building, "wall")
+        )
+
+        context["roof_lca_first_building"] = tables.LCATable(
+            self.create_building_table(first_building, "roofbase")
+        )
+        context["roof_lca_second_building"] = tables.LCATable(
+            self.create_building_table(second_building, "roofbase")
+        )
+
+        context["floor_lca_first_building"] = tables.LCATable(
+            self.create_building_table(first_building, "floor")
+        )
+        context["floor_lca_second_building"] = tables.LCATable(
+            self.create_building_table(second_building, "floor")
+        )
 
         return context
 

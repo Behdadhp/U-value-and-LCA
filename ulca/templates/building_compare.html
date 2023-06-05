@@ -1,11 +1,13 @@
 {% extends "base.html" %}
+
 {% load bootstrap3 %}
 {% load django_tables2 %}
 
+
 {% load static %}
 
-
 {% block content %}
+    {% bootstrap_css %}
 
     <div class="row text-center">
         <div class="col-xs-12 col-sm-12 col-md-12">
@@ -374,6 +376,11 @@
             {% endfor %}
         </div>
     </div>
+
+
+    {#    U-Value      #}
+
+
     <div class="row text-center">
         <h1 class=header_color>U-value</h1>
         <div class="col-xs-12 col-sm-12 col-md-6">
@@ -381,6 +388,52 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6">
             {% render_table uvalue_table_second_building %}
+        </div>
+    </div>
+
+
+
+
+    {#    LCA   Wall   #}
+
+
+    <div class="row text-center">
+        <h1 class=header_color>LCA Wall</h1>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            {% render_table wall_lca_first_building %}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            {% render_table wall_lca_second_building %}
+        </div>
+    </div>
+
+
+
+    {#    LCA   Roof   #}
+
+
+    <div class="row text-center">
+        <h1 class=header_color>LCA Roof</h1>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            {% render_table roof_lca_first_building %}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            {% render_table roof_lca_second_building %}
+        </div>
+    </div>
+
+
+
+    {#    LCA   Floor   #}
+
+
+    <div class="row text-center">
+        <h1 class=header_color>LCA Floor</h1>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            {% render_table floor_lca_first_building %}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            {% render_table floor_lca_second_building %}
         </div>
     </div>
 {% endblock %}
