@@ -152,6 +152,18 @@ class BuildingCompare(generic.TemplateView):
         context["first_building"] = first_building
         context["second_building"] = second_building
 
+        context["wall"] = calc.FilterDifferences(
+            first_building, second_building
+        ).filter_wall(first_building, second_building)
+
+        context["roof"] = calc.FilterDifferences(
+            first_building, second_building
+        ).filter_roof(first_building, second_building)
+
+        context["floor"] = calc.FilterDifferences(
+            first_building, second_building
+        ).filter_floor(first_building, second_building)
+
         return context
 
 

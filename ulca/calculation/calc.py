@@ -32,6 +32,30 @@ class Calc:
             )
 
 
+class Compare:
+    def __init__(self, first_building, second_building):
+        """Initialize first and second building model"""
+
+        self.first_building = first_building
+        self.second_building = second_building
+
+    def first_project(self):
+        """Gets first building project"""
+
+        return self.first_building.project
+
+    def second_project(self):
+        """Gets second building project"""
+
+        return self.second_building.project
+
+    @staticmethod
+    def get_project_key(component):
+        """Returns keys of each component"""
+
+        return list(component.keys())
+
+
 class CreateProject(Calc):
     def create_dictionary_for_each_layer(self, component):
         """Creates a dictionary for attributes of each layer of requested components"""
@@ -168,3 +192,181 @@ class CalcLCA(CreateProject):
                 )
 
         return project
+
+
+class CompareBuildings(Compare):
+    def get_different_materials_name(self, project_one, project_two, component):
+        """Loops through 2 components and returns the different materials' name"""
+
+        project_one_keys = self.get_project_key(project_one[component])
+        project_two_keys = self.get_project_key(project_two[component])
+
+        list_of_different_materials = []
+        for item in project_two_keys:
+            material_index = project_two_keys.index(item)
+            if project_one_keys[material_index] != project_two_keys[material_index]:
+                list_of_different_materials.append(project_one_keys[material_index])
+
+        return list_of_different_materials
+
+    def get_different_materials_thickness(self, project_one, project_two, component):
+        """Loops through 2 components and returns the different materials' thickness"""
+
+        project_one_keys = self.get_project_key(project_one[component])
+        project_two_keys = self.get_project_key(project_two[component])
+
+        list_of_different_materials = []
+        for item in project_two_keys:
+            material_index = project_two_keys.index(item)
+            if project_one_keys[material_index] == item and isinstance(
+                self.second_building.project[component][item], dict
+            ):
+                if (
+                    self.second_building.project[component][item]["thickness"]
+                    != self.first_building.project[component][item]["thickness"]
+                ):
+                    list_of_different_materials.append(item)
+
+        return list_of_different_materials
+
+    @staticmethod
+    def merge_two_list(material_list, thickness_list):
+        """Merges the material's differences"""
+
+        return material_list + thickness_list
+
+    @staticmethod
+    def get_id_of_different_materials(list_of_different_materials, first_project):
+        """Gets the id of each different material present in list_of_different_materials"""
+
+        list_of_ids = []
+        for item in list_of_different_materials:
+            list_of_ids.append(first_project[item]["id"])
+
+        return list_of_ids
+
+
+class CreateDictOfDifferences(CompareBuildings):
+    def differences_in_wall(self):
+        """Creates a dict for each component"""
+
+        return self.merge_two_list(
+            self.get_different_materials_name(
+                self.first_project(), self.second_project(), "wall"
+            ),
+            self.get_different_materials_thickness(
+                self.first_project(), self.second_project(), "wall"
+            ),
+        )
+
+    def differences_in_roof(self):
+        """Creates a dict for each component"""
+
+        return self.merge_two_list(
+            self.get_different_materials_name(
+                self.first_project(), self.second_project(), "roofbase"
+            ),
+            self.get_different_materials_thickness(
+                self.first_project(), self.second_project(), "roofbase"
+            ),
+        )
+
+    def differences_in_floor(self):
+        """Creates a dict for each component"""
+
+        return self.merge_two_list(
+            self.get_different_materials_name(
+                self.first_project(), self.second_project(), "floor"
+            ),
+            self.get_different_materials_thickness(
+                self.first_project(), self.second_project(), "floor"
+            ),
+        )
+
+    def create_dict_of_differences(self):
+        return {
+            "wall": {
+                "diff": self.get_id_of_different_materials(
+                    self.differences_in_wall(), self.first_project()["wall"]
+                )
+            },
+            "roof": {
+                "diff": self.get_id_of_different_materials(
+                    self.differences_in_roof(), self.first_project()["roofbase"]
+                )
+            },
+            "floor": {
+                "diff": self.get_id_of_different_materials(
+                    self.differences_in_floor(), self.first_project()["floor"]
+                )
+            },
+        }
+
+
+class FilterDifferences(Compare):
+    def create_instance(self):
+        instance = CreateDictOfDifferences(self.first_building, self.second_building)
+        return instance.create_dict_of_differences()
+
+    def filter_wall(self, first_model, second_model):
+        first_project_key = self.get_project_key(self.first_project()["wall"])
+        second_project_key = self.get_project_key(self.second_project()["wall"])
+        test = {}
+        for material_id in self.create_instance()["wall"]["diff"]:
+            n = material_id - 1
+            test[material_id] = [
+                {
+                    first_project_key[n]: first_model.project["wall"].get(
+                        first_project_key[n]
+                    )
+                },
+                {
+                    second_project_key[n]: second_model.project["wall"].get(
+                        second_project_key[n]
+                    )
+                },
+            ]
+
+        return test
+
+    def filter_roof(self, first_model, second_model):
+        first_project_key = self.get_project_key(self.first_project()["roofbase"])
+        second_project_key = self.get_project_key(self.second_project()["roofbase"])
+        test = {}
+        for material_id in self.create_instance()["roof"]["diff"]:
+            n = material_id - 1
+            test[material_id] = [
+                {
+                    first_project_key[n]: first_model.project["roofbase"].get(
+                        first_project_key[n]
+                    )
+                },
+                {
+                    second_project_key[n]: second_model.project["roofbase"].get(
+                        second_project_key[n]
+                    )
+                },
+            ]
+
+        return test
+
+    def filter_floor(self, first_model, second_model):
+        first_project_key = self.get_project_key(self.first_project()["floor"])
+        second_project_key = self.get_project_key(self.second_project()["floor"])
+        test = {}
+        for material_id in self.create_instance()["floor"]["diff"]:
+            n = material_id - 1
+            test[material_id] = [
+                {
+                    first_project_key[n]: first_model.project["floor"].get(
+                        first_project_key[n]
+                    )
+                },
+                {
+                    second_project_key[n]: second_model.project["floor"].get(
+                        second_project_key[n]
+                    )
+                },
+            ]
+
+        return test
