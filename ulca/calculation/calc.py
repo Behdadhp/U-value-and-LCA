@@ -311,10 +311,11 @@ class FilterDifferences(Compare):
     def filter_wall(self, first_model, second_model):
         first_project_key = self.get_project_key(self.first_project()["wall"])
         second_project_key = self.get_project_key(self.second_project()["wall"])
-        test = {}
+        comparison_wall = {}
+        counter = 1
         for material_id in self.create_instance()["wall"]["diff"]:
             n = material_id - 1
-            test[material_id] = [
+            comparison_wall[counter] = [
                 {
                     first_project_key[n]: first_model.project["wall"].get(
                         first_project_key[n]
@@ -326,16 +327,18 @@ class FilterDifferences(Compare):
                     )
                 },
             ]
+            counter += 1
 
-        return test
+        return comparison_wall
 
     def filter_roof(self, first_model, second_model):
         first_project_key = self.get_project_key(self.first_project()["roofbase"])
         second_project_key = self.get_project_key(self.second_project()["roofbase"])
-        test = {}
+        comparison_roof = {}
+        counter = 1
         for material_id in self.create_instance()["roof"]["diff"]:
             n = material_id - 1
-            test[material_id] = [
+            comparison_roof[counter] = [
                 {
                     first_project_key[n]: first_model.project["roofbase"].get(
                         first_project_key[n]
@@ -347,16 +350,17 @@ class FilterDifferences(Compare):
                     )
                 },
             ]
-
-        return test
+        counter += 1
+        return comparison_roof
 
     def filter_floor(self, first_model, second_model):
         first_project_key = self.get_project_key(self.first_project()["floor"])
         second_project_key = self.get_project_key(self.second_project()["floor"])
-        test = {}
+        comparison_floor = {}
+        counter = 1
         for material_id in self.create_instance()["floor"]["diff"]:
             n = material_id - 1
-            test[material_id] = [
+            comparison_floor[counter] = [
                 {
                     first_project_key[n]: first_model.project["floor"].get(
                         first_project_key[n]
@@ -368,5 +372,6 @@ class FilterDifferences(Compare):
                     )
                 },
             ]
+            counter += 1
 
-        return test
+        return comparison_floor
