@@ -135,13 +135,8 @@ class BuildingUpdate(generic.UpdateView):
 
         return context
 
-    @staticmethod
-    def get_uvalue(project: dict, component: str):
-        instance = calc.CalcUValue(project, models.Material)
-        return instance.calc_u(component)
 
-
-class BuildingCompare(generic.TemplateView):
+class BuildingCompare(generic.TemplateView, MultiTableMixin):
     """Comparing two projects"""
 
     template_name = "building_compare.html"
@@ -153,6 +148,14 @@ class BuildingCompare(generic.TemplateView):
         )
         second_building = models.Building.objects.get(
             name=self.kwargs.get("second_building")
+        )
+
+        context["uvalue_table_first_building"] = tables.BuildingDetail(
+            models.Building.objects.filter(name=self.kwargs.get("first_building"))
+        )
+
+        context["uvalue_table_second_building"] = tables.BuildingDetail(
+            models.Building.objects.filter(name=self.kwargs.get("first_building"))
         )
 
         context["first_building"] = first_building
