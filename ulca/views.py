@@ -35,8 +35,8 @@ class BuildingList(FilterView, SingleTableView):
             second_building = form.cleaned_data.get("second_building")
             return redirect(
                 "building:compareBuilding",
-                first_project=first_building,
-                second_project=second_building,
+                first_building=first_building,
+                second_building=second_building,
             )
         else:
             return self.get(request, *args, **kwargs)
@@ -142,15 +142,15 @@ class BuildingCompare(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        first_project = models.Building.objects.get(
-            name=self.kwargs.get("first_project")
+        first_building = models.Building.objects.get(
+            name=self.kwargs.get("first_building")
         )
-        second_project = models.Building.objects.get(
-            name=self.kwargs.get("second_project")
+        second_building = models.Building.objects.get(
+            name=self.kwargs.get("second_building")
         )
 
-        context["first_project"] = first_project
-        context["second_project"] = second_project
+        context["first_building"] = first_building
+        context["second_building"] = second_building
 
         return context
 

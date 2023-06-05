@@ -18,7 +18,7 @@ urlpatterns = [
         name="updateBuilding",
     ),
     path(
-        "buildings/compare/<str:first_project>/<str:second_project>",
+        "buildings/compare/<str:first_building>/<str:second_building>",
         views.BuildingCompare.as_view(),
         name="compareBuilding",
     ),
