@@ -1,7 +1,7 @@
 import json
 
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django_filters.views import FilterView
 from django_tables2 import SingleTableView, MultiTableMixin
 from . import models, tables
@@ -96,7 +96,13 @@ class BuildingCreate(generic.CreateView):
     template_name = "building_form.html"
     model = models.Building
     form_class = forms.CreateBuilding
-    success_url = reverse_lazy("building:buildings")
+
+    def get_success_url(self):
+        latest_building = models.Building.objects.last()
+        if latest_building:
+            return reverse("building:updateBuilding", args=[latest_building.pk])
+        else:
+            return reverse("building:buildings")
 
     def form_valid(self, form):
         form.instance.project = sort_project(form.instance.project)
