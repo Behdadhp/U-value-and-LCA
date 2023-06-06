@@ -119,7 +119,11 @@ class UpdateBuilding(forms.ModelForm):
 
         if commit:
             # Sort the project before saving in database
-            building.project = sort_project(instance=building.project)
+            sorted_dict = {}
+            for component in building.project:
+                sorted_dict[component] = sort_project(building.project, component)
+            building.project = sorted_dict
+
             building.save()
 
         return building

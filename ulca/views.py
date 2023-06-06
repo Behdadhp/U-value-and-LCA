@@ -105,7 +105,10 @@ class BuildingCreate(generic.CreateView):
             return reverse("building:buildings")
 
     def form_valid(self, form):
-        form.instance.project = sort_project(form.instance.project)
+        sorted_dict = {}
+        for component in form.instance.project:
+            sorted_dict[component] = sort_project(form.instance.project, component)
+        form.instance.project = sorted_dict
         self.object = form.save(commit=False)
         self.object.save()
         return super().form_valid(form)
