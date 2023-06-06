@@ -51,7 +51,7 @@ The "area" mentioned above is the total area of each component e.g. wall, floor 
 # Attention
 This app is not synced with any databases yet, so before creating the project
 you need to provide the infos for material in the app. The name of materials should
-be exactly as same as the material in the project, otherwise it will rais an error.
+be exactly as same as the material in the project, otherwise it will raise an error.
 
 # Calculating the LCA
 
