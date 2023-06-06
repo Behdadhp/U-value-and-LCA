@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <div class="text-center">
-        <div class="d-block">
-            <h1>U-value and LCA</h1>
-        </div>
+    <div class="row text-center">
+        <h1>U-value and LCA</h1>
     </div>
-
-    <div class="text-center">
-        <div class="d-block">
-            <h4>This website makes it possible to give a Revit model as JSON
-                and it will automaticly calculate the U-Value and LCA for the
-                building. To start click
+    <div class="row text-center">
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <h4>Simply provide your Revit model as JSON, and the system will automatically calculate
+                the U-Value and LCA for your building. You can also compare different
+                materials and thicknesses for your project.
+            </h4>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <h4>Click here to get started.
                 <a href="{% url 'building:createProject' %}"
-                   class="btn btn-secondary"
-                >here</a
+                   class="btn btn-primary"
+                >Create New Project</a
                 >
             </h4>
         </div>
     </div>
-
 {% endblock %}
