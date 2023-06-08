@@ -128,7 +128,13 @@ class BuildingUpdate(generic.UpdateView):
     model = models.Building
     form_class = forms.UpdateBuilding
     template_name = "building_update.html"
-    success_url = reverse_lazy("building:buildings")
+
+    def get_success_url(self):
+        current_model = self.get_object()
+        if current_model:
+            return reverse("building:updateBuilding", args=[current_model.pk])
+        else:
+            return reverse("building:buildings")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
