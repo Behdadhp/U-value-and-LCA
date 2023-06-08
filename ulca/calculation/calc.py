@@ -170,6 +170,8 @@ class CalcLCA(CreateProject):
         to each layer in the project"""
 
         project = self.project_with_attr()
+
+        # Calculate the LCA for each material
         for layer in project[component]:
             if isinstance(project[component][layer], dict):
                 material = self.get_material(layer)
@@ -190,6 +192,46 @@ class CalcLCA(CreateProject):
                 project[component][layer]["ep"] = self.calc_for_each_balance(
                     material.EP, multiplier
                 )
+
+        # Calculate the total LCA for each material
+        for layer in project[component]:
+            if isinstance(project[component][layer], dict):
+                total_gwp = sum(project[component][layer]["gwp"].values())
+                total_odp = sum(project[component][layer]["odp"].values())
+                total_pocp = sum(project[component][layer]["pocp"].values())
+                total_ap = sum(project[component][layer]["ap"].values())
+                total_ep = sum(project[component][layer]["ep"].values())
+
+                project[component][layer]["total_lca"] = {
+                    "gwp": round(total_gwp, 3),
+                    "odp": round(total_odp, 3),
+                    "pocp": round(total_pocp, 3),
+                    "ap": round(total_ap, 3),
+                    "ep": round(total_ep, 3),
+                }
+
+        total_gwp_in_component = 0
+        total_odp_in_component = 0
+        total_pocp_in_component = 0
+        total_ap_in_component = 0
+        total_ep_in_component = 0
+
+        # Calculate the total LCA for each component
+        for layer in project[component]:
+            if isinstance(project[component][layer], dict):
+                total_gwp_in_component += project[component][layer]["total_lca"]["gwp"]
+                total_odp_in_component += project[component][layer]["total_lca"]["odp"]
+                total_pocp_in_component += project[component][layer]["total_lca"][
+                    "pocp"
+                ]
+                total_ap_in_component += project[component][layer]["total_lca"]["ap"]
+                total_ep_in_component += project[component][layer]["total_lca"]["ep"]
+
+        project[component]["total_gwp_component"] = round(total_gwp_in_component, 3)
+        project[component]["total_odp_component"] = round(total_odp_in_component, 3)
+        project[component]["total_pocp_component"] = round(total_pocp_in_component, 3)
+        project[component]["total_ap_component"] = round(total_ap_in_component, 3)
+        project[component]["total_ep_component"] = round(total_ep_in_component, 3)
 
         return project
 

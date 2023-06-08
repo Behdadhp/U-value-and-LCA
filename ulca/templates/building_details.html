@@ -12,11 +12,20 @@
     </div>
 
 
+    {#    U value    #}
+
+
     <div class="col-xs-12 col-sm-6 col-md-12">
         <h1> Table for U-Value</h1>
         <br>
         {% render_table table %}
     </div>
+
+
+    {#    Wall    #}
+
+
+
     <div class="col-xs-12 col-sm-6 col-md-12">
         <h1> Tables for Wall</h1>
         <br>
@@ -27,6 +36,31 @@
         <br>
         {% render_table wall_lca %}
     </div>
+    <div class="col-xs-12 col-sm-6 col-md-12">
+        <table class="table table-striped">
+            <thead>
+            <td>Component</td>
+            <td>Total GWP</td>
+            <td>Total ODP</td>
+            <td>Total POCP</td>
+            <td>Total AP</td>
+            <td>Total EP</td>
+            </thead>
+            <tr>
+                <td><b>Wall</b></td>
+                <td>{{ model.project.wall.total_gwp_component }}</td>
+                <td>{{ model.project.wall.total_odp_component }}</td>
+                <td>{{ model.project.wall.total_pocp_component }}</td>
+                <td>{{ model.project.wall.total_ap_component }}</td>
+                <td>{{ model.project.wall.total_ep_component }}</td>
+        </table>
+    </div>
+
+
+
+    {#    Floor    #}
+
+
 
     <div class="col-xs-12 col-sm-6 col-md-12">
         <h1> Tables for Floor</h1>
@@ -38,6 +72,33 @@
         <br>
         {% render_table floor_lca %}
     </div>
+    <div class="col-xs-12 col-sm-6 col-md-12">
+        <table class="table table-striped">
+            <thead>
+            <td>Component</td>
+            <td>Total GWP</td>
+            <td>Total ODP</td>
+            <td>Total POCP</td>
+            <td>Total AP</td>
+            <td>Total EP</td>
+
+            </thead>
+            <tr>
+                <td><b>Floor</b></td>
+                <td>{{ model.project.floor.total_gwp_component }}</td>
+                <td>{{ model.project.floor.total_odp_component }}</td>
+                <td>{{ model.project.floor.total_pocp_component }}</td>
+                <td>{{ model.project.floor.total_ap_component }}</td>
+                <td>{{ model.project.floor.total_ep_component }}</td>
+        </table>
+    </div>
+
+
+
+    {#    Roof    #}
+
+
+
 
     <div class="col-xs-12 col-sm-6 col-md-12">
         <h1> Tables for Roof</h1>
@@ -49,5 +110,24 @@
         <br>
         {% render_table roofbase_lca %}
     </div>
+    <div class="col-xs-12 col-sm-6 col-md-12">
+        <table class="table table-striped">
+            <thead>
+            <td>Component</td>
+            <td>Total GWP</td>
+            <td>Total ODP</td>
+            <td>Total POCP</td>
+            <td>Total AP</td>
+            <td>Total EP</td>
 
+            </thead>
+            <tr>
+                <td><b>Roof</b></td>
+                <td>{{ model.project.roofbase.total_gwp_component }}</td>
+                <td>{{ model.project.roofbase.total_odp_component }}</td>
+                <td>{{ model.project.roofbase.total_pocp_component }}</td>
+                <td>{{ model.project.roofbase.total_ap_component }}</td>
+                <td>{{ model.project.roofbase.total_ep_component }}</td>
+        </table>
+    </div>
 {% endblock %}

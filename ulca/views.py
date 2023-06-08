@@ -72,6 +72,7 @@ class BuildingDetails(generic.DetailView, MultiTableMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["model"] = models.Building.objects.get(id=self.get_building_id())
         context["table"] = tables.BuildingDetail(self.create_data_query())
         context["wall_component"] = tables.ComponentTable(
             self.create_building_table("wall")
