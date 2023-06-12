@@ -246,11 +246,14 @@
     </div>
     <br>
     {% buttons %}
-        <button type="submit" class="btn btn-primary btn-lg">Save</button>
-
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% url 'building:buildings' %}" class="btn btn-secondary"
+        >Home</a
+        >
     {% endbuttons %}
     </form>
     <button class="btn btn-secondary" id="copy-button">Copy the project to Clipboard</button>
+
 
 
     <script>
