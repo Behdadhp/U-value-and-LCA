@@ -1,15 +1,20 @@
 from django.db import models
 
-from .calculation.data import building_default_value, material_default_value
+from .calculation.data import material_default_value
 
 from .calculation import calc
+import json
 
 
 class Building(models.Model):
     """ORM representation of the Projects"""
 
     name = models.CharField(max_length=64, blank=False, null=False, unique=True)
-    project = models.JSONField(default=building_default_value, blank=False, null=False)
+    project = models.JSONField(blank=True, null=True)
+    project_json = models.JSONField(default={}, blank=True, null=True)
+    project_document = models.FileField(
+        upload_to="ulca/static/documents", blank=True, null=True
+    )
     wall = models.TextField(blank=True)
     roof = models.TextField(blank=True)
     floor = models.TextField(blank=True)
@@ -21,28 +26,47 @@ class Building(models.Model):
     def __str__(self):
         return self.name
 
+    def get_project_from_document(self):
+        """Gets the document content"""
+        if self.project_document:
+            content = self.project_document.open("r").readlines()
+            if isinstance(content[0], str):
+                return json.loads(content[0])
+            else:
+                test = content[0].decode("utf-8")
+                return json.loads(test)
+
+    def choose_project(self):
+        """Chooses a project, depending on which one user has provided"""
+        if self.project_json:
+            return self.project_json
+        elif self.project_document:
+            return self.get_project_from_document()
+        else:
+            raise ValueError("Please provide a project to continue")
+
     def get_wall(self):
         """Gets the wall from Project"""
-        return self.project["wall"]
+        return self.choose_project()["wall"]
 
     def get_roof(self):
         """Gets the roof from Project"""
-        return self.project["roofbase"]
+        return self.choose_project()["roofbase"]
 
     def get_floor(self):
         """Gets the floor from Project"""
-        return self.project["floor"]
+        return self.choose_project()["floor"]
 
     def get_uvalue(self, component):
         """Gets the value of U"""
-        instance = calc.CalcUValue(self.project, Material)
+        instance = calc.CalcUValue(self.choose_project(), Material)
         return instance.calc_u(component)
 
     def get_lca(self):
         """Gets the environmental impact"""
         project = {}
         for layer in ["wall", "floor", "roofbase"]:
-            instance = calc.CalcLCA(self.project, Material)
+            instance = calc.CalcLCA(self.choose_project(), Material)
             dic = instance.calc_lca(layer)
             project.update(dic[layer])
         return project

@@ -10,11 +10,12 @@ class CreateBuilding(forms.ModelForm):
 
     class Meta:
         model = models.Building
-        fields = ("name", "project")
+        fields = ("name", "project_json", "project_document")
 
         help_texts = {
             "name": _("Give a name to this project."),
-            "project": _("Paste the json coming from 3D-Model here."),
+            "project_json": _("Either paste the JSON direct here"),
+            "project_document": _("Or upload the .txt file here"),
         }
 
 

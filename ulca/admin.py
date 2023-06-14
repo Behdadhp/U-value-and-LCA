@@ -16,6 +16,8 @@ class BuildingAdmin(admin.ModelAdmin):
         "roofUvalue",
         "floorUvalue",
         "lca",
+        "project_document",
+        "project_json",
     )
 
 

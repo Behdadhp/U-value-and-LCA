@@ -97,3 +97,6 @@ ulca/calculation/data.py
 .idea/misc.xml
 .idea/website.iml
 .idea/codeStyles/codeStyleConfig.xml
+
+# project documents
+ulca/static/documents

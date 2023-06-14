@@ -4,18 +4,52 @@
 {% block content %}
 
     {% bootstrap_css %}
-<div class="container">
-  <div class="row text-center">
-    <div class="col-sm-6">
-      <h1>Create new project</h1>
-    </div>
-    <div class="col-sm-6">
-      <form action="{% url 'building:createProject' %}" method="post">
-        {% csrf_token %} {% bootstrap_form form %} {% buttons %} <br />
-        <button type="submit" class="btn btn-primary">Create</button>
-      </form>
-    </div>
-  </div>
-</div>
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-sm-6">
+                <h1>Create new project</h1>
+                <h3>Attention</h3>
+                <p>You need to provide JSON either in <b>textfield</b> or <b>upload it
+                    in document</b> as .txt file. The JSON should be followed by this template:</p>
+                <code>
+                    {
+                    "floor": {
+                    "material1": {
+                    "id": 1
+                    "thickness": "number in mm"
+                    },
+                    "material2": {
+                    "id": 2
+                    "thickness": "number in mm"
+                    },
+                    "...",
+                    "area": "number in m2"
+                    },
+                    "roofbase": {
+                    "material1": {
+                    "id": 1
+                    "thickness": "number in mm"
+                    },
+                    "...",
+                    "area": "number in m2"
+                    },
+                    "wall": {
+                    "material1": {
+                    "id": 1
+                    "thickness": "number in mm"
+                    },
+                    "...",
+                    "area": "number in m2"
+                    }
+                    }</code>
+            </div>
+            <div class="col-sm-6">
+                <form action="{% url 'building:createProject' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %} {% bootstrap_form form %} {% buttons %} <br/>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                    </div>
+                    </div>
+                    </div>
 
-{% endbuttons %} {% endblock %}
+                {% endbuttons %} {% endblock %}

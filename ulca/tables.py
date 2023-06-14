@@ -52,7 +52,16 @@ class BuildingTable(tables.Table):
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
         model = models.Building
-        exclude = ("id", "project", "wallUvalue", "roofUvalue", "floorUvalue", "lca")
+        exclude = (
+            "id",
+            "project",
+            "wallUvalue",
+            "roofUvalue",
+            "floorUvalue",
+            "lca",
+            "project_json",
+            "project_document",
+        )
 
 
 class BuildingDetail(tables.Table):

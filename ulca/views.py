@@ -106,12 +106,20 @@ class BuildingCreate(generic.CreateView):
             return reverse("building:buildings")
 
     def form_valid(self, form):
+        if form.instance.project_document and not form.instance.project_document.open(
+            "r"
+        ).name.endswith(".txt"):
+            raise ValueError("Please provide a valid file. It should be .txt.")
+
         sorted_dict = {}
-        for component in form.instance.project:
-            sorted_dict[component] = sort_project(form.instance.project, component)
+        for component in form.instance.choose_project():
+            sorted_dict[component] = sort_project(
+                form.instance.choose_project(), component
+            )
         form.instance.project = sorted_dict
         self.object = form.save(commit=False)
         self.object.save()
+
         return super().form_valid(form)
 
 
