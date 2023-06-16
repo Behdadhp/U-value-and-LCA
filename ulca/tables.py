@@ -10,18 +10,17 @@ from . import models
 class BuildingTable(tables.Table):
     """Table for building model"""
 
-    generate = tables.LinkColumn(
-        "building:details", args=[A("pk")], verbose_name="", text="Generate"
-    )
-    update = tables.LinkColumn(
-        "building:updateBuilding", args=[A("pk")], verbose_name="", text="Update"
-    )
-    Delete = tables.LinkColumn(
-        "building:deleteBuilding",
-        args=[A("pk")],
-        text="Delete",
+    actions = tables.TemplateColumn(
+        """
+        <a href="{% url 'building:details' record.pk %}">Generate</a>
+        <br>
+        <br>
+        <a href="{% url 'building:updateBuilding' record.pk %}">Update</a>
+        <br>
+        <br>
+        <a href="{% url 'building:deleteBuilding' record.pk %}" style="color: red;">Delete</a>
+        """,
         verbose_name="",
-        attrs={"a": {"style": "color: red;"}},
     )
 
     wall = tables.Column(verbose_name="Wall components")
@@ -62,6 +61,7 @@ class BuildingTable(tables.Table):
             "project_json",
             "project_document",
         )
+        attrs = {"class": "table table-striped"}
 
 
 class BuildingDetail(tables.Table):
