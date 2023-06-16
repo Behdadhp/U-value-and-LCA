@@ -279,7 +279,7 @@ class MaterialUpdate(generic.UpdateView):
 
 class PDFView(generic.View):
     @staticmethod
-    def get( request, *args, **kwargs):
+    def get(request, *args, **kwargs):
         first_building = models.Building.objects.get(name=kwargs["first_building"])
         second_building = models.Building.objects.get(name=kwargs["second_building"])
         # Filter the components based on the changes:

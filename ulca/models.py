@@ -47,26 +47,26 @@ class Building(models.Model):
 
     def get_wall(self):
         """Gets the wall from Project"""
-        return self.choose_project()["wall"]
+        return self.project["wall"]
 
     def get_roof(self):
         """Gets the roof from Project"""
-        return self.choose_project()["roofbase"]
+        return self.project["roofbase"]
 
     def get_floor(self):
         """Gets the floor from Project"""
-        return self.choose_project()["floor"]
+        return self.project["floor"]
 
     def get_uvalue(self, component):
         """Gets the value of U"""
-        instance = calc.CalcUValue(self.choose_project(), Material)
+        instance = calc.CalcUValue(self.project, Material)
         return instance.calc_u(component)
 
     def get_lca(self):
         """Gets the environmental impact"""
         project = {}
         for layer in ["wall", "floor", "roofbase"]:
-            instance = calc.CalcLCA(self.choose_project(), Material)
+            instance = calc.CalcLCA(self.project, Material)
             dic = instance.calc_lca(layer)
             project.update(dic[layer])
         return project
@@ -75,6 +75,9 @@ class Building(models.Model):
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
         """Save the elements to model"""
+
+        if self.project is None:
+            self.project = self.choose_project()
 
         # get the wall
         self.wall = self.get_wall()
