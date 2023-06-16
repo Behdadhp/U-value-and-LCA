@@ -333,36 +333,38 @@ class PDFView(generic.View):
 
         textobject = p.beginText(20, 750)
 
+        textobject.textLine(f"Name of new project: {second_building.name}")
+
         # Check if there is any changes in the component:
         if len(wall) > 0:
-            textobject.textLine("Changes for Wall:")
+            textobject.textLine(f"{len(wall)} Change(s) for Wall:")
 
             for key, value in wall.items():
                 material = next(iter(value[0]))
                 textobject.textLine(
-                    f'{key}: {material} thickness: {value[0][material]["thickness"]} mm, layer:{value[0][material]["id"]} '
+                    f'      {key}: {material} thickness: {value[0][material]["thickness"]} mm, layer:{value[0][material]["id"]} '
                 )
         else:
             textobject.textLine("No changes for Wall")
 
         if len(roof) > 0:
-            textobject.textLine("Changes for Roof:")
+            textobject.textLine(f"{len(roof)} Change(s) for Roof:")
 
             for key, value in roof.items():
                 material = next(iter(value[0]))
                 textobject.textLine(
-                    f'{key}: {material} thickness: {value[0][material]["thickness"]} mm, layer:{value[0][material]["id"]} '
+                    f'      {key}: {material} thickness: {value[0][material]["thickness"]} mm, layer:{value[0][material]["id"]} '
                 )
         else:
             textobject.textLine("No changes for Roof")
 
         if len(floor) > 0:
-            textobject.textLine("Changes for Floor:")
+            textobject.textLine(f"{len(floor)} Change(s) for Floor:")
 
             for key, value in floor.items():
                 material = next(iter(value[0]))
                 textobject.textLine(
-                    f'{key}: {material} thickness: {value[0][material]["thickness"]} mm, layer:{value[0][material]["id"]} '
+                    f'      {key}: {material} thickness: {value[0][material]["thickness"]} mm, layer:{value[0][material]["id"]} '
                 )
         else:
             textobject.textLine("No changes for Floor")
