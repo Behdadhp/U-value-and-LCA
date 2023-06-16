@@ -80,25 +80,24 @@ class BuildingDetail(tables.Table):
 class MaterialTable(tables.Table):
     """Table for material model"""
 
-    update = tables.LinkColumn(
-        "building:updateMaterial", args=[A("pk")], verbose_name="", text="Update"
-    )
-    Delete = tables.LinkColumn(
-        "building:deleteMaterial",
-        args=[A("pk")],
-        text="Delete",
+    actions = tables.TemplateColumn(
+        """
+        <a href="{% url 'building:updateMaterial' record.pk %}">Update</a>
+        <br>
+        <br>
+        <a href="{% url 'building:deleteMaterial' record.pk %}" style="color: red;">Delete</a>
+        """,
         verbose_name="",
-        attrs={"a": {"style": "color: red;"}},
     )
     items = tables.Column(empty_values=(), verbose_name="")
 
     @staticmethod
     def render_items():
         items = [
-            "Herstellungsphase",
-            "Erneuerung",
-            "Energiebedarf",
-            "Lebensendphase",
+            "Herstellungsphase (A1-A3)",
+            "Erneuerung (B2 & B4)",
+            "Energiebedarf (B6)",
+            "Lebensendphase (C3 & C4)",
         ]
         return format_html_join("\n", "<p>{}: </p>", ((key,) for key in items))
 
@@ -228,10 +227,10 @@ class LCATable(tables.Table):
         """Crates phases for each layer"""
 
         items = [
-            "Herstellungsphase",
-            "Erneuerung",
-            "Energiebedarf",
-            "Lebensendphase",
+            "Herstellungsphase (A1-A3)",
+            "Erneuerung (B2 & B4)",
+            "Energiebedarf (B6)",
+            "Lebensendphase (C3 & C4)",
         ]
         return format_html_join("\n", "<p>{}: </p>", ((key,) for key in items))
 
