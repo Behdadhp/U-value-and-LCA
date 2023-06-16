@@ -34,4 +34,9 @@ urlpatterns = [
         views.MaterialDelete.as_view(),
         name="deleteMaterial",
     ),
+    path(
+        "buildings/changespdf/<str:first_building>/<str:second_building>",
+        views.PDFView.as_view(),
+        name="pdf",
+    ),
 ]

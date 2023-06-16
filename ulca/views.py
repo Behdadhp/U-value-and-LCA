@@ -12,6 +12,9 @@ from . import forms
 from .calculation import calc
 from .utils import sort_project
 
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+
 
 class BuildingList(FilterView, SingleTableView):
     """View for listing all buildings"""
@@ -272,3 +275,72 @@ class MaterialUpdate(generic.UpdateView):
     fields = "__all__"
     template_name = "material_update.html"
     success_url = reverse_lazy("building:materials")
+
+
+class PDFView(generic.View):
+    @staticmethod
+    def get( request, *args, **kwargs):
+        first_building = models.Building.objects.get(name=kwargs["first_building"])
+        second_building = models.Building.objects.get(name=kwargs["second_building"])
+        # Filter the components based on the changes:
+
+        wall = calc.FilterDifferences(first_building, second_building).filter_wall(
+            second_building, first_building
+        )
+
+        floor = calc.FilterDifferences(first_building, second_building).filter_floor(
+            second_building, first_building
+        )
+
+        roof = calc.FilterDifferences(first_building, second_building).filter_roof(
+            second_building, first_building
+        )
+
+        response = HttpResponse(content_type="application/pdf")
+        response["Content-Disposition"] = 'attachment; filename="changes.pdf"'
+
+        p = canvas.Canvas(response)
+
+        textobject = p.beginText(20, 750)
+
+        # Check if there is any changes in the component:
+        if len(wall) > 0:
+            textobject.textLine("Changes for Wall:")
+
+            for key, value in wall.items():
+                material = next(iter(value[0]))
+                textobject.textLine(
+                    f'{key}: {material} thickness: {value[0][material]["thickness"]} mm, layer:{value[0][material]["id"]} '
+                )
+        else:
+            textobject.textLine("No changes for Wall")
+
+        if len(roof) > 0:
+            textobject.textLine("Changes for Roof:")
+
+            for key, value in roof.items():
+                material = next(iter(value[0]))
+                textobject.textLine(
+                    f'{key}: {material} thickness: {value[0][material]["thickness"]} mm, layer:{value[0][material]["id"]} '
+                )
+        else:
+            textobject.textLine("No changes for Roof")
+
+        if len(floor) > 0:
+            textobject.textLine("Changes for Floor:")
+
+            for key, value in floor.items():
+                material = next(iter(value[0]))
+                textobject.textLine(
+                    f'{key}: {material} thickness: {value[0][material]["thickness"]} mm, layer:{value[0][material]["id"]} '
+                )
+        else:
+            textobject.textLine("No changes for Floor")
+
+        # Generate the changes
+        p.drawText(textobject)
+
+        p.showPage()
+        p.save()
+
+        return response

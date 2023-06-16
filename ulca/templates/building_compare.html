@@ -10,6 +10,10 @@
     {% bootstrap_css %}
 
     <div class="row text-center">
+        <a href="{% url 'building:pdf' first_building=first_building second_building=second_building %}"
+           class="btn btn-primary"
+        ><h4>Click here to get the summary of changes as pdf</h4></a
+        >
         <div class="col-xs-12 col-sm-12 col-md-12">
             <h1>Comparison between two buildings</h1>
 
