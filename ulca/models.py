@@ -33,8 +33,9 @@ class Building(models.Model):
             if isinstance(content[0], str):
                 return json.loads(content[0])
             else:
-                test = content[0].decode("utf-8")
-                return json.loads(test)
+                content = content[0].decode("utf-8")
+                valid_json = content.replace("'", '"')
+                return json.loads(valid_json)
 
     def choose_project(self):
         """Chooses a project, depending on which one user has provided"""
