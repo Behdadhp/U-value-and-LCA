@@ -11,13 +11,13 @@ class BuildingTable(tables.Table):
 
     actions = tables.TemplateColumn(
         """
-        <a href="{% url 'building:details' record.pk %}">Generate</a>
+        <a class="btn btn-dark" href="{% url 'building:details' record.pk %}">Generate</a>
         <br>
         <br>
-        <a href="{% url 'building:updateBuilding' record.pk %}">Update</a>
+        <a class="btn btn-primary" href="{% url 'building:updateBuilding' record.pk %}">Update</a>
         <br>
         <br>
-        <a href="{% url 'building:deleteBuilding' record.pk %}" style="color: red;">Delete</a>
+        <a class="btn btn-danger" href="{% url 'building:deleteBuilding' record.pk %}" ;">Delete</a>
         """,
         verbose_name="",
     )
@@ -81,10 +81,10 @@ class MaterialTable(tables.Table):
 
     actions = tables.TemplateColumn(
         """
-        <a href="{% url 'building:updateMaterial' record.pk %}">Update</a>
+        <a class="btn btn-primary" href="{% url 'building:updateMaterial' record.pk %}">Update</a>
         <br>
         <br>
-        <a href="{% url 'building:deleteMaterial' record.pk %}" style="color: red;">Delete</a>
+        <a  class="btn btn-danger" href="{% url 'building:deleteMaterial' record.pk %}";">Delete</a>
         """,
         verbose_name="",
     )
