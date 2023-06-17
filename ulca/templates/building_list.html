@@ -18,17 +18,16 @@
             <form class="form-inline" method="post">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="id_first_building">First project</label>
-                    {{ compare_form.first_building }}
+                    <input type="text" name="first_building" placeholder="First project">
                 </div>
                 <div class="form-group">
-                    <label for="id_second_building">Second project</label>
-                    {{ compare_form.second_building }}
+                    <input type="text" name="second_building" placeholder="Second project">
                 </div>
                 <button type="submit" class="btn btn-primary">Compare Buildings</button>
             </form>
-
         </div>
+    </div>
+    <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
             {% render_table table %}
         </div>
