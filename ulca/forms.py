@@ -4,6 +4,10 @@ from django.utils.translation import gettext_lazy as _
 
 from .utils import sort_project
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .models import Building
+
 
 class CreateBuilding(forms.ModelForm):
     """Form for creating building"""
@@ -128,6 +132,73 @@ class UpdateBuilding(forms.ModelForm):
             building.save()
 
         return building
+
+
+class UpdateMaterial(forms.ModelForm):
+    """Form for updating material"""
+
+    class Meta:
+        model = models.Material
+        fields = ("name", "rho", "lamb", "type", "url_to_oekobaudat")
+
+    def __init__(self, *args, **kwargs):
+        """Creates dynamic forms"""
+
+        super().__init__(*args, **kwargs)
+        self.populate_fields("GWP")
+        self.populate_fields("ODP")
+        self.populate_fields("POCP")
+        self.populate_fields("AP")
+        self.populate_fields("EP")
+
+    def populate_fields(self, field_name):
+        """Populates the fields for the specified module"""
+
+        data = getattr(self.instance, field_name)
+
+        for module, value in data.items():
+            field_label = f"{module} "
+
+            self.fields[f"{field_name}_{module}"] = forms.FloatField(
+                label=field_label, initial=value
+            )
+
+    def save_module(self, module_name, instance):
+        """Loops through all fields. If any change is present,
+        the model should get updated"""
+
+        module_data = {}
+
+        for field_name, value in self.cleaned_data.items():
+            if field_name.startswith(f"{module_name}_"):
+                module = field_name[len(f"{module_name}_") :]
+                module_data[module] = value
+
+                instance[module] = value
+
+    def save(self, commit=True):
+        """Saves the updated fields into model"""
+
+        material = super().save(commit=False)
+
+        self.save_module("GWP", material.GWP)
+        self.save_module("ODP", material.ODP)
+        self.save_module("POCP", material.POCP)
+        self.save_module("AP", material.AP)
+        self.save_module("EP", material.EP)
+
+        if commit:
+            material.save()
+
+        return material
+
+    @receiver(post_save, sender=models.Material)
+    def update_buildings(sender, **kwargs):
+        """Retrieve all Building instances and saves all of them again"""
+
+        buildings = Building.objects.all()
+        for building in buildings:
+            building.save()
 
 
 class CompareBuildings(forms.Form):

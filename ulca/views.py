@@ -302,9 +302,24 @@ class MaterialUpdate(generic.UpdateView):
     """Update existing material"""
 
     model = models.Material
-    fields = "__all__"
+    form_class = forms.UpdateMaterial
+
     template_name = "material_update.html"
-    success_url = reverse_lazy("building:materials")
+
+    def get_success_url(self):
+        current_model = self.get_object()
+        if current_model:
+            return reverse("building:updateMaterial", args=[current_model.pk])
+        else:
+            return reverse("building:materials")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Convert the project data to JSON and pass it to the template
+        context["material"] = self.object
+
+        return context
 
 
 class PDFView(generic.View):
