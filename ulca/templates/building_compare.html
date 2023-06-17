@@ -101,23 +101,24 @@
             {% endfor %}
         </div>
         <div class="col-xs-12 col-sm-12 col-md-3">
-            {% for key, value in wall.items %}
-                {% for item in value %}
-                    {% if not forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
-                                <div class="image-pos">
-                                    <img src="{% static material_source_image %}"
-                                         alt="{{ key }}"
-                                         width="{{ value.thickness }}" height="150">
-                                    <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
-                                </div>
-                                <br>
-                            {% endwith %}
-                        {% endfor %}
-                    {% endif %}
+            <div class="image-container">
+                {% for key, value in wall.items %}
+                    {% for item in value %}
+                        {% if not forloop.counter|divisibleby:2 %}
+                            {% for key, value in item.items %}
+                                {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
+                                    <div class="image-pos">
+                                        <img src="{% static material_source_image %}"
+                                             alt="{{ key }}"
+                                             width="{{ value.thickness }}" height="150">
+                                        <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
+                                    </div>
+                                {% endwith %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-3">
             {% for key, value in wall.items %}
@@ -131,23 +132,25 @@
             {% endfor %}
         </div>
         <div class="col-xs-12 col-sm-12 col-md-3">
-            {% for key, value in wall.items %}
-                {% for item in value %}
-                    {% if forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
-                                <div class="image-pos">
-                                    <img src="{% static material_source_image %}"
-                                         alt="{{ key }}"
-                                         width="{{ value.thickness }}" height="150">
-                                    <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
-                                </div>
-                                <br>
-                            {% endwith %}
-                        {% endfor %}
-                    {% endif %}
+            <div class="image-container">
+                {% for key, value in wall.items %}
+                    {% for item in value %}
+                        {% if forloop.counter|divisibleby:2 %}
+                            {% for key, value in item.items %}
+                                {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
+                                    <div class="image-pos">
+                                        <img src="{% static material_source_image %}"
+                                             alt="{{ key }}"
+                                             width="{{ value.thickness }}" height="150">
+                                        <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
+                                    </div>
+                                    <br>
+                                {% endwith %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            </div>
         </div>
     </div>
 
@@ -298,23 +301,25 @@
             {% endfor %}
         </div>
         <div class="col-xs-12 col-sm-12 col-md-3">
-            {% for key, value in roof.items %}
-                {% for item in value %}
-                    {% if not forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
-                                <div class="image-pos">
-                                    <img src="{% static material_source_image %}"
-                                         alt="{{ key }}"
-                                         width="{{ value.thickness }}" height="150">
-                                    <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
-                                </div>
-                                <br>
-                            {% endwith %}
-                        {% endfor %}
-                    {% endif %}
+            <div class="image-container">
+                {% for key, value in roof.items %}
+                    {% for item in value %}
+                        {% if not forloop.counter|divisibleby:2 %}
+                            {% for key, value in item.items %}
+                                {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
+                                    <div class="image-pos">
+                                        <img src="{% static material_source_image %}"
+                                             alt="{{ key }}"
+                                             width="{{ value.thickness }}" height="150">
+                                        <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
+                                    </div>
+                                    <br>
+                                {% endwith %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-3">
             {% for key, value in roof.items %}
@@ -328,23 +333,25 @@
             {% endfor %}
         </div>
         <div class="col-xs-12 col-sm-12 col-md-3">
-            {% for key, value in roof.items %}
-                {% for item in value %}
-                    {% if forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
-                                <div class="image-pos">
-                                    <img src="{% static material_source_image %}"
-                                         alt="{{ key }}"
-                                         width="{{ value.thickness }}" height="150">
-                                    <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
-                                </div>
-                                <br>
-                            {% endwith %}
-                        {% endfor %}
-                    {% endif %}
+            <div class="image-container">
+                {% for key, value in roof.items %}
+                    {% for item in value %}
+                        {% if forloop.counter|divisibleby:2 %}
+                            {% for key, value in item.items %}
+                                {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
+                                    <div class="image-pos">
+                                        <img src="{% static material_source_image %}"
+                                             alt="{{ key }}"
+                                             width="{{ value.thickness }}" height="150">
+                                        <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
+                                    </div>
+                                    <br>
+                                {% endwith %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            </div>
         </div>
     </div>
 
@@ -492,23 +499,25 @@
             {% endfor %}
         </div>
         <div class="col-xs-12 col-sm-12 col-md-3">
-            {% for key, value in floor.items %}
-                {% for item in value %}
-                    {% if not forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
-                                <div class="image-pos">
-                                    <img src="{% static material_source_image %}"
-                                         alt="{{ key }}"
-                                         width="{{ value.thickness }}" height="150">
-                                    <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
-                                </div>
-                                <br>
-                            {% endwith %}
-                        {% endfor %}
-                    {% endif %}
+            <div class="image-container">
+                {% for key, value in floor.items %}
+                    {% for item in value %}
+                        {% if not forloop.counter|divisibleby:2 %}
+                            {% for key, value in item.items %}
+                                {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
+                                    <div class="image-pos">
+                                        <img src="{% static material_source_image %}"
+                                             alt="{{ key }}"
+                                             width="{{ value.thickness }}" height="150">
+                                        <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
+                                    </div>
+                                    <br>
+                                {% endwith %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-3">
             {% for key, value in floor.items %}
@@ -522,29 +531,34 @@
             {% endfor %}
         </div>
         <div class="col-xs-12 col-sm-12 col-md-3">
-            {% for key, value in floor.items %}
-                {% for item in value %}
-                    {% if forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
-                                <div class="image-pos">
-                                    <img src="{% static material_source_image %}"
-                                         alt="{{ key }}"
-                                         width="{{ value.thickness }}" height="150">
-                                    <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
-                                </div>
-                                <br>
-                            {% endwith %}
-                        {% endfor %}
-                    {% endif %}
+            <div class="image-container">
+                {% for key, value in floor.items %}
+                    {% for item in value %}
+                        {% if forloop.counter|divisibleby:2 %}
+                            {% for key, value in item.items %}
+                                {% with 'material_images/'|add:key|add:'.jpg' as material_source_image %}
+                                    <div class="image-pos">
+                                        <img src="{% static material_source_image %}"
+                                             alt="{{ key }}"
+                                             width="{{ value.thickness }}" height="150">
+                                        <div class="centered h4 text-dark"><b>{{ value.id }}</b></div>
+                                    </div>
+                                    <br>
+                                {% endwith %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            </div>
         </div>
     </div>
 
 
 
     {#   Floor Layers    #}
+
+
+
     <div class="row text-center">
         <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4>Click here to show the layers</h4>
         </button>

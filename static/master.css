@@ -24,8 +24,12 @@
     background-color: darkgrey;
 }
 
+.image-container {
+    display: flex;
+}
+
 .image-pos {
-    display: inline-block;
+    display: inline;
     margin-right: 10px;
 }
 
