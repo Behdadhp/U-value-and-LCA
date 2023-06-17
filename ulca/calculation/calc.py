@@ -392,7 +392,7 @@ class FilterDifferences(Compare):
                     )
                 },
             ]
-        counter += 1
+            counter += 1
         return comparison_roof
 
     def filter_floor(self, first_model, second_model):
