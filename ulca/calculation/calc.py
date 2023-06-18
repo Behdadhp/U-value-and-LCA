@@ -31,6 +31,11 @@ class Calc:
                 )
             )
 
+    def get_nett_area(self):
+        """Gets nett area of project"""
+
+        return self.project["wall"]["nett_area"]
+
 
 class Compare:
     def __init__(self, first_building, second_building):
@@ -161,7 +166,7 @@ class CalcUValue(CreateProject):
 class CalcLCA(CreateProject):
     @staticmethod
     def calc_for_each_balance(material, multiplier):
-        """adds a dictionary containing material's balance multiply in multiplier"""
+        """Adds a dictionary containing material's balance multiply in multiplier"""
 
         return {
             "Herstellungsphase": round(material["Herstellungsphase"] * multiplier, 3),
@@ -171,7 +176,7 @@ class CalcLCA(CreateProject):
         }
 
     def gets_multiplier(self, component, layer, material):
-        """creates multiplier based on the type of material"""
+        """Creates multiplier based on the type of material"""
 
         project = self.project_with_attr()
         if material.type == "area":
@@ -181,8 +186,21 @@ class CalcLCA(CreateProject):
         else:
             return project[component][layer]["mass"]
 
+    def lca_rating_system(self, component, layer, phase):
+        """Calculates the lca rating system for each material"""
+
+        project = self.project_with_attr()
+        dic = {}
+        lca_rating_system_dic = {}
+        lca_rating_gwp = project[component][layer][phase]
+        for key, value in lca_rating_gwp.items():
+            lca_calculation = value / self.get_nett_area() * 2 / 100
+            dic.update({key: lca_calculation})
+        lca_rating_system_dic.update(dic)
+        return lca_rating_system_dic
+
     def calc_lca(self, component):
-        """creates a dictionary for each environmental impacts and adds them
+        """Creates a dictionary for each environmental impacts and adds them
         to each layer in the project"""
 
         project = self.project_with_attr()
@@ -249,7 +267,65 @@ class CalcLCA(CreateProject):
         project[component]["total_ap_component"] = round(total_ap_in_component, 3)
         project[component]["total_ep_component"] = round(total_ep_in_component, 3)
 
+        # Create the lca rating system for each layer
+        for layer in project[component]:
+            if isinstance(project[component][layer], dict):
+                if "lca_rating_system" not in project[component][layer]:
+                    project[component][layer]["lca_rating_system"] = {}
+
+                project[component][layer]["lca_rating_system"].update(
+                    {"gwp": self.lca_rating_system(component, layer, "gwp")}
+                )
+                project[component][layer]["lca_rating_system"].update(
+                    {"odp": self.lca_rating_system(component, layer, "odp")}
+                )
+                project[component][layer]["lca_rating_system"].update(
+                    {"pocp": self.lca_rating_system(component, layer, "pocp")}
+                )
+                project[component][layer]["lca_rating_system"].update(
+                    {"ap": self.lca_rating_system(component, layer, "ap")}
+                )
+                project[component][layer]["lca_rating_system"].update(
+                    {"ep": self.lca_rating_system(component, layer, "ep")}
+                )
+
+        # Create the total lca rating system for each component
+        total_gwp_lca_rating_system = self.calc_total_value_of_rating_system(
+            project[component]["total_gwp_component"]
+        )
+        total_odp_lca_rating_system = self.calc_total_value_of_rating_system(
+            project[component]["total_odp_component"]
+        )
+        total_pocp_lca_rating_system = self.calc_total_value_of_rating_system(
+            project[component]["total_pocp_component"]
+        )
+        total_ap_lca_rating_system = self.calc_total_value_of_rating_system(
+            project[component]["total_ap_component"]
+        )
+        total_ep_lca_rating_system = self.calc_total_value_of_rating_system(
+            project[component]["total_ep_component"]
+        )
+
+        project[component]["total_gwp_lca_rating_system"] = round(
+            total_gwp_lca_rating_system, 3
+        )
+        project[component]["total_odp_lca_rating_system"] = round(
+            total_odp_lca_rating_system, 3
+        )
+        project[component]["total_pocp_lca_rating_system"] = round(
+            total_pocp_lca_rating_system, 3
+        )
+        project[component]["total_ap_lca_rating_system"] = round(
+            total_ap_lca_rating_system, 3
+        )
+        project[component]["total_ep_lca_rating_system"] = round(
+            total_ep_lca_rating_system, 3
+        )
+
         return project
+
+    def calc_total_value_of_rating_system(self, total_value_of_rating_system):
+        return total_value_of_rating_system / self.get_nett_area() * 2 / 100
 
 
 class CompareBuildings(Compare):
