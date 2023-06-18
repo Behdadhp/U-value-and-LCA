@@ -5,6 +5,8 @@ from .calculation.data import material_default_value
 from .calculation import calc
 import json
 
+from .utils import valid_json
+
 
 class Building(models.Model):
     """ORM representation of the Projects"""
@@ -34,8 +36,8 @@ class Building(models.Model):
                 return json.loads(content[0])
             else:
                 content = content[0].decode("utf-8")
-                valid_json = content.replace("'", '"')
-                return json.loads(valid_json)
+                valid_content = valid_json(content)
+                return json.loads(valid_content)
 
     def choose_project(self):
         """Chooses a project, depending on which one user has provided"""

@@ -9,3 +9,9 @@ def sort_project(instance, component):
         )
     }
     return sorted_component
+
+
+def valid_json(content):
+    """Create a valid json"""
+
+    return content.replace("'", '"')

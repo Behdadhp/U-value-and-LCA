@@ -14,12 +14,26 @@
             {% endif %}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6">
-            <form method="post">
-                {% csrf_token %}
-                <button class="btn btn-dark" type="submit" name="export_material">Export materials</button>
-            </form>
+            <div class="d-flex justify-content-end">
+                <form method="post" class="ml-2">
+                    {% csrf_token %}
+                    <button class="btn btn-info" type="submit" name="export_material">Export materials</button>
+                </form>
+                <form method="post" enctype="multipart/form-data" class="form-inline">
+                    <button class="btn btn-info" type="submit" name="import_material">Import materials</button>
+                    <div class="form-group">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="file" name="file" accept=".txt" value="Default File Name">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-12">
+    </div>
+    <div class="row text-center">
+        <div class="col-xs-12 col-sm-12 col-md-12">
             {% render_table table %}
         </div>
     </div>

@@ -11,7 +11,7 @@ from django.views import generic
 from . import filters
 from . import forms
 from .calculation import calc
-from .utils import sort_project
+from .utils import sort_project, valid_json
 
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
@@ -299,9 +299,23 @@ class MateriaList(FilterView, SingleTableView):
         else:
             return reverse("building:materials")
 
+    @staticmethod
+    def import_model_from_file(file):
+        content = file.open("r").readlines()[0].decode("utf-8")
+        valid_content = valid_json(content)
+        valid_content = json.loads(valid_content)
+        for obj in valid_content:
+            imported_object = obj.get("fields")["name"]
+            if not models.Material.objects.filter(name=imported_object).exists():
+                fields = obj.get("fields")
+                models.Material.objects.create(**fields)
+
     def post(self, request, *args, **kwargs):
         if "export_material" in request.POST:
             self.save_model_to_file()
+        elif "import_material" in request.POST and "file" in request.FILES:
+            file = request.FILES["file"]
+            self.import_model_from_file(file)
         return redirect("building:materials")
 
 
