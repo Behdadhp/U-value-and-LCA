@@ -148,7 +148,7 @@ class MaterialTable(tables.Table):
 class ComponentTable(tables.Table):
     """Tables for components"""
 
-    layer = tables.Column(empty_values=(), verbose_name="Component (inside to outside)")
+    layer = tables.Column(empty_values=(), verbose_name="Material (inside to outside)")
     thickness = tables.Column(empty_values=(), verbose_name="Thickness mm")
     area = tables.Column(empty_values=(), verbose_name="Area m2")
     volume = tables.Column(empty_values=(), verbose_name="Voloume m3")
@@ -201,6 +201,82 @@ class ComponentTable(tables.Table):
 
 
 class LCATable(tables.Table):
+    """Table for LCA"""
+
+    phase = tables.Column(empty_values=())
+    layer = tables.Column(empty_values=(), verbose_name="Material (inside to outside)")
+    gwp = tables.Column(empty_values=(), verbose_name="GWP")
+    odp = tables.Column(empty_values=(), verbose_name="ODP")
+    pocp = tables.Column(empty_values=(), verbose_name="POCP")
+    ap = tables.Column(empty_values=(), verbose_name="AP")
+    ep = tables.Column(empty_values=(), verbose_name="EP")
+
+    @staticmethod
+    def render_layer(record):
+        """ "Gets the layers"""
+
+        return format_html_join(
+            "",
+            "<b>{} </b>",
+            ((key,) for key in record),
+        )
+
+    @staticmethod
+    def render_phase():
+        """Crates phases for each layer"""
+
+        items = [
+            "Herstellungsphase (A1-A3)",
+            "Erneuerung (B2 & B4)",
+            "Energiebedarf (B6)",
+            "Lebensendphase (C3 & C4)",
+        ]
+        return format_html_join("\n", "<p>{}: </p>", ((key,) for key in items))
+
+    def render_gwp(self, record):
+        """Gets the gwp for each layer"""
+
+        return self.get_phase_value("gwp", record)
+
+    def render_odp(self, record):
+        """Gets the odp for each layer"""
+
+        return self.get_phase_value("odp", record)
+
+    def render_pocp(self, record):
+        """Gets the pocp for each layer"""
+
+        return self.get_phase_value("pocp", record)
+
+    def render_ap(self, record):
+        """Gets the ap for each layer"""
+
+        return self.get_phase_value("ap", record)
+
+    def render_ep(self, record):
+        """Gets the gwp for each layer"""
+
+        return self.get_phase_value("ep", record)
+
+    @staticmethod
+    def get_phase_value(phase, record):
+        layer = list(record.keys())
+        phase_value = [key for key in record[layer[0]][phase].values()]
+
+        return format_html_join(
+            "",
+            "<p>{} </p>",
+            ((item,) for item in phase_value),
+        )
+
+    class Meta:
+        template_name = "django_tables2/bootstrap4.html"
+        sequence = ("layer", "phase")
+
+        attrs = {"class": "table table-striped"}
+
+
+class LCARatingSystemTable(tables.Table):
     """Table for LCA"""
 
     phase = tables.Column(empty_values=())
@@ -261,7 +337,9 @@ class LCATable(tables.Table):
     @staticmethod
     def get_phase_value(phase, record):
         layer = list(record.keys())
-        phase_value = [key for key in record[layer[0]][phase].values()]
+        phase_value = [
+            key for key in record[layer[0]]["lca_rating_system"][phase].values()
+        ]
 
         return format_html_join(
             "",

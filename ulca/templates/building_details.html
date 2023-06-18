@@ -6,27 +6,31 @@
 
     {% bootstrap_css %}
     <div class="row text-center">
-
         <div class="col-xs-12 col-sm-6 col-md-12">
             <h2> Generated page for project: {{ building }}</h2>
             <p>The first table is the calculation of U-Value. Below this table, there are other tables for 3
                 components of the building (Wall, Roof and Floor) and their calculation of LCA.</p>
         </div>
+    </div>
 
 
-        {#    U value    #}
+    {#    U value    #}
 
-
+    <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
             <h1 class=header_color> Table for U-Value</h1>
             <br>
             {% render_table table %}
         </div>
+    </div>
 
 
-        {#    Wall    #}
+
+    {#    Wall    #}
 
 
+
+    <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
             <h1 class=header_color> Tables for Wall</h1>
             <br>
@@ -37,30 +41,42 @@
             <br>
             {% render_table wall_lca %}
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <table class="table table-striped">
-                <thead>
-                <td>Component</td>
-                <td>Total GWP</td>
-                <td>Total ODP</td>
-                <td>Total POCP</td>
-                <td>Total AP</td>
-                <td>Total EP</td>
-                </thead>
-                <tr>
-                    <td><b>Wall</b></td>
-                    <td>{{ model.project.wall.total_gwp_component }}</td>
-                    <td>{{ model.project.wall.total_odp_component }}</td>
-                    <td>{{ model.project.wall.total_pocp_component }}</td>
-                    <td>{{ model.project.wall.total_ap_component }}</td>
-                    <td>{{ model.project.wall.total_ep_component }}</td>
-            </table>
+    </div>
+    <div class="row text-center">
+        <button class="btn btn-info" onclick="toggleCode('codeContainer1')"><h4>Click here to show the rating
+            system </h4>
+        </button>
+        <div id="codeContainer1" style="display: none;">
+            {% render_table wall_rating_system %}
+            <div class="col-xs-12 col-sm-6 col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <td>Component</td>
+                    <td>Total GWP</td>
+                    <td>Total ODP</td>
+                    <td>Total POCP</td>
+                    <td>Total AP</td>
+                    <td>Total EP</td>
+                    </thead>
+                    <tr>
+                        <td><b>Wall</b></td>
+                        <td>{{ model.project.wall.total_gwp_lca_rating_system }}</td>
+                        <td>{{ model.project.wall.total_odp_lca_rating_system }}</td>
+                        <td>{{ model.project.wall.total_pocp_lca_rating_system }}</td>
+                        <td>{{ model.project.wall.total_ap_lca_rating_system }}</td>
+                        <td>{{ model.project.wall.total_ep_lca_rating_system }}</td>
+                </table>
+            </div>
         </div>
+    </div>
 
 
-        {#    Floor    #}
+
+    {#    Floor    #}
 
 
+
+    <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
             <h1 class=header_color> Tables for Floor</h1>
             <br>
@@ -71,31 +87,41 @@
             <br>
             {% render_table floor_lca %}
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <table class="table table-striped">
-                <thead>
-                <td>Component</td>
-                <td>Total GWP</td>
-                <td>Total ODP</td>
-                <td>Total POCP</td>
-                <td>Total AP</td>
-                <td>Total EP</td>
-
-                </thead>
-                <tr>
-                    <td><b>Floor</b></td>
-                    <td>{{ model.project.floor.total_gwp_component }}</td>
-                    <td>{{ model.project.floor.total_odp_component }}</td>
-                    <td>{{ model.project.floor.total_pocp_component }}</td>
-                    <td>{{ model.project.floor.total_ap_component }}</td>
-                    <td>{{ model.project.floor.total_ep_component }}</td>
-            </table>
+    </div>
+    <div class="row text-center">
+        <button class="btn btn-info" onclick="toggleCode('codeContainer2')"><h4>Click here to show the rating
+            system </h4>
+        </button>
+        <div id="codeContainer2" style="display: none;">
+            {% render_table floor_rating_system %}
+            <div class="col-xs-12 col-sm-6 col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <td>Component</td>
+                    <td>Total GWP</td>
+                    <td>Total ODP</td>
+                    <td>Total POCP</td>
+                    <td>Total AP</td>
+                    <td>Total EP</td>
+                    </thead>
+                    <tr>
+                        <td><b>Floor</b></td>
+                        <td>{{ model.project.floor.total_gwp_lca_rating_system }}</td>
+                        <td>{{ model.project.floor.total_odp_lca_rating_system }}</td>
+                        <td>{{ model.project.floor.total_pocp_lca_rating_system }}</td>
+                        <td>{{ model.project.floor.total_ap_lca_rating_system }}</td>
+                        <td>{{ model.project.floor.total_ep_lca_rating_system }}</td>
+                </table>
+            </div>
         </div>
+    </div>
 
 
-        {#    Roof    #}
+
+    {#    Roof    #}
 
 
+    <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
             <h1 class=header_color> Tables for Roof</h1>
             <br>
@@ -106,25 +132,44 @@
             <br>
             {% render_table roofbase_lca %}
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <table class="table table-striped">
-                <thead>
-                <td>Component</td>
-                <td>Total GWP</td>
-                <td>Total ODP</td>
-                <td>Total POCP</td>
-                <td>Total AP</td>
-                <td>Total EP</td>
-
-                </thead>
-                <tr>
-                    <td><b>Roof</b></td>
-                    <td>{{ model.project.roofbase.total_gwp_component }}</td>
-                    <td>{{ model.project.roofbase.total_odp_component }}</td>
-                    <td>{{ model.project.roofbase.total_pocp_component }}</td>
-                    <td>{{ model.project.roofbase.total_ap_component }}</td>
-                    <td>{{ model.project.roofbase.total_ep_component }}</td>
-            </table>
+    </div>
+    <div class="row text-center">
+        <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4>Click here to show the rating
+            system </h4>
+        </button>
+        <div id="codeContainer3" style="display: none;">
+            {% render_table roofbase_rating_system %}
+            <div class="col-xs-12 col-sm-6 col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <td>Component</td>
+                    <td>Total GWP</td>
+                    <td>Total ODP</td>
+                    <td>Total POCP</td>
+                    <td>Total AP</td>
+                    <td>Total EP</td>
+                    </thead>
+                    <tr>
+                        <td><b>Roof</b></td>
+                        <td>{{ model.project.roofbase.total_gwp_lca_rating_system }}</td>
+                        <td>{{ model.project.roofbase.total_odp_lca_rating_system }}</td>
+                        <td>{{ model.project.roofbase.total_pocp_lca_rating_system }}</td>
+                        <td>{{ model.project.roofbase.total_ap_lca_rating_system }}</td>
+                        <td>{{ model.project.roofbase.total_ep_lca_rating_system }}</td>
+                </table>
+            </div>
         </div>
     </div>
+
+
+    <script>
+        function toggleCode(containerId) {
+            var codeContainer = document.getElementById(containerId);
+            if (codeContainer.style.display === "none" || codeContainer.style.display === '') {
+                codeContainer.style.display = "block";
+            } else {
+                codeContainer.style.display = "none";
+            }
+        }
+    </script>
 {% endblock %}

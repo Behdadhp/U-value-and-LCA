@@ -97,6 +97,16 @@ class BuildingDetails(generic.DetailView, MultiTableMixin):
         context["roofbase_lca"] = tables.LCATable(
             self.create_building_table("roofbase")
         )
+
+        context["wall_rating_system"] = tables.LCARatingSystemTable(
+            self.create_building_table("wall")
+        )
+        context["floor_rating_system"] = tables.LCARatingSystemTable(
+            self.create_building_table("floor")
+        )
+        context["roofbase_rating_system"] = tables.LCARatingSystemTable(
+            self.create_building_table("roofbase")
+        )
         return context
 
 
