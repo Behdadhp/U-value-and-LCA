@@ -19,6 +19,8 @@ from reportlab.pdfgen import canvas
 import tkinter as tk
 from tkinter import filedialog
 
+from django.core import serializers
+
 
 class BuildingList(FilterView, SingleTableView):
     """View for listing all buildings"""
@@ -276,6 +278,31 @@ class MateriaList(FilterView, SingleTableView):
 
     def get_queryset(self):
         return models.Material.objects.all()
+
+    def save_model_to_file(self):
+        post_list = serializers.serialize("json", self.get_queryset())
+
+        root = tk.Tk()
+        root.withdraw()
+
+        # Prompt the user to select the save location
+        save_location = filedialog.asksaveasfilename(
+            initialdir="/",
+            title="Select the path and file name to save the file",
+            filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],
+        )
+        if save_location:
+            save_location = os.path.splitext(save_location)[0] + ".txt"
+            with open(save_location, "w") as file:
+                file.write(str(post_list))
+            print(f"Model saved to {save_location}.")
+        else:
+            return reverse("building:materials")
+
+    def post(self, request, *args, **kwargs):
+        if "export_material" in request.POST:
+            self.save_model_to_file()
+        return redirect("building:materials")
 
 
 class MaterialCreate(generic.CreateView):
