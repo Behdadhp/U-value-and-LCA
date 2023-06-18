@@ -194,7 +194,7 @@ class CalcLCA(CreateProject):
         lca_rating_system_dic = {}
         lca_rating_gwp = project[component][layer][phase]
         for key, value in lca_rating_gwp.items():
-            lca_calculation = value / self.get_nett_area() * 2 / 100
+            lca_calculation = round(value / self.get_nett_area() * 2 / 100, 5)
             dic.update({key: lca_calculation})
         lca_rating_system_dic.update(dic)
         return lca_rating_system_dic

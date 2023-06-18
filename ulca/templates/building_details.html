@@ -44,7 +44,7 @@
     </div>
     <div class="row text-center">
         <button class="btn btn-info" onclick="toggleCode('codeContainer1')"><h4>Click here to show the rating
-            system </h4>
+            system divided by net area</h4>
         </button>
         <div id="codeContainer1" style="display: none;">
             {% render_table wall_rating_system %}
@@ -72,6 +72,51 @@
 
 
 
+        {#    Roof    #}
+
+
+    <div class="row text-center">
+        <div class="col-xs-12 col-sm-6 col-md-12">
+            <h1 class=header_color> Tables for Roof</h1>
+            <br>
+            {% render_table roofbase_component %}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-12">
+            <h3> Life Cycle Assessment table</h3>
+            <br>
+            {% render_table roofbase_lca %}
+        </div>
+    </div>
+    <div class="row text-center">
+        <button class="btn btn-info" onclick="toggleCode('codeContainer2')"><h4>Click here to show the rating
+            system divided by net area</h4>
+        </button>
+        <div id="codeContainer2" style="display: none;">
+            {% render_table roofbase_rating_system %}
+            <div class="col-xs-12 col-sm-6 col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <td>Component</td>
+                    <td>Total GWP</td>
+                    <td>Total ODP</td>
+                    <td>Total POCP</td>
+                    <td>Total AP</td>
+                    <td>Total EP</td>
+                    </thead>
+                    <tr>
+                        <td><b>Roof</b></td>
+                        <td>{{ model.project.roofbase.total_gwp_lca_rating_system }}</td>
+                        <td>{{ model.project.roofbase.total_odp_lca_rating_system }}</td>
+                        <td>{{ model.project.roofbase.total_pocp_lca_rating_system }}</td>
+                        <td>{{ model.project.roofbase.total_ap_lca_rating_system }}</td>
+                        <td>{{ model.project.roofbase.total_ep_lca_rating_system }}</td>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
     {#    Floor    #}
 
 
@@ -89,10 +134,10 @@
         </div>
     </div>
     <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer2')"><h4>Click here to show the rating
-            system </h4>
+        <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4>Click here to show the rating
+            system divided by net area</h4>
         </button>
-        <div id="codeContainer2" style="display: none;">
+        <div id="codeContainer3" style="display: none;">
             {% render_table floor_rating_system %}
             <div class="col-xs-12 col-sm-6 col-md-12">
                 <table class="table table-striped">
@@ -118,48 +163,7 @@
 
 
 
-    {#    Roof    #}
 
-
-    <div class="row text-center">
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <h1 class=header_color> Tables for Roof</h1>
-            <br>
-            {% render_table roofbase_component %}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <h3> Life Cycle Assessment table</h3>
-            <br>
-            {% render_table roofbase_lca %}
-        </div>
-    </div>
-    <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4>Click here to show the rating
-            system </h4>
-        </button>
-        <div id="codeContainer3" style="display: none;">
-            {% render_table roofbase_rating_system %}
-            <div class="col-xs-12 col-sm-6 col-md-12">
-                <table class="table table-striped">
-                    <thead>
-                    <td>Component</td>
-                    <td>Total GWP</td>
-                    <td>Total ODP</td>
-                    <td>Total POCP</td>
-                    <td>Total AP</td>
-                    <td>Total EP</td>
-                    </thead>
-                    <tr>
-                        <td><b>Roof</b></td>
-                        <td>{{ model.project.roofbase.total_gwp_lca_rating_system }}</td>
-                        <td>{{ model.project.roofbase.total_odp_lca_rating_system }}</td>
-                        <td>{{ model.project.roofbase.total_pocp_lca_rating_system }}</td>
-                        <td>{{ model.project.roofbase.total_ap_lca_rating_system }}</td>
-                        <td>{{ model.project.roofbase.total_ep_lca_rating_system }}</td>
-                </table>
-            </div>
-        </div>
-    </div>
 
 
     <script>
