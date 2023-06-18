@@ -23,25 +23,6 @@ class CreateBuilding(forms.ModelForm):
         }
 
 
-class CreateMaterial(forms.ModelForm):
-    """Form for creating material"""
-
-    class Meta:
-        model = models.Material
-        fields = (
-            "name",
-            "rho",
-            "lamb",
-            "type",
-            "GWP",
-            "ODP",
-            "POCP",
-            "AP",
-            "EP",
-            "url_to_oekobaudat",
-        )
-
-
 class UpdateBuilding(forms.ModelForm):
     """Form for updating building"""
 

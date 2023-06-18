@@ -1,21 +1,149 @@
 {% extends "base.html" %}
+{% load static %}
+{# Load the tag library #}
 {% load bootstrap3 %}
 
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
 {% block content %}
+    {% load bootstrap3 %}
 
-    {% bootstrap_css %}
-<div class="container">
-  <div class="row text-center">
-    <div class="col-sm-6">
-      <h1>Create new material</h1>
-    </div>
-    <div class="col-sm-6">
-      <form action="{% url 'building:createMaterial' %}" method="post">
-        {% csrf_token %} {% bootstrap_form form %} {% buttons %} <br />
-        <button type="submit" class="btn btn-primary">Create</button>
-      </form>
-    </div>
-  </div>
-</div>
 
-{% endbuttons %} {% endblock %}
+
+    {#    name   #}
+
+
+
+    <div class="row text-center">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <h1>Edit the Project</h1>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <form action="{% url 'building:createMaterial' %}" method="post">
+                {% csrf_token %}
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":4" == "name" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+        </div>
+
+
+        {#    rho and lambda   #}
+
+
+        <div class="row text-center">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":3" == "rho" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":3" == "lam" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+
+        {#    type and URL   #}
+
+
+        <div class="row text-center">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":3" == "typ" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":3" == "url" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+
+        {#    GWP and ODP    #}
+
+
+        <div class="row text-center">
+            <h1 class=header_color>LCA attributes</h1>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <h3>GWP</h3>
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":3" == "GWP" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <h3>ODP</h3>
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":3" == "ODP" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+
+        {#    POCP and AP    #}
+
+
+        <div class="row text-center">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <h3>POCP</h3>
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":3" == "POC" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <h3>AP</h3>
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":2" == "AP" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+
+        {#    EP    #}
+
+
+        <div class="row text-center">
+            <div class="col-xs-12 col-sm-6 col-md-3"></div>
+
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <h3>EP</h3>
+                {% for component in form.visible_fields %}
+                    {% if component.name|slice:":2" == "EP" %}
+                        {% bootstrap_field component %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3"></div>
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">Create</button>
+            {% endbuttons %}
+            </form>
+        </div>
+
+
+{% endblock %}

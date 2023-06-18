@@ -322,7 +322,7 @@ class MateriaList(FilterView, SingleTableView):
 class MaterialCreate(generic.CreateView):
     template_name = "material_form.html"
     models = models.Material
-    form_class = forms.CreateMaterial
+    form_class = forms.UpdateMaterial
     success_url = reverse_lazy("building:materials")
 
     def form_valid(self, form):
