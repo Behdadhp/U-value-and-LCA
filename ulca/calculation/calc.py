@@ -57,6 +57,21 @@ class Compare:
 
 
 class CreateProject(Calc):
+    def calc_nett_area(self):
+        """Calculate the nett area of building"""
+
+        project = self.project
+        total_wall_length = project["wall"]["total_wall_length"]
+        total_thickness = 0
+        for layer in project["wall"]:
+            if isinstance(project["wall"][layer], dict):
+                thickness = project["wall"][layer]["thickness"]
+                total_thickness += thickness
+        construction_area = total_thickness / 1000 * float(total_wall_length)
+        gross_area = float(project["roofbase"]["area"])
+
+        return gross_area - construction_area
+
     def create_dictionary_for_each_layer(self, component):
         """Creates a dictionary for attributes of each layer of requested components"""
 
@@ -78,6 +93,7 @@ class CreateProject(Calc):
                     * material.rho,
                     3,
                 )  # m2 * mm * rho
+        project[component]["nett_area"] = round(self.calc_nett_area(), 3)
 
         return project[component]
 
