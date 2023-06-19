@@ -3,9 +3,10 @@
 {% load django_tables2 %}
 
 {% block content %}
+    {% bootstrap_css %}
+
     <div class="row text-center">
-        {% bootstrap_css %}
-        <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="col-xs-12 col-sm-6 col-md-6 ">
             {% if filter %}
                 <form action="" method="get" class="form form-inline">
                     {% bootstrap_form filter.form layout='inline' %}
