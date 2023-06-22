@@ -115,7 +115,7 @@ class Material(models.Model):
 
     type_choices = ((MASS, "Mass"), (VOLUME, "Volume"), (AREA, "Area"))
 
-    name = models.CharField(max_length=64, blank=False, null=False)
+    name = models.CharField(max_length=64, blank=False, null=False, unique=True)
     rho = models.FloatField(max_length=8)
     lamb = models.FloatField(
         max_length=8, blank=False, null=False, verbose_name="lambda"

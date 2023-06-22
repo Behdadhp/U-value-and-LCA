@@ -187,3 +187,9 @@ class CompareBuildings(forms.Form):
 
     first_building = forms.CharField()
     second_building = forms.CharField()
+
+
+class ImportMaterial(forms.Form):
+    """Form to import material"""
+
+    import_material = forms.CharField()

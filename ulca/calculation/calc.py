@@ -1,4 +1,6 @@
 from . import data
+from bs4 import BeautifulSoup
+import requests
 
 
 class Calc:
@@ -509,3 +511,169 @@ class FilterDifferences(Compare):
             counter += 1
 
         return comparison_floor
+
+
+class ScrapData:
+    def __init__(self, url_to_db):
+        self.url_to_db = url_to_db
+
+    def get_html(self):
+        data = requests.get(self.url_to_db).text
+        soup = BeautifulSoup(data, "html.parser")
+        return soup
+
+    def get_phase_value(self, ui_attr):
+        """Scrap the phase"""
+
+        ul = self.get_html().find("ul", id=ui_attr)
+        try:
+            return float(ul.text)
+        except Exception:
+            return 0
+
+    def get_phase(self, th_attr):
+        """Scrap the amount of each phase"""
+
+        th = self.get_html().find("th", id=th_attr)
+        try:
+            ls = th.text.replace("\n", "").split("\t")
+            for item in ls:
+                if item == "":
+                    item_index = ls.index(item)
+                    del ls[item_index]
+            return str(ls[len(ls) - 1])
+        except Exception:
+            return None
+
+    def get_name(self, span_attr):
+        list_of_contents = []
+        for td in self.get_html().find_all(
+            "td", {"class": "ui-panelgrid-cell", "role": "gridcell"}
+        ):
+            list_of_contents.append(td)
+            if td.find("span", id=span_attr):
+                name_index = list_of_contents.index(td)
+
+        try:
+            return list_of_contents[name_index + 1].get_text(strip=True)
+        except Exception:
+            return None
+
+    def get_rho(self, ui_attr):
+        ul = self.get_html().find("ul", id=ui_attr)
+        try:
+            content = ul.text
+            list_of_contents = content.split()
+            for item in list_of_contents:
+                if "density:" in item or "Rohdichte:" in item:
+                    get_index = list_of_contents.index(item)
+            try:
+                return float(list_of_contents[get_index + 2])
+            except ValueError:
+                return 0
+        except Exception:
+            return 0
+
+    def get_type(self, ul_attr):
+        """Get type of material for calculation"""
+
+        ul = self.get_html().find_all("ul", id=ul_attr)
+        try:
+            for item in ul:
+                if item.find("a"):
+                    text_content = item.get_text(strip=True)
+                    list_of_content = text_content.split()
+
+            if "kg" in list_of_content:
+                return "Mass"
+            elif "m3" in list_of_content:
+                return "Volume"
+            else:
+                return "Area"
+        except Exception:
+            return None
+
+
+class CreateScrapDataDict(ScrapData):
+    def create_dict(self):
+        """Create a dict to store value of materials"""
+
+        material_dict = {"GWP": {}, "ODP": {}, "POCP": {}, "AP": {}, "EP": {}}
+
+        material_dict.update(
+            {
+                "name": self.get_name("j_idt62:accPanel:j_idt136:name"),
+                "rho": self.get_rho(
+                    "j_idt62:accPanel:j_idt367:j_idt393:0:j_idt389:j_idt392:0:j_idt390_list"
+                ),
+                "lamb": 0,
+                "type": self.get_type("j_idt62:accPanel:j_idt367:j_idt393_list"),
+                "url_to_oekobaudat": self.url_to_db,
+            }
+        )
+
+        for counter in range(15):
+            phase = self.get_phase(
+                f"j_idt62:accPanel:lciaindicatorsform:j_idt1502:j_idt1535:{counter}"
+            )
+            value_gwp = self.get_phase_value(
+                f"j_idt62:accPanel:lciaindicatorsform:j_idt1502:0:j_idt1535:{counter}:j_idt1537_list"
+            )
+            value_odp = self.get_phase_value(
+                f"j_idt62:accPanel:lciaindicatorsform:j_idt1502:1:j_idt1535:{counter}:j_idt1537_list"
+            )
+            value_pocp = self.get_phase_value(
+                f"j_idt62:accPanel:lciaindicatorsform:j_idt1502:2:j_idt1535:{counter}:j_idt1537_list"
+            )
+            value_ap = self.get_phase_value(
+                f"j_idt62:accPanel:lciaindicatorsform:j_idt1502:3:j_idt1535:{counter}:j_idt1537_list"
+            )
+            value_ep = self.get_phase_value(
+                f"j_idt62:accPanel:lciaindicatorsform:j_idt1502:4:j_idt1535:{counter}:j_idt1537_list"
+            )
+
+            if phase and value_gwp:
+                material_dict["GWP"].update({phase: value_gwp})
+                material_dict["ODP"].update({phase: value_odp})
+                material_dict["POCP"].update({phase: value_pocp})
+                material_dict["AP"].update({phase: value_ap})
+                material_dict["EP"].update({phase: value_ep})
+            else:
+                break
+
+        return material_dict
+
+    def create_dict_for_model(self):
+        model_material_dict = {}
+
+        material_dict = self.create_dict()
+        model_material_dict.update(material_dict)
+
+        herstellungsphase = 0
+        erneuerung = 0
+        energiebedarf = 0
+        lebensendphase = 0
+        for item in material_dict:
+            if isinstance(material_dict[item], dict):
+                for key, value in material_dict[item].items():
+                    if key == "A1-A3":
+                        herstellungsphase += value
+                    if key == "B2":
+                        erneuerung += value
+                    if key == "B4":
+                        erneuerung += value
+                    if key == "B6":
+                        energiebedarf += value
+                    if key == "C3":
+                        lebensendphase += value
+                    if key == "C4":
+                        lebensendphase += value
+
+                model_material_dict[item] = {
+                    "Herstellungsphase": herstellungsphase,
+                    "Erneuerung": erneuerung,
+                    "Energiebedarf": energiebedarf,
+                    "Lebensendphase": lebensendphase,
+                }
+
+        return model_material_dict
