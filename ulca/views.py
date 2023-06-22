@@ -32,11 +32,6 @@ class BuildingList(FilterView, SingleTableView):
 
     filterset_class = filters.BuildingFilter
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["compare_form"] = forms.CompareBuildings()
-        return context
-
     def post(self, request, *args, **kwargs):
         form = forms.CompareBuildings(request.POST)
         if form.is_valid():
