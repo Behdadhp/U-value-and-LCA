@@ -20,6 +20,8 @@ import tkinter as tk
 from tkinter import filedialog
 
 from django.core import serializers
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class BuildingList(FilterView, SingleTableView):
@@ -360,11 +362,20 @@ class MateriaList(FilterView, SingleTableView):
         content = file.open("r").readlines()[0].decode("utf-8")
         valid_content = valid_json(content)
         valid_content = json.loads(valid_content)
+
+        # Disconnect the post_save signal for Material model
+        post_save.disconnect(
+            forms.UpdateMaterial.update_buildings, sender=models.Material
+        )
+
         for obj in valid_content:
             imported_object = obj.get("fields")["name"]
             if not models.Material.objects.filter(name=imported_object).exists():
                 fields = obj.get("fields")
                 models.Material.objects.create(**fields)
+
+        # Reconnect the post_save signal for Material model
+        post_save.connect(forms.UpdateMaterial.update_buildings, sender=models.Material)
 
     def post(self, request, *args, **kwargs):
         if "export_material" in request.POST:
