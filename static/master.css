@@ -39,3 +39,11 @@
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
+.img-opacity {
+    opacity: 0.2;
+}
+
+.img-opacity:hover {
+    opacity: 0.6;
+}

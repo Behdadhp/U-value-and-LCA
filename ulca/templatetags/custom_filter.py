@@ -22,3 +22,16 @@ def floor_material(material, obj):
     for _ in obj.project["floor"]:
         if isinstance(obj.project["floor"][material], dict):
             return material
+
+
+@register.filter
+def filter_material_if_changed(material, comparison_dict):
+    for item in comparison_dict:
+        for counter in range(len(comparison_dict[item])):
+            if material in comparison_dict[item][counter].keys():
+                return material
+
+
+@register.filter
+def divide(value, arg):
+    return int(value) / int(arg)
