@@ -102,6 +102,7 @@ class BuildingDetails(generic.DetailView, MultiTableMixin):
         context["roofbase_rating_system"] = tables.LCARatingSystemTable(
             self.create_building_table("roofbase")
         )
+
         return context
 
 
@@ -209,6 +210,19 @@ class BuildingCompare(generic.TemplateView, MultiTableMixin):
             if isinstance(building.project[component][key], dict)
         ]
 
+    def create_data_for_charts(self, project, component):
+        """Provides data for creating charts"""
+
+        return [
+            project.project[component][item]
+            for item in project.project[component]
+            if item == "total_gwp_lca_rating_system"
+            or item == "total_odp_lca_rating_system"
+            or item == "total_pocp_lca_rating_system"
+            or item == "total_ap_lca_rating_system"
+            or item == "total_ep_lca_rating_system"
+        ]
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         first_building = models.Building.objects.get(
@@ -268,6 +282,43 @@ class BuildingCompare(generic.TemplateView, MultiTableMixin):
         context["floor_lca_second_building"] = tables.LCATable(
             self.create_building_table(second_building, "floor")
         )
+
+        # Providing data for charts
+
+        context["chart_first_buidling_value_phases_wall"] = self.create_data_for_charts(
+            first_building, "wall"
+        )
+
+        context[
+            "chart_second_buidling_value_phases_wall"
+        ] = self.create_data_for_charts(second_building, "wall")
+
+        context["chart_first_buidling_value_phases_roof"] = self.create_data_for_charts(
+            first_building, "roofbase"
+        )
+
+        context[
+            "chart_second_buidling_value_phases_roof"
+        ] = self.create_data_for_charts(second_building, "roofbase")
+
+        context[
+            "chart_first_buidling_value_phases_floor"
+        ] = self.create_data_for_charts(first_building, "floor")
+
+        context[
+            "chart_second_buidling_value_phases_floor"
+        ] = self.create_data_for_charts(second_building, "floor")
+
+        context["chart_uvalue_first_building"] = [
+            first_building.wallUvalue,
+            first_building.roofUvalue,
+            first_building.floorUvalue,
+        ]
+        context["chart_uvalue_second_building"] = [
+            second_building.wallUvalue,
+            second_building.roofUvalue,
+            second_building.floorUvalue,
+        ]
 
         return context
 
