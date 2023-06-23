@@ -22,11 +22,11 @@
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-6">
-            <h1>Name: {{ first_building }}</h1>
+            <a href="{% url "building:updateBuilding" pk=first_building.id %}"><h1>Name: {{ first_building }}</h1></a>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6">
 
-            <h1>Name: {{ second_building }}</h1>
+            <a href="{% url "building:updateBuilding" pk=second_building.id %}"><h1>Name: {{ second_building }}</h1></a>
         </div>
 
 
