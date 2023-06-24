@@ -212,18 +212,28 @@ class BuildingCompare(generic.TemplateView, MultiTableMixin):
             if isinstance(building.project[component][key], dict)
         ]
 
-    def create_data_for_charts(self, project, component):
+    @staticmethod
+    def create_data_for_charts_phase(building, component):
         """Provides data for creating charts"""
 
         return [
-            project.project[component][item]
-            for item in project.project[component]
+            building.project[component][item]
+            for item in building.project[component]
             if item == "total_gwp_lca_rating_system"
             or item == "total_odp_lca_rating_system"
             or item == "total_pocp_lca_rating_system"
             or item == "total_ap_lca_rating_system"
             or item == "total_ep_lca_rating_system"
         ]
+
+    @staticmethod
+    def create_data_for_charts_material(building, component):
+        dic = {}
+        for material in building.project[component]:
+            if isinstance(building.project[component][material], dict):
+                value = building.project[component][material]["total_lca"]
+                dic.update({material: value})
+        return dic
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -287,29 +297,29 @@ class BuildingCompare(generic.TemplateView, MultiTableMixin):
 
         # Providing data for charts
 
-        context["chart_first_buidling_value_phases_wall"] = self.create_data_for_charts(
-            first_building, "wall"
-        )
+        context[
+            "chart_first_buidling_value_phases_wall"
+        ] = self.create_data_for_charts_phase(first_building, "wall")
 
         context[
             "chart_second_buidling_value_phases_wall"
-        ] = self.create_data_for_charts(second_building, "wall")
+        ] = self.create_data_for_charts_phase(second_building, "wall")
 
-        context["chart_first_buidling_value_phases_roof"] = self.create_data_for_charts(
-            first_building, "roofbase"
-        )
+        context[
+            "chart_first_buidling_value_phases_roof"
+        ] = self.create_data_for_charts_phase(first_building, "roofbase")
 
         context[
             "chart_second_buidling_value_phases_roof"
-        ] = self.create_data_for_charts(second_building, "roofbase")
+        ] = self.create_data_for_charts_phase(second_building, "roofbase")
 
         context[
             "chart_first_buidling_value_phases_floor"
-        ] = self.create_data_for_charts(first_building, "floor")
+        ] = self.create_data_for_charts_phase(first_building, "floor")
 
         context[
             "chart_second_buidling_value_phases_floor"
-        ] = self.create_data_for_charts(second_building, "floor")
+        ] = self.create_data_for_charts_phase(second_building, "floor")
 
         context["chart_uvalue_first_building"] = [
             first_building.wallUvalue,
@@ -321,6 +331,27 @@ class BuildingCompare(generic.TemplateView, MultiTableMixin):
             second_building.roofUvalue,
             second_building.floorUvalue,
         ]
+
+        context[
+            "chart_first_building_material_wall"
+        ] = self.create_data_for_charts_material(first_building, "wall")
+        context[
+            "chart_second_building_material_wall"
+        ] = self.create_data_for_charts_material(second_building, "wall")
+
+        context[
+            "chart_first_building_material_roof"
+        ] = self.create_data_for_charts_material(first_building, "roofbase")
+        context[
+            "chart_second_building_material_roof"
+        ] = self.create_data_for_charts_material(second_building, "roofbase")
+
+        context[
+            "chart_first_building_material_floor"
+        ] = self.create_data_for_charts_material(first_building, "floor")
+        context[
+            "chart_second_building_material_floor"
+        ] = self.create_data_for_charts_material(second_building, "floor")
 
         return context
 
