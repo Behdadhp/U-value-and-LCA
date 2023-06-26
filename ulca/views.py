@@ -20,6 +20,8 @@ import tkinter as tk
 from tkinter import filedialog
 
 from django.core import serializers
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class BuildingList(FilterView, SingleTableView):
@@ -102,6 +104,7 @@ class BuildingDetails(generic.DetailView, MultiTableMixin):
         context["roofbase_rating_system"] = tables.LCARatingSystemTable(
             self.create_building_table("roofbase")
         )
+
         return context
 
 
@@ -209,6 +212,29 @@ class BuildingCompare(generic.TemplateView, MultiTableMixin):
             if isinstance(building.project[component][key], dict)
         ]
 
+    @staticmethod
+    def create_data_for_charts_phase(building, component):
+        """Provides data for creating charts"""
+
+        return [
+            building.project[component][item]
+            for item in building.project[component]
+            if item == "total_gwp_lca_rating_system"
+            or item == "total_odp_lca_rating_system"
+            or item == "total_pocp_lca_rating_system"
+            or item == "total_ap_lca_rating_system"
+            or item == "total_ep_lca_rating_system"
+        ]
+
+    @staticmethod
+    def create_data_for_charts_material(building, component):
+        dic = {}
+        for material in building.project[component]:
+            if isinstance(building.project[component][material], dict):
+                value = building.project[component][material]["total_lca"]
+                dic.update({material: value})
+        return dic
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         first_building = models.Building.objects.get(
@@ -269,6 +295,64 @@ class BuildingCompare(generic.TemplateView, MultiTableMixin):
             self.create_building_table(second_building, "floor")
         )
 
+        # Providing data for charts
+
+        context[
+            "chart_first_buidling_value_phases_wall"
+        ] = self.create_data_for_charts_phase(first_building, "wall")
+
+        context[
+            "chart_second_buidling_value_phases_wall"
+        ] = self.create_data_for_charts_phase(second_building, "wall")
+
+        context[
+            "chart_first_buidling_value_phases_roof"
+        ] = self.create_data_for_charts_phase(first_building, "roofbase")
+
+        context[
+            "chart_second_buidling_value_phases_roof"
+        ] = self.create_data_for_charts_phase(second_building, "roofbase")
+
+        context[
+            "chart_first_buidling_value_phases_floor"
+        ] = self.create_data_for_charts_phase(first_building, "floor")
+
+        context[
+            "chart_second_buidling_value_phases_floor"
+        ] = self.create_data_for_charts_phase(second_building, "floor")
+
+        context["chart_uvalue_first_building"] = [
+            first_building.wallUvalue,
+            first_building.roofUvalue,
+            first_building.floorUvalue,
+        ]
+        context["chart_uvalue_second_building"] = [
+            second_building.wallUvalue,
+            second_building.roofUvalue,
+            second_building.floorUvalue,
+        ]
+
+        context[
+            "chart_first_building_material_wall"
+        ] = self.create_data_for_charts_material(first_building, "wall")
+        context[
+            "chart_second_building_material_wall"
+        ] = self.create_data_for_charts_material(second_building, "wall")
+
+        context[
+            "chart_first_building_material_roof"
+        ] = self.create_data_for_charts_material(first_building, "roofbase")
+        context[
+            "chart_second_building_material_roof"
+        ] = self.create_data_for_charts_material(second_building, "roofbase")
+
+        context[
+            "chart_first_building_material_floor"
+        ] = self.create_data_for_charts_material(first_building, "floor")
+        context[
+            "chart_second_building_material_floor"
+        ] = self.create_data_for_charts_material(second_building, "floor")
+
         return context
 
 
@@ -309,11 +393,20 @@ class MateriaList(FilterView, SingleTableView):
         content = file.open("r").readlines()[0].decode("utf-8")
         valid_content = valid_json(content)
         valid_content = json.loads(valid_content)
+
+        # Disconnect the post_save signal for Material model
+        post_save.disconnect(
+            forms.UpdateMaterial.update_buildings, sender=models.Material
+        )
+
         for obj in valid_content:
             imported_object = obj.get("fields")["name"]
             if not models.Material.objects.filter(name=imported_object).exists():
                 fields = obj.get("fields")
                 models.Material.objects.create(**fields)
+
+        # Reconnect the post_save signal for Material model
+        post_save.connect(forms.UpdateMaterial.update_buildings, sender=models.Material)
 
     def post(self, request, *args, **kwargs):
         if "export_material" in request.POST:

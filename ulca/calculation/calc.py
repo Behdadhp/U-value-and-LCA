@@ -658,6 +658,13 @@ class CreateScrapDataDict(ScrapData):
                 for key, value in material_dict[item].items():
                     if key == "A1-A3":
                         herstellungsphase += value
+                    else:
+                        if key == "A1":
+                            herstellungsphase += value
+                        if key == "A2":
+                            herstellungsphase += value
+                        if key == "A3":
+                            herstellungsphase += value
                     if key == "B2":
                         erneuerung += value
                     if key == "B4":
