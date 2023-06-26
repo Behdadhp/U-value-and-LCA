@@ -11,20 +11,20 @@ class BuildingTable(tables.Table):
 
     actions = tables.TemplateColumn(
         """
-        <a class="btn btn-dark" href="{% url 'building:details' record.pk %}">Generate</a>
+        <a class="btn btn-dark" href="{% url 'building:details' record.pk %}">Generieren</a>
         <br>
         <br>
-        <a class="btn btn-primary" href="{% url 'building:updateBuilding' record.pk %}">Update</a>
+        <a class="btn btn-primary" href="{% url 'building:updateBuilding' record.pk %}">Aktualisieren</a>
         <br>
         <br>
-        <a class="btn btn-danger" href="{% url 'building:deleteBuilding' record.pk %}" ;">Delete</a>
+        <a class="btn btn-danger" href="{% url 'building:deleteBuilding' record.pk %}" ;">Löschen</a>
         """,
         verbose_name="",
     )
 
-    wall = tables.Column(verbose_name="Wall components")
-    roof = tables.Column(verbose_name="Roof components")
-    floor = tables.Column(verbose_name="Floor components")
+    wall = tables.Column(verbose_name="Außenwandkomponenten")
+    roof = tables.Column(verbose_name="Dachkomponenten")
+    floor = tables.Column(verbose_name="Bodenplattekomponenten")
 
     def render_wall(self, value):
         return self.render_components(value)
@@ -66,9 +66,9 @@ class BuildingTable(tables.Table):
 class BuildingDetail(tables.Table):
     """Table for building details"""
 
-    wallUvalue = tables.Column(verbose_name="Wall U-value")
-    roofUvalue = tables.Column(verbose_name="Roof U-value")
-    floorUvalue = tables.Column(verbose_name="Floor U-value")
+    wallUvalue = tables.Column(verbose_name="Außenwand U-Wert")
+    roofUvalue = tables.Column(verbose_name="Dach U-Wert")
+    floorUvalue = tables.Column(verbose_name="Bodenplatte U-Wert")
 
     class Meta:
         template_name = "django_tables2/bootstrap4.html"
@@ -81,10 +81,10 @@ class MaterialTable(tables.Table):
 
     actions = tables.TemplateColumn(
         """
-        <a class="btn btn-primary" href="{% url 'building:updateMaterial' record.pk %}">Update</a>
+        <a class="btn btn-primary" href="{% url 'building:updateMaterial' record.pk %}">Aktualisieren</a>
         <br>
         <br>
-        <a  class="btn btn-danger" href="{% url 'building:deleteMaterial' record.pk %}";">Delete</a>
+        <a  class="btn btn-danger" href="{% url 'building:deleteMaterial' record.pk %}";">Löschen</a>
         """,
         verbose_name="",
     )
@@ -148,11 +148,11 @@ class MaterialTable(tables.Table):
 class ComponentTable(tables.Table):
     """Tables for components"""
 
-    layer = tables.Column(empty_values=(), verbose_name="Material (inside to outside)")
-    thickness = tables.Column(empty_values=(), verbose_name="Thickness mm")
-    area = tables.Column(empty_values=(), verbose_name="Area m2")
-    volume = tables.Column(empty_values=(), verbose_name="Voloume m3")
-    mass = tables.Column(empty_values=(), verbose_name="Mass kg")
+    layer = tables.Column(empty_values=(), verbose_name="Material (von innen nach außen)")
+    thickness = tables.Column(empty_values=(), verbose_name="Dicke  mm")
+    area = tables.Column(empty_values=(), verbose_name="Fläche m2")
+    volume = tables.Column(empty_values=(), verbose_name="Volumen m3")
+    mass = tables.Column(empty_values=(), verbose_name="Masse kg")
 
     @staticmethod
     def render_layer(record):
@@ -204,7 +204,7 @@ class LCATable(tables.Table):
     """Table for LCA"""
 
     phase = tables.Column(empty_values=())
-    layer = tables.Column(empty_values=(), verbose_name="Material (inside to outside)")
+    layer = tables.Column(empty_values=(), verbose_name="Material (von innen nach außen)")
     gwp = tables.Column(empty_values=(), verbose_name="GWP")
     odp = tables.Column(empty_values=(), verbose_name="ODP")
     pocp = tables.Column(empty_values=(), verbose_name="POCP")
@@ -280,7 +280,7 @@ class LCARatingSystemTable(tables.Table):
     """Table for LCA"""
 
     phase = tables.Column(empty_values=())
-    layer = tables.Column(empty_values=(), verbose_name="Component (inside to outside)")
+    layer = tables.Column(empty_values=(), verbose_name="Material (von innen nach außen)")
     gwp = tables.Column(empty_values=(), verbose_name="GWP")
     odp = tables.Column(empty_values=(), verbose_name="ODP")
     pocp = tables.Column(empty_values=(), verbose_name="POCP")
