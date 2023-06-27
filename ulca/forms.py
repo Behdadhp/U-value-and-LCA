@@ -17,9 +17,9 @@ class CreateBuilding(forms.ModelForm):
         fields = ("name", "project_json", "project_document")
 
         help_texts = {
-            "name": _("Give a name to this project."),
-            "project_json": _("Either paste the JSON direct here"),
-            "project_document": _("Or upload the .txt file here"),
+            "name": _("Geben Sie diesem Projekt einen Namen."),
+            "project_json": _("Entweder fügen Sie das JSON direkt hier ein:"),
+            "project_document": _("Oder laden Sie die .txt-Datei hier hoch:"),
         }
 
 

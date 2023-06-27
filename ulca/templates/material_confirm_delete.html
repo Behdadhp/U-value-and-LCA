@@ -4,17 +4,17 @@
 {% block content %}
 {% bootstrap_css %}
 <div class="text-center">
-  <h3>Are you sure you want to delete this material?</h3>
+  <h3>Sind Sie sicher, dass Sie dieses Material löschen möchten?</h3>
 
   <form method="POST">
     {% csrf_token %}
     <input
       type="submit"
-      value="Confirm Delete"
+      value="Löschen bestätigen"
       class="btn btn-danger btn-large"
     />
     <a href="{% url 'building:materials' %}" class="btn btn-primary btn-large"
-      >Cansel</a
+      >Abbrechen</a
     >
   </form>
 </div>

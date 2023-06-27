@@ -7,10 +7,10 @@
     <div class="container">
         <div class="row text-center">
             <div class="col-sm-6">
-                <h1>Create new project</h1>
-                <h3>Attention</h3>
-                <p>You need to provide JSON either in <b>textfield</b> or <b>upload it
-                    in document</b> as .txt file. The JSON should be followed by this template:</p>
+                <h1>Neues Projekt erstellen</h1>
+                <h3>Achtung</h3>
+                <p>Sie müssen JSON entweder im <b>Textfeld</b> angeben oder als .txt-Datei
+                    <b>hochladen</b>. Das JSON sollte dem folgenden Template folgen:</p>
                 <code>
                     {
                     "floor": {
@@ -46,7 +46,7 @@
             <div class="col-sm-6">
                 <form action="{% url 'building:createProject' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %} {% bootstrap_form form %} {% buttons %} <br/>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Erstellen</button>
                     </form>
                     </div>
                     </div>

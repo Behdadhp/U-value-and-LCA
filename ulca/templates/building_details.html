@@ -7,9 +7,11 @@
     {% bootstrap_css %}
     <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
-            <h2> Generated page for project: {{ building }}</h2>
-            <p>The first table is the calculation of U-Value. Below this table, there are other tables for 3
-                components of the building (Wall, Roof and Floor) and their calculation of LCA.</p>
+            <h2> Generierte Seite für Projekt: {{ building }}</h2>
+            <p>Die erste Tabelle enthält die Berechnung des U-Werts. Unterhalb dieser
+                Tabelle befinden sich weitere Tabellen für die 3 Komponenten
+                des Gebäudes (Außenwand, Dach und Boden)
+                sowie deren Berechnung der Ökobilanz (LCA).</p>
         </div>
     </div>
 
@@ -18,7 +20,7 @@
 
     <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
-            <h1 class=header_color> Table for U-Value</h1>
+            <h1 class=header_color>Tabelle für den U-Wert</h1>
             <br>
             {% render_table table %}
         </div>
@@ -32,19 +34,18 @@
 
     <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
-            <h1 class=header_color> Tables for Wall</h1>
+            <h1 class=header_color>Tabellen für die Außenwand</h1>
             <br>
             {% render_table wall_component %}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-12">
-            <h3> Life Cycle Assessment table</h3>
+            <h3> Tabelle für die Ökobilanz (LCA)</h3>
             <br>
             {% render_table wall_lca %}
         </div>
     </div>
     <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer1')"><h4>Click here to show the rating
-            system divided by net area</h4>
+        <button class="btn btn-info" onclick="toggleCode('codeContainer1')"><h4>Klicken Sie hier, um das Bewertungssystem nach NGF anzuzeigen.</h4>
         </button>
         <div id="codeContainer1" style="display: none;">
             {% render_table wall_rating_system %}
@@ -82,14 +83,13 @@
             {% render_table roofbase_component %}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-12">
-            <h3> Life Cycle Assessment table</h3>
+            <h3> Tabelle für die Ökobilanz (LCA)</h3>
             <br>
             {% render_table roofbase_lca %}
         </div>
     </div>
     <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer2')"><h4>Click here to show the rating
-            system divided by net area</h4>
+        <button class="btn btn-info" onclick="toggleCode('codeContainer2')"><h4>Klicken Sie hier, um das Bewertungssystem nach NGF anzuzeigen.</h4>
         </button>
         <div id="codeContainer2" style="display: none;">
             {% render_table roofbase_rating_system %}
@@ -128,14 +128,13 @@
             {% render_table floor_component %}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-12">
-            <h3> Life Cycle Assessment table</h3>
+            <h3> Tabelle für die Ökobilanz (LCA)</h3>
             <br>
             {% render_table floor_lca %}
         </div>
     </div>
     <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4>Click here to show the rating
-            system divided by net area</h4>
+        <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4>Klicken Sie hier, um das Bewertungssystem nach NGF anzuzeigen.</h4>
         </button>
         <div id="codeContainer3" style="display: none;">
             {% render_table floor_rating_system %}
