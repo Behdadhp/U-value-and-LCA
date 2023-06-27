@@ -2,6 +2,7 @@ import ast
 
 import django_tables2 as tables
 from django.utils.html import format_html, format_html_join
+from django.utils.safestring import mark_safe
 
 from . import models
 
@@ -148,7 +149,9 @@ class MaterialTable(tables.Table):
 class ComponentTable(tables.Table):
     """Tables for components"""
 
-    layer = tables.Column(empty_values=(), verbose_name="Material (von innen nach außen)")
+    layer = tables.Column(
+        empty_values=(), verbose_name="Material (von innen nach außen)"
+    )
     thickness = tables.Column(empty_values=(), verbose_name="Dicke  mm")
     area = tables.Column(empty_values=(), verbose_name="Fläche m2")
     volume = tables.Column(empty_values=(), verbose_name="Volumen m3")
@@ -204,12 +207,18 @@ class LCATable(tables.Table):
     """Table for LCA"""
 
     phase = tables.Column(empty_values=())
-    layer = tables.Column(empty_values=(), verbose_name="Material (von innen nach außen)")
-    gwp = tables.Column(empty_values=(), verbose_name="GWP")
-    odp = tables.Column(empty_values=(), verbose_name="ODP")
-    pocp = tables.Column(empty_values=(), verbose_name="POCP")
-    ap = tables.Column(empty_values=(), verbose_name="AP")
-    ep = tables.Column(empty_values=(), verbose_name="EP")
+    layer = tables.Column(
+        empty_values=(), verbose_name="Material (von innen nach außen)"
+    )
+    gwp = tables.Column(empty_values=(), verbose_name=mark_safe("GWP<br>(kgCO2-Äqv)"))
+    odp = tables.Column(empty_values=(), verbose_name=mark_safe("ODP<br>(kgR11-Äqv)"))
+    pocp = tables.Column(
+        empty_values=(), verbose_name=mark_safe("POCP<br>(kgEthen-Äqv)")
+    )
+    ap = tables.Column(empty_values=(), verbose_name=mark_safe("AP<br>(kgSO2-Äqv)"))
+    ep = tables.Column(
+        empty_values=(), verbose_name=mark_safe("EP<br>(kg Phosphat-Äqv)")
+    )
 
     @staticmethod
     def render_layer(record):
@@ -280,7 +289,9 @@ class LCARatingSystemTable(tables.Table):
     """Table for LCA"""
 
     phase = tables.Column(empty_values=())
-    layer = tables.Column(empty_values=(), verbose_name="Material (von innen nach außen)")
+    layer = tables.Column(
+        empty_values=(), verbose_name="Material (von innen nach außen)"
+    )
     gwp = tables.Column(empty_values=(), verbose_name="GWP")
     odp = tables.Column(empty_values=(), verbose_name="ODP")
     pocp = tables.Column(empty_values=(), verbose_name="POCP")
