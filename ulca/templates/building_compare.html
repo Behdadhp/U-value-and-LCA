@@ -146,30 +146,30 @@
             <div class="image-container">
                 {% for material, properties in second_building.project.wall.items %}
                     {% if material|wall_material:second_building %}
+
                         {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            {% if material|filter_material_if_changed:wall %}
-                                {% with properties.thickness|divide:2 as thickness %}
-                                    {% if material|filter_material_if_changed:wall %}
-                                        <div class="image-pos img-opacity:hover">
-                                            <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
-                                                 width="{{ thickness }}"
-                                                 height="100"
-                                                 class="bold-image">
-                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                        </div>
-                                    {% else %}
-                                        <div class="image-pos img-opacity img-opacity:hover">
-                                            <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
-                                                 width="{{ thickness }}"
-                                                 height="100"
-                                                 class="transparent-image">
-                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                        </div>
-                                    {% endif %}
-                                {% endwith %}
-                            {% endif %}
+                            {% with properties.thickness|divide:2 as thickness %}
+
+                                {% if material|filter_material_if_changed:wall %}
+                                    <div class="image-pos img-opacity:hover">
+                                        <img src="{% static material_source_image %}"
+                                             alt="{{ material }}"
+                                             width="{{ thickness }}"
+                                             height="100"
+                                             class="bold-image">
+                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                    </div>
+                                {% else %}
+                                    <div class="image-pos img-opacity img-opacity:hover">
+                                        <img src="{% static material_source_image %}"
+                                             alt="{{ material }}"
+                                             width="{{ thickness }}"
+                                             height="100"
+                                             class="transparent-image">
+                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
                         {% endwith %}
                     {% endif %}
                 {% endfor %}
@@ -554,7 +554,6 @@
     </div>
 
 
-
     {#   Rofbase LCA    #}
     <div class="row text-center">
         <button class="btn btn-info" onclick="toggleCode('codeContainer6')"><h4>Ökobilanz</h4>
@@ -857,7 +856,6 @@
             <canvas id="secondBuildingPieChartCanvas"></canvas>
         </div>
     </div>
-
 
 
     <script>
