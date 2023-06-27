@@ -148,23 +148,27 @@
                     {% if material|wall_material:second_building %}
                         {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
                             {% if material|filter_material_if_changed:wall %}
-                                <div class="image-pos img-opacity:hover">
-                                    <img src="{% static material_source_image %}"
-                                         alt="{{ material }}"
-                                         width="{{ properties.thickness }}"
-                                         height="100"
-                                         class="bold-image">
-                                    <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                </div>
-                            {% else %}
-                                <div class="image-pos img-opacity img-opacity:hover">
-                                    <img src="{% static material_source_image %}"
-                                         alt="{{ material }}"
-                                         width="{{ properties.thickness }}"
-                                         height="100"
-                                         class="transparent-image">
-                                    <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                </div>
+                                {% with properties.thickness|divide:2 as thickness %}
+                                    {% if material|filter_material_if_changed:wall %}
+                                        <div class="image-pos img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="bold-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% else %}
+                                        <div class="image-pos img-opacity img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="transparent-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
                             {% endif %}
                         {% endwith %}
                     {% endif %}
@@ -176,7 +180,7 @@
 
     {#   Wall Layers    #}
 
-
+    <br>
     <div class="row text-center">
         <button class="btn btn-info" onclick="toggleCode('codeContainer1')"><h4> Schichten</h4>
         </button>
@@ -228,9 +232,7 @@
         <button class="btn btn-info" onclick="toggleCode('codeContainer2')"><h4>Diagramme</h4>
         </button>
         <div id="codeContainer2" style="display: none;">
-
-            <h2 class=header_color>Materialien</h2>
-
+            <h2 class="text-info">Materialien</h2>
             <div class="row text-center">
                 <div class="col-xs-12 col-sm-12 col-md-4">
                     <canvas id="chart_wall_gwp" width="400" height="400"></canvas>
@@ -253,7 +255,7 @@
                 </div>
             </div>
 
-            <h2 class=header_color>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
+            <h2 class=text-info>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
 
             <div class="row text-center">
                 <div class="col-xs-12 col-sm-12 col-md-4">
@@ -282,14 +284,17 @@
 
     {#      Wall LCA       #}
 
-
     <div class="row text-center">
-        <h2 class=header_color>LCA</h2>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            {% render_table wall_lca_first_building %}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            {% render_table wall_lca_second_building %}
+        <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4>Ökobilanz</h4>
+        </button>
+        <div id="codeContainer3" style="display: none;">
+            <h2 class=text-info>Ökobilanz</h2>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                {% render_table wall_lca_first_building %}
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                {% render_table wall_lca_second_building %}
+            </div>
         </div>
     </div>
 
@@ -444,11 +449,11 @@
 
     {#   Roofbase Layers    #}
 
-
+    <br>
     <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4> Schichten</h4>
+        <button class="btn btn-info" onclick="toggleCode('codeContainer4')"><h4> Schichten</h4>
         </button>
-        <div id="codeContainer3" style="display: none;">
+        <div id="codeContainer4" style="display: none;">
             <h2 class="text-info">Schichten</h2>
             <div class="col-xs-12 col-sm-12 col-md-6">
                 {% for material, properties in first_building.project.roofbase.items %}
@@ -492,13 +497,12 @@
     </div>
 
     <div class="row text-center">
-
-        <button class="btn btn-info" onclick="toggleCode('codeContainer4')"><h4>Diagramme</h4>
+        <button class="btn btn-info" onclick="toggleCode('codeContainer5')"><h4>Diagramme</h4>
         </button>
-        <div id="codeContainer4" style="display: none;">
+        <div id="codeContainer5" style="display: none;">
+            <h2 class=text-info>Materialien</h2>
             <div class="row text-center">
 
-                <h2 class=header_color>Materialien</h2>
 
                 <div class="col-xs-12 col-sm-12 col-md-4">
                     <canvas id="chart_roof_gwp" width="400" height="400"></canvas>
@@ -521,9 +525,10 @@
                 </div>
             </div>
 
-            <h2 class=header_color>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
 
+            <h2 class=text-info>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
             <div class="row text-center">
+
                 <div class="col-xs-12 col-sm-12 col-md-4">
                     <canvas id="chart_roof1" width="400" height="400"></canvas>
                 </div>
@@ -545,19 +550,24 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 
+
     {#   Rofbase LCA    #}
-
-
     <div class="row text-center">
-        <h2 class=header_color>LCA</h2>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            {% render_table roof_lca_first_building %}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            {% render_table roof_lca_second_building %}
+        <button class="btn btn-info" onclick="toggleCode('codeContainer6')"><h4>Ökobilanz</h4>
+        </button>
+        <div id="codeContainer6" style="display: none;">
+            <h2 class=text-info>Ökobilanz</h2>
+            <h2 class=header_color>LCA</h2>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                {% render_table roof_lca_first_building %}
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                {% render_table roof_lca_second_building %}
+            </div>
         </div>
     </div>
 
@@ -615,7 +625,6 @@
 
 
     {#    Floor Details    #}
-
 
     <div class="row text-left">
         <div class="col-xs-12 col-sm-12 col-md-2">
@@ -709,11 +718,11 @@
 
     {#   Floor Layers    #}
 
-
+    <br>
     <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer5')"><h4>Schichten</h4>
+        <button class="btn btn-info" onclick="toggleCode('codeContainer7')"><h4>Schichten</h4>
         </button>
-        <div id="codeContainer5" style="display: none;">
+        <div id="codeContainer7" style="display: none;">
             <h2 class="text-info">Schichten</h2>
             <div class="col-xs-12 col-sm-12 col-md-6">
                 {% for material, properties in first_building.project.floor.items %}
@@ -758,11 +767,11 @@
 
     <div class="row text-center">
 
-        <button class="btn btn-info" onclick="toggleCode('codeContainer6')"><h4>Diagramme</h4>
+        <button class="btn btn-info" onclick="toggleCode('codeContainer8')"><h4>Diagramme</h4>
         </button>
-        <div id="codeContainer6" style="display: none;">
+        <div id="codeContainer8" style="display: none;">
 
-            <h2 class=header_color>Materialien</h2>
+            <h2 class=text-info>Materialien</h2>
 
             <div class="row text-center">
                 <div class="col-xs-12 col-sm-12 col-md-4">
@@ -786,25 +795,25 @@
                 </div>
             </div>
 
-            <h2 class=header_color>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
+            <h2 class=text-info>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
 
             <div class="row text-center">
                 <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor1"></canvas>
+                    <canvas id="chart_floor1" width="400" height="400"></canvas>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor2"></canvas>
+                    <canvas id="chart_floor2" width="400" height="400"></canvas>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor3"></canvas>
+                    <canvas id="chart_floor3" width="400" height="400"></canvas>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-2">
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor4"></canvas>
+                    <canvas id="chart_floor4" width="400" height="400"></canvas>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor5"></canvas>
+                    <canvas id="chart_floor5" width="400" height="400"></canvas>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-2">
                 </div>
@@ -814,14 +823,18 @@
 
     {#    Floor LCA#}
 
-
     <div class="row text-center">
-        <h2 class=header_color>LCA</h2>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            {% render_table floor_lca_first_building %}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            {% render_table floor_lca_second_building %}
+
+        <button class="btn btn-info" onclick="toggleCode('codeContainer9')"><h4>Ökobilanz</h4>
+        </button>
+        <div id="codeContainer9" style="display: none;">
+            <h2 class=text-info>Ökobilanz</h2>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                {% render_table floor_lca_first_building %}
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                {% render_table floor_lca_second_building %}
+            </div>
         </div>
     </div>
 

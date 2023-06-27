@@ -649,11 +649,11 @@ class CreateScrapDataDict(ScrapData):
         material_dict = self.create_dict()
         model_material_dict.update(material_dict)
 
-        herstellungsphase = 0
-        erneuerung = 0
-        energiebedarf = 0
-        lebensendphase = 0
         for item in material_dict:
+            herstellungsphase = 0
+            erneuerung = 0
+            energiebedarf = 0
+            lebensendphase = 0
             if isinstance(material_dict[item], dict):
                 for key, value in material_dict[item].items():
                     if key == "A1-A3":
