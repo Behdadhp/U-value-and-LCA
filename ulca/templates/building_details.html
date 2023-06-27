@@ -20,7 +20,7 @@
 
     <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
-            <h1 class=header_color>Tabelle für den U-Wert</h1>
+            <h1 class=header_color>Tabelle für U-Wert</h1>
             <br>
             {% render_table table %}
         </div>
@@ -34,7 +34,7 @@
 
     <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
-            <h1 class=header_color>Tabellen für die Außenwand</h1>
+            <h1 class=header_color>Tabellen für Außenwand</h1>
             <br>
             {% render_table wall_component %}
         </div>
@@ -60,7 +60,7 @@
                     <td>Total EP</td>
                     </thead>
                     <tr>
-                        <td><b>Wall</b></td>
+                        <td><b>Außenwand</b></td>
                         <td>{{ model.project.wall.total_gwp_lca_rating_system }}</td>
                         <td>{{ model.project.wall.total_odp_lca_rating_system }}</td>
                         <td>{{ model.project.wall.total_pocp_lca_rating_system }}</td>
@@ -78,7 +78,7 @@
 
     <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
-            <h1 class=header_color> Tables for Roof</h1>
+            <h1 class=header_color>Tabellen für Dach</h1>
             <br>
             {% render_table roofbase_component %}
         </div>
@@ -104,7 +104,7 @@
                     <td>Total EP</td>
                     </thead>
                     <tr>
-                        <td><b>Roof</b></td>
+                        <td><b>Dach</b></td>
                         <td>{{ model.project.roofbase.total_gwp_lca_rating_system }}</td>
                         <td>{{ model.project.roofbase.total_odp_lca_rating_system }}</td>
                         <td>{{ model.project.roofbase.total_pocp_lca_rating_system }}</td>
@@ -123,7 +123,7 @@
 
     <div class="row text-center">
         <div class="col-xs-12 col-sm-6 col-md-12">
-            <h1 class=header_color> Tables for Floor</h1>
+            <h1 class=header_color>Tabellen für Bodenplatte</h1>
             <br>
             {% render_table floor_component %}
         </div>
@@ -149,7 +149,7 @@
                     <td>Total EP</td>
                     </thead>
                     <tr>
-                        <td><b>Floor</b></td>
+                        <td><b>Bodenplatte</b></td>
                         <td>{{ model.project.floor.total_gwp_lca_rating_system }}</td>
                         <td>{{ model.project.floor.total_odp_lca_rating_system }}</td>
                         <td>{{ model.project.floor.total_pocp_lca_rating_system }}</td>
