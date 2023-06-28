@@ -854,8 +854,13 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6">
             <canvas id="secondBuildingPieChartCanvas"></canvas>
+            <br>
         </div>
+        <button class="btn btn-primary btn-lg onclick" onclick="captureScreenshot()">Aktuelle Seite als PDF speichern
+        </button>
+
     </div>
+
 
 
     <script>
@@ -1097,6 +1102,41 @@
                 }
             });
         }
+
+
+        {#    Function for creating pdf out of screen shot    #}
+
+        function captureScreenshot() {
+            html2canvas(document.body).then(function (canvas) {
+                var imgData = canvas.toDataURL('image/png');
+                var pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+
+                var pageWidth = pdf.internal.pageSize.getWidth();
+                var pageHeight = pdf.internal.pageSize.getHeight();
+
+                var imageWidth = canvas.width;
+                var imageHeight = canvas.height - 2 * (canvas.height / document.body.clientHeight); // decrease height of the image
+
+                var ratio = imageWidth / imageHeight >= pageWidth / pageHeight ? pageWidth / imageWidth : pageHeight / imageHeight;
+                var width = imageWidth * ratio;
+                var height = imageHeight * ratio;
+
+                var newCanvas = document.createElement('canvas');
+                newCanvas.width = imageWidth;
+                newCanvas.height = imageHeight;
+
+                var ctx = newCanvas.getContext('2d');
+                var img = new Image();
+                img.onload = function () {
+                    ctx.drawImage(img, 0, 2 * (canvas.height / document.body.clientHeight), imageWidth, imageHeight, 0, 0, imageWidth, imageHeight);
+                    var imgData = newCanvas.toDataURL('image/png');
+                    pdf.addImage(imgData, 'PNG', 0, 0, width, height);
+                    pdf.save('sample.pdf');
+                };
+                img.src = canvas.toDataURL('image/png');
+            });
+        }
+
     </script>
 
 {% endblock %}
