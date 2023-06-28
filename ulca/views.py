@@ -21,7 +21,6 @@ from tkinter import filedialog
 
 from django.core import serializers
 from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class BuildingList(FilterView, SingleTableView):
