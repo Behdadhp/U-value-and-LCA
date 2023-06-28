@@ -483,6 +483,18 @@ class MaterialUpdate(generic.UpdateView):
 
         return context
 
+    def post(self, request, *args, **kwargs):
+        if "reset_material" in request.POST:
+            material = self.get_object()
+            instance = calc.CreateScrapDataDict(
+                material.url_to_oekobaudat
+            ).create_dict_for_model()
+            for key, value in instance.items():
+                setattr(material, key, value)
+            material.save()
+            return redirect("building:updateMaterial", pk=material.pk)
+        return super().post(request, *args, **kwargs)
+
 
 class PDFView(generic.View):
     @staticmethod
