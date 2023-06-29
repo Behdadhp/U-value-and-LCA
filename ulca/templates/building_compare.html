@@ -10,855 +10,864 @@
 
 {% block content %}
     {% bootstrap_css %}
-
     <div class="row text-center">
         <a href="{% url 'building:pdf' first_building=first_building second_building=second_building %}"
            class="btn btn-primary"
         ><h4>Klicken Sie hier, um eine Zusammenfassung der Änderungen als PDF zu erhalten.</h4></a
         >
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <h1>Vergleich zwischen zwei Gebäuden</h1>
+    </div>
+    <div id="screenshot-start">
+        <div class="row text-center">
 
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <h1>Vergleich zwischen zwei Gebäuden</h1>
+
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <a href="{% url "building:updateBuilding" pk=first_building.id %}"><h1>Name: {{ first_building }}</h1>
+                </a>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+
+                <a href="{% url "building:updateBuilding" pk=second_building.id %}"><h1>Name: {{ second_building }}</h1>
+                </a>
+            </div>
+
+
+            {#      Wall       #}
+
+
+            <h1 class=header_color>Außenwand</h1>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <table class="table table-striped">
+                    <thead>
+                    <td>Schicht</td>
+                    <td>Name</td>
+                    <td>Dicke</td>
+                    </thead>
+                    {% for key, value in wall.items %}
+                        {% for item in value %}
+                            {% if not forloop.counter|divisibleby:2 %}
+                                {% for key, value in item.items %}
+                                    <tr>
+                                    <td>{{ value.id }}</td>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value.thickness }}</td>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    </tr>
+                </table>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <table class="table table-striped">
+                    <thead>
+                    <td>Schicht</td>
+                    <td>Name</td>
+                    <td>Dicke</td>
+                    </thead>
+                    {% for key, value in wall.items %}
+                        {% for item in value %}
+                            {% if forloop.counter|divisibleby:2 %}
+                                {% for key, value in item.items %}
+                                    <tr>
+                                    <td>{{ value.id }}</td>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value.thickness }}</td>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    </tr>
+                </table>
+            </div>
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            <a href="{% url "building:updateBuilding" pk=first_building.id %}"><h1>Name: {{ first_building }}</h1></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6">
 
-            <a href="{% url "building:updateBuilding" pk=second_building.id %}"><h1>Name: {{ second_building }}</h1></a>
-        </div>
+        {#      Wall Details       #}
 
 
-        {#      Wall       #}
-
-
-        <h1 class=header_color>Außenwand</h1>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            <table class="table table-striped">
-                <thead>
-                <td>Schicht</td>
-                <td>Name</td>
-                <td>Dicke</td>
-                </thead>
+        <div class="row text-left">
+            <div class="col-xs-12 col-sm-12 col-md-2">
                 {% for key, value in wall.items %}
                     {% for item in value %}
                         {% if not forloop.counter|divisibleby:2 %}
                             {% for key, value in item.items %}
-                                <tr>
-                                <td>{{ value.id }}</td>
-                                <td>{{ key }}</td>
-                                <td>{{ value.thickness }}</td>
+                                <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-                </tr>
-            </table>
-        </div>
+            </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            <table class="table table-striped">
-                <thead>
-                <td>Schicht</td>
-                <td>Name</td>
-                <td>Dicke</td>
-                </thead>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div class="image-container">
+                    {% for material, properties in first_building.project.wall.items %}
+                        {% if material|wall_material:first_building %}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                {% with properties.thickness|divide:2 as thickness %}
+                                    {% if material|filter_material_if_changed:wall %}
+                                        <div class="image-pos img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="bold-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% else %}
+                                        <div class="image-pos img-opacity img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="transparent-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                            {% endwith %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-2">
                 {% for key, value in wall.items %}
                     {% for item in value %}
                         {% if forloop.counter|divisibleby:2 %}
                             {% for key, value in item.items %}
-                                <tr>
-                                <td>{{ value.id }}</td>
-                                <td>{{ key }}</td>
-                                <td>{{ value.thickness }}</td>
+                                <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-                </tr>
-            </table>
-        </div>
-    </div>
+            </div>
 
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div class="image-container">
+                    {% for material, properties in second_building.project.wall.items %}
+                        {% if material|wall_material:second_building %}
 
-    {#      Wall Details       #}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                {% with properties.thickness|divide:2 as thickness %}
 
-
-    <div class="row text-left">
-        <div class="col-xs-12 col-sm-12 col-md-2">
-            {% for key, value in wall.items %}
-                {% for item in value %}
-                    {% if not forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-4">
-            <div class="image-container">
-                {% for material, properties in first_building.project.wall.items %}
-                    {% if material|wall_material:first_building %}
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            {% with properties.thickness|divide:2 as thickness %}
-                                {% if material|filter_material_if_changed:wall %}
-                                    <div class="image-pos img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="bold-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% else %}
-                                    <div class="image-pos img-opacity img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="transparent-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% endif %}
+                                    {% if material|filter_material_if_changed:wall %}
+                                        <div class="image-pos img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="bold-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% else %}
+                                        <div class="image-pos img-opacity img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="transparent-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
                             {% endwith %}
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
+
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-2">
-            {% for key, value in wall.items %}
-                {% for item in value %}
-                    {% if forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
+        {#   Wall Layers    #}
 
-        <div class="col-xs-12 col-sm-12 col-md-4">
-            <div class="image-container">
-                {% for material, properties in second_building.project.wall.items %}
-                    {% if material|wall_material:second_building %}
-
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            {% with properties.thickness|divide:2 as thickness %}
-
-                                {% if material|filter_material_if_changed:wall %}
-                                    <div class="image-pos img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="bold-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% else %}
-                                    <div class="image-pos img-opacity img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="transparent-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% endif %}
+        <br>
+        <div class="row text-center">
+            <button class="btn btn-info" onclick="toggleCode('codeContainer1')"><h4> Schichten</h4>
+            </button>
+            <div id="codeContainer1" style="display: none;">
+                <h2 class="text-info">Schichten</h2>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% for material, properties in first_building.project.wall.items %}
+                        {% if material|wall_material:first_building %}
+                            <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% for material, properties in first_building.project.wall.items %}
+                        {% if material|wall_material:first_building %}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                <div class="image-pos">
+                                    <img src="{% static material_source_image %}"
+                                         alt="{{ key }}"
+                                         width="{{ properties.thickness }}" height="150">
+                                    <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                </div>
                             {% endwith %}
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% for material, properties in second_building.project.wall.items %}
+                        {% if material|wall_material:second_building %}
+                            <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% for material, properties in second_building.project.wall.items %}
+                        {% if material|wall_material:second_building %}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                <div class="image-pos">
+                                    <img src="{% static material_source_image %}"
+                                         alt="{{ key }}"
+                                         width="{{ properties.thickness }}" height="150">
+                                    <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                </div>
+                            {% endwith %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-
-    </div>
-
-    {#   Wall Layers    #}
-
-    <br>
-    <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer1')"><h4> Schichten</h4>
         </button>
-        <div id="codeContainer1" style="display: none;">
-            <h2 class="text-info">Schichten</h2>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% for material, properties in first_building.project.wall.items %}
-                    {% if material|wall_material:first_building %}
-                        <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
-                    {% endif %}
-                {% endfor %}
-                {% for material, properties in first_building.project.wall.items %}
-                    {% if material|wall_material:first_building %}
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            <div class="image-pos">
-                                <img src="{% static material_source_image %}"
-                                     alt="{{ key }}"
-                                     width="{{ properties.thickness }}" height="150">
-                                <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                            </div>
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% for material, properties in second_building.project.wall.items %}
-                    {% if material|wall_material:second_building %}
-                        <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
-                    {% endif %}
-                {% endfor %}
-                {% for material, properties in second_building.project.wall.items %}
-                    {% if material|wall_material:second_building %}
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            <div class="image-pos">
-                                <img src="{% static material_source_image %}"
-                                     alt="{{ key }}"
-                                     width="{{ properties.thickness }}" height="150">
-                                <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                            </div>
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    </button>
 
-    <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer2')"><h4>Diagramme</h4>
-        </button>
-        <div id="codeContainer2" style="display: none;">
-            <h2 class="text-info">Materialien</h2>
-            <div class="row text-center">
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_wall_gwp" width="400" height="400"></canvas>
+        <div class="row text-center">
+            <button class="btn btn-info" onclick="toggleCode('codeContainer2')"><h4>Diagramme</h4>
+            </button>
+            <div id="codeContainer2" style="display: none;">
+                <h2 class="text-info">Materialien</h2>
+                <div class="row text-center">
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_wall_gwp" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_wall_odp" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_wall_pocp" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_wall_ap" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_wall_ep" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_wall_odp" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_wall_pocp" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_wall_ap" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_wall_ep" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
-                </div>
-            </div>
 
-            <h2 class=text-info>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
+                <h2 class=text-info>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
 
-            <div class="row text-center">
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_wall1" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_wall2" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_wall3" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_wall4" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_wall5" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
+                <div class="row text-center">
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_wall1" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_wall2" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_wall3" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_wall4" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_wall5" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-    {#      Wall LCA       #}
+        {#      Wall LCA       #}
 
-    <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4>Ökobilanz</h4>
-        </button>
-        <div id="codeContainer3" style="display: none;">
-            <h2 class=text-info>Ökobilanz</h2>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% render_table wall_lca_first_building %}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% render_table wall_lca_second_building %}
+        <div class="row text-center">
+            <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4>Ökobilanz</h4>
+            </button>
+            <div id="codeContainer3" style="display: none;">
+                <h2 class=text-info>Ökobilanz</h2>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% render_table wall_lca_first_building %}
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% render_table wall_lca_second_building %}
+                </div>
             </div>
         </div>
-    </div>
 
 
-    {#    Roofbase  #}
+        {#    Roofbase  #}
 
-    <div class="row text-center">
+        <div class="row text-center">
 
-        <h1 class=header_color>Dach</h1>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            <table class="table table-striped">
-                <thead>
-                <td>Schicht</td>
-                <td>Name</td>
-                <td>Dicke</td>
-                </thead>
+            <h1 class=header_color>Dach</h1>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <table class="table table-striped">
+                    <thead>
+                    <td>Schicht</td>
+                    <td>Name</td>
+                    <td>Dicke</td>
+                    </thead>
+                    {% for key, value in roof.items %}
+                        {% for item in value %}
+                            {% if not forloop.counter|divisibleby:2 %}
+                                {% for key, value in item.items %}
+                                    <tr>
+                                    <td>{{ value.id }}</td>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value.thickness }}</td>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    </tr>
+                </table>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <table class="table table-striped">
+                    <thead>
+                    <td>Schicht</td>
+                    <td>Name</td>
+                    <td>Dicke</td>
+                    </thead>
+                    {% for key, value in roof.items %}
+                        {% for item in value %}
+                            {% if forloop.counter|divisibleby:2 %}
+                                {% for key, value in item.items %}
+                                    <tr>
+                                    <td>{{ value.id }}</td>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value.thickness }}</td>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        {#    Roofbase Details    #}
+
+        <div class="row text-left">
+            <div class="col-xs-12 col-sm-12 col-md-2">
                 {% for key, value in roof.items %}
                     {% for item in value %}
                         {% if not forloop.counter|divisibleby:2 %}
                             {% for key, value in item.items %}
-                                <tr>
-                                <td>{{ value.id }}</td>
-                                <td>{{ key }}</td>
-                                <td>{{ value.thickness }}</td>
+                                <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-                </tr>
-            </table>
-        </div>
+            </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            <table class="table table-striped">
-                <thead>
-                <td>Schicht</td>
-                <td>Name</td>
-                <td>Dicke</td>
-                </thead>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div class="image-container">
+                    {% for material, properties in first_building.project.roofbase.items %}
+                        {% if material|roof_material:first_building %}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                {% with properties.thickness|divide:2 as thickness %}
+
+                                    {% if material|filter_material_if_changed:roof %}
+                                        <div class="image-pos img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="bold-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% else %}
+                                        <div class="image-pos img-opacity img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="transparent-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                            {% endwith %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-2">
                 {% for key, value in roof.items %}
                     {% for item in value %}
                         {% if forloop.counter|divisibleby:2 %}
                             {% for key, value in item.items %}
-                                <tr>
-                                <td>{{ value.id }}</td>
-                                <td>{{ key }}</td>
-                                <td>{{ value.thickness }}</td>
+                                <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-                </tr>
-            </table>
-        </div>
-    </div>
+            </div>
 
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div class="image-container">
+                    {% for material, properties in second_building.project.roofbase.items %}
+                        {% if material|roof_material:second_building %}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                {% with properties.thickness|divide:2 as thickness %}
 
-    {#    Roofbase Details    #}
-
-    <div class="row text-left">
-        <div class="col-xs-12 col-sm-12 col-md-2">
-            {% for key, value in roof.items %}
-                {% for item in value %}
-                    {% if not forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-4">
-            <div class="image-container">
-                {% for material, properties in first_building.project.roofbase.items %}
-                    {% if material|roof_material:first_building %}
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            {% with properties.thickness|divide:2 as thickness %}
-
-                                {% if material|filter_material_if_changed:roof %}
-                                    <div class="image-pos img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="bold-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% else %}
-                                    <div class="image-pos img-opacity img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="transparent-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% endif %}
+                                    {% if material|filter_material_if_changed:roof %}
+                                        <div class="image-pos img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="bold-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% else %}
+                                        <div class="image-pos img-opacity img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="transparent-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
                             {% endwith %}
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-2">
-            {% for key, value in roof.items %}
-                {% for item in value %}
-                    {% if forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-4">
-            <div class="image-container">
-                {% for material, properties in second_building.project.roofbase.items %}
-                    {% if material|roof_material:second_building %}
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            {% with properties.thickness|divide:2 as thickness %}
+        {#   Roofbase Layers    #}
 
-                                {% if material|filter_material_if_changed:roof %}
-                                    <div class="image-pos img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="bold-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% else %}
-                                    <div class="image-pos img-opacity img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="transparent-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% endif %}
+        <br>
+        <div class="row text-center">
+            <button class="btn btn-info" onclick="toggleCode('codeContainer4')"><h4> Schichten</h4>
+            </button>
+            <div id="codeContainer4" style="display: none;">
+                <h2 class="text-info">Schichten</h2>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% for material, properties in first_building.project.roofbase.items %}
+                        {% if material|roof_material:first_building %}
+                            <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% for material, properties in first_building.project.roofbase.items %}
+                        {% if material|roof_material:first_building %}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                <div class="image-pos">
+                                    <img src="{% static material_source_image %}"
+                                         alt="{{ key }}"
+                                         width="{{ properties.thickness }}" height="150">
+                                    <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                </div>
                             {% endwith %}
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
-
-    {#   Roofbase Layers    #}
-
-    <br>
-    <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer4')"><h4> Schichten</h4>
-        </button>
-        <div id="codeContainer4" style="display: none;">
-            <h2 class="text-info">Schichten</h2>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% for material, properties in first_building.project.roofbase.items %}
-                    {% if material|roof_material:first_building %}
-                        <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
-                    {% endif %}
-                {% endfor %}
-                {% for material, properties in first_building.project.roofbase.items %}
-                    {% if material|roof_material:first_building %}
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            <div class="image-pos">
-                                <img src="{% static material_source_image %}"
-                                     alt="{{ key }}"
-                                     width="{{ properties.thickness }}" height="150">
-                                <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                            </div>
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% for material, properties in second_building.project.roofbase.items %}
-                    {% if material|roof_material:second_building %}
-                        <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
-                    {% endif %}
-                {% endfor %}
-                {% for material, properties in second_building.project.roofbase.items %}
-                    {% if material|roof_material:second_building %}
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            <div class="image-pos">
-                                <img src="{% static material_source_image %}"
-                                     alt="{{ key }}"
-                                     width="{{ properties.thickness }}" height="150">
-                                <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                            </div>
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
-    <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer5')"><h4>Diagramme</h4>
-        </button>
-        <div id="codeContainer5" style="display: none;">
-            <h2 class=text-info>Materialien</h2>
-            <div class="row text-center">
-
-
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_roof_gwp" width="400" height="400"></canvas>
+                        {% endif %}
+                    {% endfor %}
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_roof_odp" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_roof_pocp" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_roof_ap" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_roof_ep" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
-                </div>
-            </div>
-
-
-            <h2 class=text-info>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
-            <div class="row text-center">
-
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_roof1" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_roof2" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_roof3" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_roof4" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_roof5" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% for material, properties in second_building.project.roofbase.items %}
+                        {% if material|roof_material:second_building %}
+                            <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% for material, properties in second_building.project.roofbase.items %}
+                        {% if material|roof_material:second_building %}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                <div class="image-pos">
+                                    <img src="{% static material_source_image %}"
+                                         alt="{{ key }}"
+                                         width="{{ properties.thickness }}" height="150">
+                                    <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                </div>
+                            {% endwith %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
 
-    </div>
+        <div class="row text-center">
+            <button class="btn btn-info" onclick="toggleCode('codeContainer5')"><h4>Diagramme</h4>
+            </button>
+            <div id="codeContainer5" style="display: none;">
+                <h2 class=text-info>Materialien</h2>
+                <div class="row text-center">
 
 
-    {#   Rofbase LCA    #}
-    <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer6')"><h4>Ökobilanz</h4>
-        </button>
-        <div id="codeContainer6" style="display: none;">
-            <h2 class=text-info>Ökobilanz</h2>
-            <h2 class=header_color>LCA</h2>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% render_table roof_lca_first_building %}
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_roof_gwp" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_roof_odp" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_roof_pocp" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_roof_ap" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_roof_ep" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
+                </div>
+
+
+                <h2 class=text-info>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
+                <div class="row text-center">
+
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_roof1" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_roof2" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_roof3" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_roof4" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_roof5" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
+                </div>
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% render_table roof_lca_second_building %}
+
+        </div>
+
+
+        {#   Rofbase LCA    #}
+        <div class="row text-center">
+            <button class="btn btn-info" onclick="toggleCode('codeContainer6')"><h4>Ökobilanz</h4>
+            </button>
+            <div id="codeContainer6" style="display: none;">
+                <h2 class=text-info>Ökobilanz</h2>
+                <h2 class=header_color>LCA</h2>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% render_table roof_lca_first_building %}
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% render_table roof_lca_second_building %}
+                </div>
             </div>
         </div>
-    </div>
 
 
-    {#    Floor   #}
+        {#    Floor   #}
 
 
-    <div class="row text-center">
-        <h1 class=header_color>Bodenplatte</h1>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            <table class="table table-striped">
-                <thead>
-                <td>Schicht</td>
-                <td>Name</td>
-                <td>Dicke</td>
-                </thead>
+        <div class="row text-center">
+            <h1 class=header_color>Bodenplatte</h1>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <table class="table table-striped">
+                    <thead>
+                    <td>Schicht</td>
+                    <td>Name</td>
+                    <td>Dicke</td>
+                    </thead>
+                    {% for key, value in floor.items %}
+                        {% for item in value %}
+                            {% if not forloop.counter|divisibleby:2 %}
+                                {% for key, value in item.items %}
+                                    <tr>
+                                    <td>{{ value.id }}</td>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value.thickness }}</td>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    </tr>
+                </table>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <table class="table table-striped">
+                    <thead>
+                    <td>Schicht</td>
+                    <td>Name</td>
+                    <td>Dicke</td>
+                    </thead>
+                    {% for key, value in floor.items %}
+                        {% for item in value %}
+                            {% if forloop.counter|divisibleby:2 %}
+                                {% for key, value in item.items %}
+                                    <tr>
+                                    <td>{{ value.id }}</td>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value.thickness }}</td>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        {#    Floor Details    #}
+
+        <div class="row text-left">
+            <div class="col-xs-12 col-sm-12 col-md-2">
                 {% for key, value in floor.items %}
                     {% for item in value %}
                         {% if not forloop.counter|divisibleby:2 %}
                             {% for key, value in item.items %}
-                                <tr>
-                                <td>{{ value.id }}</td>
-                                <td>{{ key }}</td>
-                                <td>{{ value.thickness }}</td>
+                                <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-                </tr>
-            </table>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            <table class="table table-striped">
-                <thead>
-                <td>Schicht</td>
-                <td>Name</td>
-                <td>Dicke</td>
-                </thead>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div class="image-container">
+                    {% for material, properties in first_building.project.floor.items %}
+                        {% if material|floor_material:first_building %}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                {% with properties.thickness|divide:2 as thickness %}
+                                    {% if material|filter_material_if_changed:floor %}
+                                        <div class="image-pos img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="bold-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% else %}
+                                        <div class="image-pos img-opacity img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="transparent-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                            {% endwith %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-2">
                 {% for key, value in floor.items %}
                     {% for item in value %}
                         {% if forloop.counter|divisibleby:2 %}
                             {% for key, value in item.items %}
-                                <tr>
-                                <td>{{ value.id }}</td>
-                                <td>{{ key }}</td>
-                                <td>{{ value.thickness }}</td>
+                                <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-                </tr>
-            </table>
-        </div>
-    </div>
+            </div>
 
-
-    {#    Floor Details    #}
-
-    <div class="row text-left">
-        <div class="col-xs-12 col-sm-12 col-md-2">
-            {% for key, value in floor.items %}
-                {% for item in value %}
-                    {% if not forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-4">
-            <div class="image-container">
-                {% for material, properties in first_building.project.floor.items %}
-                    {% if material|floor_material:first_building %}
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            {% with properties.thickness|divide:2 as thickness %}
-                                {% if material|filter_material_if_changed:floor %}
-                                    <div class="image-pos img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="bold-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% else %}
-                                    <div class="image-pos img-opacity img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="transparent-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% endif %}
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div class="image-container">
+                    {% for material, properties in second_building.project.floor.items %}
+                        {% if material|floor_material:second_building %}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                {% with properties.thickness|divide:2 as thickness %}
+                                    {% if material|filter_material_if_changed:floor %}
+                                        <div class="image-pos img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="bold-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% else %}
+                                        <div class="image-pos img-opacity img-opacity:hover">
+                                            <img src="{% static material_source_image %}"
+                                                 alt="{{ material }}"
+                                                 width="{{ thickness }}"
+                                                 height="100"
+                                                 class="transparent-image">
+                                            <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
                             {% endwith %}
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-2">
-            {% for key, value in floor.items %}
-                {% for item in value %}
-                    {% if forloop.counter|divisibleby:2 %}
-                        {% for key, value in item.items %}
-                            <p>{{ value.id }}) {{ key }} {{ value.thickness }} mm</p>
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
+        {#   Floor Layers    #}
 
-        <div class="col-xs-12 col-sm-12 col-md-4">
-            <div class="image-container">
-                {% for material, properties in second_building.project.floor.items %}
-                    {% if material|floor_material:second_building %}
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            {% with properties.thickness|divide:2 as thickness %}
-                                {% if material|filter_material_if_changed:floor %}
-                                    <div class="image-pos img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="bold-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% else %}
-                                    <div class="image-pos img-opacity img-opacity:hover">
-                                        <img src="{% static material_source_image %}"
-                                             alt="{{ material }}"
-                                             width="{{ thickness }}"
-                                             height="100"
-                                             class="transparent-image">
-                                        <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                                    </div>
-                                {% endif %}
+        <br>
+        <div class="row text-center">
+            <button class="btn btn-info" onclick="toggleCode('codeContainer7')"><h4>Schichten</h4>
+            </button>
+            <div id="codeContainer7" style="display: none;">
+                <h2 class="text-info">Schichten</h2>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% for material, properties in first_building.project.floor.items %}
+                        {% if material|floor_material:first_building %}
+                            <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% for material, properties in first_building.project.floor.items %}
+                        {% if material|floor_material:first_building %}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                <div class="image-pos">
+                                    <img src="{% static material_source_image %}" alt="{{ key }}"
+                                         width="{{ properties.thickness }}" height="150">
+                                    <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                </div>
                             {% endwith %}
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% for material, properties in second_building.project.floor.items %}
+                        {% if material|floor_material:second_building %}
+                            <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% for material, properties in second_building.project.floor.items %}
+                        {% if material|floor_material:second_building %}
+                            {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
+                                <div class="image-pos">
+                                    <img src="{% static material_source_image %}" alt="{{ key }}"
+                                         width="{{ properties.thickness }}" height="150">
+                                    <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
+                                </div>
+                            {% endwith %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        </button>
+
+
+        <div class="row text-center">
+
+            <button class="btn btn-info" onclick="toggleCode('codeContainer8')"><h4>Diagramme</h4>
+            </button>
+            <div id="codeContainer8" style="display: none;">
+
+                <h2 class=text-info>Materialien</h2>
+
+                <div class="row text-center">
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_floor_gwp" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_floor_odp" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_floor_pocp" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_floor_ap" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_floor_ep" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
+                </div>
+
+                <h2 class=text-info>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
+
+                <div class="row text-center">
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_floor1" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_floor2" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_floor3" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_floor4" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4">
+                        <canvas id="chart_floor5" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {#    Floor LCA#}
+
+        <div class="row text-center">
+
+            <button class="btn btn-info" onclick="toggleCode('codeContainer9')"><h4>Ökobilanz</h4>
+            </button>
+            <div id="codeContainer9" style="display: none;">
+                <h2 class=text-info>Ökobilanz</h2>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% render_table floor_lca_first_building %}
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    {% render_table floor_lca_second_building %}
+                </div>
+            </div>
+        </div>
+
+
+        {#    U-Value      #}
+
+
+        <div class="row text-center">
+            <h1 class=header_color>U Wert</h1>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                {% render_table uvalue_table_first_building %}
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                {% render_table uvalue_table_second_building %}
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <canvas id="firstBuildingPieChartCanvas"></canvas>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <canvas id="secondBuildingPieChartCanvas"></canvas>
+                <br>
             </div>
         </div>
     </div>
-
-    {#   Floor Layers    #}
-
-    <br>
-    <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer7')"><h4>Schichten</h4>
-        </button>
-        <div id="codeContainer7" style="display: none;">
-            <h2 class="text-info">Schichten</h2>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% for material, properties in first_building.project.floor.items %}
-                    {% if material|floor_material:first_building %}
-                        <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
-                    {% endif %}
-                {% endfor %}
-                {% for material, properties in first_building.project.floor.items %}
-                    {% if material|floor_material:first_building %}
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            <div class="image-pos">
-                                <img src="{% static material_source_image %}" alt="{{ key }}"
-                                     width="{{ properties.thickness }}" height="150">
-                                <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                            </div>
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% for material, properties in second_building.project.floor.items %}
-                    {% if material|floor_material:second_building %}
-                        <p>{{ forloop.counter }}) {{ material }} {{ properties.thickness }} mm</p>
-                    {% endif %}
-                {% endfor %}
-                {% for material, properties in second_building.project.floor.items %}
-                    {% if material|floor_material:second_building %}
-                        {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
-                            <div class="image-pos">
-                                <img src="{% static material_source_image %}" alt="{{ key }}"
-                                     width="{{ properties.thickness }}" height="150">
-                                <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
-                            </div>
-                        {% endwith %}
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    </button>
-
-
     <div class="row text-center">
 
-        <button class="btn btn-info" onclick="toggleCode('codeContainer8')"><h4>Diagramme</h4>
+        <button class="btn btn-primary btn-lg onclick" onclick="captureScreenshot()">Aktuelle Seite als PDF
+            speichern
         </button>
-        <div id="codeContainer8" style="display: none;">
-
-            <h2 class=text-info>Materialien</h2>
-
-            <div class="row text-center">
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor_gwp" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor_odp" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor_pocp" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor_ap" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor_ep" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
-                </div>
-            </div>
-
-            <h2 class=text-info>LCA-Bewertung nach Nettobereich aufgeteilt</h2>
-
-            <div class="row text-center">
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor1" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor2" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor3" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor4" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <canvas id="chart_floor5" width="400" height="400"></canvas>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {#    Floor LCA#}
-
-    <div class="row text-center">
-
-        <button class="btn btn-info" onclick="toggleCode('codeContainer9')"><h4>Ökobilanz</h4>
-        </button>
-        <div id="codeContainer9" style="display: none;">
-            <h2 class=text-info>Ökobilanz</h2>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% render_table floor_lca_first_building %}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                {% render_table floor_lca_second_building %}
-            </div>
-        </div>
-    </div>
-
-
-    {#    U-Value      #}
-
-
-    <div class="row text-center">
-        <h1 class=header_color>U Wert</h1>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            {% render_table uvalue_table_first_building %}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            {% render_table uvalue_table_second_building %}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            <canvas id="firstBuildingPieChartCanvas"></canvas>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            <canvas id="secondBuildingPieChartCanvas"></canvas>
-            <br>
-        </div>
-        <button class="btn btn-primary btn-lg onclick" onclick="captureScreenshot()">Aktuelle Seite als PDF speichern
-        </button>
-
     </div>
 
 
@@ -1107,33 +1116,25 @@
         {#    Function for creating pdf out of screen shot    #}
 
         function captureScreenshot() {
-            html2canvas(document.body).then(function (canvas) {
-                var imgData = canvas.toDataURL('image/png');
-                var pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+            var element = document.getElementById('screenshot-start');
+            html2canvas(element, {
+                onrendered: function (canvas) {
+                    var imgData = canvas.toDataURL('image/png');
+                    var pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
 
-                var pageWidth = pdf.internal.pageSize.getWidth();
-                var pageHeight = pdf.internal.pageSize.getHeight();
+                    var pageWidth = pdf.internal.pageSize.getWidth();
+                    var pageHeight = pdf.internal.pageSize.getHeight();
 
-                var imageWidth = canvas.width;
-                var imageHeight = canvas.height - 2 * (canvas.height / document.body.clientHeight); // decrease height of the image
+                    var imageWidth = canvas.width;
+                    var imageHeight = canvas.height;
 
-                var ratio = imageWidth / imageHeight >= pageWidth / pageHeight ? pageWidth / imageWidth : pageHeight / imageHeight;
-                var width = imageWidth * ratio;
-                var height = imageHeight * ratio;
+                    var ratio = imageWidth / imageHeight >= pageWidth / pageHeight ? pageWidth / imageWidth : pageHeight / imageHeight;
+                    var width = imageWidth * ratio;
+                    var height = imageHeight * ratio;
 
-                var newCanvas = document.createElement('canvas');
-                newCanvas.width = imageWidth;
-                newCanvas.height = imageHeight;
-
-                var ctx = newCanvas.getContext('2d');
-                var img = new Image();
-                img.onload = function () {
-                    ctx.drawImage(img, 0, 2 * (canvas.height / document.body.clientHeight), imageWidth, imageHeight, 0, 0, imageWidth, imageHeight);
-                    var imgData = newCanvas.toDataURL('image/png');
                     pdf.addImage(imgData, 'PNG', 0, 0, width, height);
                     pdf.save('sample.pdf');
-                };
-                img.src = canvas.toDataURL('image/png');
+                }
             });
         }
 
