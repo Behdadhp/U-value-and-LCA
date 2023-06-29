@@ -3,163 +3,172 @@
 {% load django_tables2 %}
 
 {% block content %}
+    <div id="screenshot-start">
 
-    {% bootstrap_css %}
-    <div class="row text-center">
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <h2> Generierte Seite für Projekt: {{ building }}</h2>
-            <p>Die erste Tabelle enthält die Berechnung des U-Werts. Unterhalb dieser
-                Tabelle befinden sich weitere Tabellen für die 3 Komponenten
-                des Gebäudes (Außenwand, Dach und Boden)
-                sowie deren Berechnung der Ökobilanz (LCA).</p>
-        </div>
-    </div>
-
-
-    {#    U value    #}
-
-    <div class="row text-center">
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <h1 class=header_color>Tabelle für U-Wert</h1>
-            <br>
-            {% render_table table %}
-        </div>
-    </div>
-
-
-
-    {#    Wall    #}
-
-
-
-    <div class="row text-center">
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <h1 class=header_color>Tabellen für Außenwand</h1>
-            <br>
-            {% render_table wall_component %}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <h3> Tabelle für die Ökobilanz (LCA)</h3>
-            <br>
-            {% render_table wall_lca %}
-        </div>
-    </div>
-    <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer1')"><h4>Klicken Sie hier, um das Bewertungssystem nach NGF anzuzeigen.</h4>
-        </button>
-        <div id="codeContainer1" style="display: none;">
-            {% render_table wall_rating_system %}
+        {% bootstrap_css %}
+        <div class="row text-center">
             <div class="col-xs-12 col-sm-6 col-md-12">
-                <table class="table table-striped">
-                    <thead>
-                    <td>Component</td>
-                    <td>Total GWP</td>
-                    <td>Total ODP</td>
-                    <td>Total POCP</td>
-                    <td>Total AP</td>
-                    <td>Total EP</td>
-                    </thead>
-                    <tr>
-                        <td><b>Außenwand</b></td>
-                        <td>{{ model.project.wall.total_gwp_lca_rating_system }}</td>
-                        <td>{{ model.project.wall.total_odp_lca_rating_system }}</td>
-                        <td>{{ model.project.wall.total_pocp_lca_rating_system }}</td>
-                        <td>{{ model.project.wall.total_ap_lca_rating_system }}</td>
-                        <td>{{ model.project.wall.total_ep_lca_rating_system }}</td>
-                </table>
+                <h2> Generierte Seite für Projekt: {{ building }}</h2>
+                <p>Die erste Tabelle enthält die Berechnung des U-Werts. Unterhalb dieser
+                    Tabelle befinden sich weitere Tabellen für die 3 Komponenten
+                    des Gebäudes (Außenwand, Dach und Boden)
+                    sowie deren Berechnung der Ökobilanz (LCA).</p>
+            </div>
+        </div>
+
+
+        {#    U value    #}
+
+        <div class="row text-center">
+            <div class="col-xs-12 col-sm-6 col-md-12">
+                <h1 class=header_color>Tabelle für U-Wert</h1>
+                <br>
+                {% render_table table %}
+            </div>
+        </div>
+
+
+        {#    Wall    #}
+
+
+        <div class="row text-center">
+            <div class="col-xs-12 col-sm-6 col-md-12">
+                <h1 class=header_color>Tabellen für Außenwand</h1>
+                <br>
+                {% render_table wall_component %}
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-12">
+                <h3> Tabelle für die Ökobilanz (LCA)</h3>
+                <br>
+                {% render_table wall_lca %}
+            </div>
+        </div>
+        <div class="row text-center">
+            <button class="btn btn-info" onclick="toggleCode('codeContainer1')"><h4>Klicken Sie hier, um das
+                Bewertungssystem nach NGF anzuzeigen.</h4>
+            </button>
+            <div id="codeContainer1" style="display: none;">
+                {% render_table wall_rating_system %}
+                <div class="col-xs-12 col-sm-6 col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                        <td>Component</td>
+                        <td>Total GWP</td>
+                        <td>Total ODP</td>
+                        <td>Total POCP</td>
+                        <td>Total AP</td>
+                        <td>Total EP</td>
+                        </thead>
+                        <tr>
+                            <td><b>Außenwand</b></td>
+                            <td>{{ model.project.wall.total_gwp_lca_rating_system }}</td>
+                            <td>{{ model.project.wall.total_odp_lca_rating_system }}</td>
+                            <td>{{ model.project.wall.total_pocp_lca_rating_system }}</td>
+                            <td>{{ model.project.wall.total_ap_lca_rating_system }}</td>
+                            <td>{{ model.project.wall.total_ep_lca_rating_system }}</td>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        {#    Roof    #}
+
+
+        <div class="row text-center">
+            <div class="col-xs-12 col-sm-6 col-md-12">
+                <h1 class=header_color>Tabellen für Dach</h1>
+                <br>
+                {% render_table roofbase_component %}
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-12">
+                <h3> Tabelle für die Ökobilanz (LCA)</h3>
+                <br>
+                {% render_table roofbase_lca %}
+            </div>
+        </div>
+        <div class="row text-center">
+            <button class="btn btn-info" onclick="toggleCode('codeContainer2')"><h4>Klicken Sie hier, um das
+                Bewertungssystem nach NGF anzuzeigen.</h4>
+            </button>
+            <div id="codeContainer2" style="display: none;">
+                {% render_table roofbase_rating_system %}
+                <div class="col-xs-12 col-sm-6 col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                        <td>Component</td>
+                        <td>Total GWP</td>
+                        <td>Total ODP</td>
+                        <td>Total POCP</td>
+                        <td>Total AP</td>
+                        <td>Total EP</td>
+                        </thead>
+                        <tr>
+                            <td><b>Dach</b></td>
+                            <td>{{ model.project.roofbase.total_gwp_lca_rating_system }}</td>
+                            <td>{{ model.project.roofbase.total_odp_lca_rating_system }}</td>
+                            <td>{{ model.project.roofbase.total_pocp_lca_rating_system }}</td>
+                            <td>{{ model.project.roofbase.total_ap_lca_rating_system }}</td>
+                            <td>{{ model.project.roofbase.total_ep_lca_rating_system }}</td>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        {#    Floor    #}
+
+
+        <div class="row text-center">
+            <div class="col-xs-12 col-sm-6 col-md-12">
+                <h1 class=header_color>Tabellen für Bodenplatte</h1>
+                <br>
+                {% render_table floor_component %}
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-12">
+                <h3> Tabelle für die Ökobilanz (LCA)</h3>
+                <br>
+                {% render_table floor_lca %}
+            </div>
+        </div>
+        <div class="row text-center">
+            <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4>Klicken Sie hier, um das
+                Bewertungssystem nach NGF anzuzeigen.</h4>
+            </button>
+
+            <div id="codeContainer3" style="display: none;">
+                {% render_table floor_rating_system %}
+                <div class="col-xs-12 col-sm-6 col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                        <td>Component</td>
+                        <td>Total GWP</td>
+                        <td>Total ODP</td>
+                        <td>Total POCP</td>
+                        <td>Total AP</td>
+                        <td>Total EP</td>
+                        </thead>
+                        <tr>
+                            <td><b>Bodenplatte</b></td>
+                            <td>{{ model.project.floor.total_gwp_lca_rating_system }}</td>
+                            <td>{{ model.project.floor.total_odp_lca_rating_system }}</td>
+                            <td>{{ model.project.floor.total_pocp_lca_rating_system }}</td>
+                            <td>{{ model.project.floor.total_ap_lca_rating_system }}</td>
+                            <td>{{ model.project.floor.total_ep_lca_rating_system }}</td>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-
-
-
-    {#    Roof    #}
-
+    <br>
 
     <div class="row text-center">
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <h1 class=header_color>Tabellen für Dach</h1>
-            <br>
-            {% render_table roofbase_component %}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <h3> Tabelle für die Ökobilanz (LCA)</h3>
-            <br>
-            {% render_table roofbase_lca %}
-        </div>
-    </div>
-    <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer2')"><h4>Klicken Sie hier, um das Bewertungssystem nach NGF anzuzeigen.</h4>
+
+        <button class="btn btn-primary btn-lg onclick" onclick="captureScreenshot()">Aktuelle Seite als PDF
+            speichern
         </button>
-        <div id="codeContainer2" style="display: none;">
-            {% render_table roofbase_rating_system %}
-            <div class="col-xs-12 col-sm-6 col-md-12">
-                <table class="table table-striped">
-                    <thead>
-                    <td>Component</td>
-                    <td>Total GWP</td>
-                    <td>Total ODP</td>
-                    <td>Total POCP</td>
-                    <td>Total AP</td>
-                    <td>Total EP</td>
-                    </thead>
-                    <tr>
-                        <td><b>Dach</b></td>
-                        <td>{{ model.project.roofbase.total_gwp_lca_rating_system }}</td>
-                        <td>{{ model.project.roofbase.total_odp_lca_rating_system }}</td>
-                        <td>{{ model.project.roofbase.total_pocp_lca_rating_system }}</td>
-                        <td>{{ model.project.roofbase.total_ap_lca_rating_system }}</td>
-                        <td>{{ model.project.roofbase.total_ep_lca_rating_system }}</td>
-                </table>
-            </div>
-        </div>
+
     </div>
-
-
-
-    {#    Floor    #}
-
-
-
-    <div class="row text-center">
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <h1 class=header_color>Tabellen für Bodenplatte</h1>
-            <br>
-            {% render_table floor_component %}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-12">
-            <h3> Tabelle für die Ökobilanz (LCA)</h3>
-            <br>
-            {% render_table floor_lca %}
-        </div>
-    </div>
-    <div class="row text-center">
-        <button class="btn btn-info" onclick="toggleCode('codeContainer3')"><h4>Klicken Sie hier, um das Bewertungssystem nach NGF anzuzeigen.</h4>
-        </button>
-        <div id="codeContainer3" style="display: none;">
-            {% render_table floor_rating_system %}
-            <div class="col-xs-12 col-sm-6 col-md-12">
-                <table class="table table-striped">
-                    <thead>
-                    <td>Component</td>
-                    <td>Total GWP</td>
-                    <td>Total ODP</td>
-                    <td>Total POCP</td>
-                    <td>Total AP</td>
-                    <td>Total EP</td>
-                    </thead>
-                    <tr>
-                        <td><b>Bodenplatte</b></td>
-                        <td>{{ model.project.floor.total_gwp_lca_rating_system }}</td>
-                        <td>{{ model.project.floor.total_odp_lca_rating_system }}</td>
-                        <td>{{ model.project.floor.total_pocp_lca_rating_system }}</td>
-                        <td>{{ model.project.floor.total_ap_lca_rating_system }}</td>
-                        <td>{{ model.project.floor.total_ep_lca_rating_system }}</td>
-                </table>
-            </div>
-        </div>
-    </div>
-
 
 
 
@@ -173,6 +182,32 @@
             } else {
                 codeContainer.style.display = "none";
             }
+        }
+
+
+        {#    Function for creating pdf out of screen shot    #}
+
+        function captureScreenshot() {
+            var element = document.getElementById('screenshot-start');
+            html2canvas(element, {
+                onrendered: function (canvas) {
+                    var imgData = canvas.toDataURL('image/png');
+                    var pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+
+                    var pageWidth = pdf.internal.pageSize.getWidth();
+                    var pageHeight = pdf.internal.pageSize.getHeight();
+
+                    var imageWidth = canvas.width;
+                    var imageHeight = canvas.height;
+
+                    var ratio = imageWidth / imageHeight >= pageWidth / pageHeight ? pageWidth / imageWidth : pageHeight / imageHeight;
+                    var width = imageWidth * ratio;
+                    var height = imageHeight * ratio;
+
+                    pdf.addImage(imgData, 'PNG', 0, 0, width, height);
+                    pdf.save('sample.pdf');
+                }
+            });
         }
     </script>
 {% endblock %}
