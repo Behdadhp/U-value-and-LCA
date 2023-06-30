@@ -189,24 +189,35 @@
 
         function captureScreenshot() {
             var element = document.getElementById('screenshot-start');
-            html2canvas(element, {
-                onrendered: function (canvas) {
-                    var imgData = canvas.toDataURL('image/png');
-                    var pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+            html2canvas(element, {scale: 1}).then(function (canvas) {
 
-                    var pageWidth = pdf.internal.pageSize.getWidth();
-                    var pageHeight = pdf.internal.pageSize.getHeight();
+                var context = canvas.getContext('2d');
+                context.globalCompositeOperation = 'destination-over';
+                context.fillStyle = '#ffffff';
+                context.fillRect(0, 0, canvas.width, canvas.height);
+                var imgData = canvas.toDataURL('image/jpeg', 1);
 
-                    var imageWidth = canvas.width;
-                    var imageHeight = canvas.height;
+                var pageWidth = 210; // A4 width in mm
+                var pageHeight = 295; // A4 height in mm
+                var margin = 20; // 2 cm margin
 
-                    var ratio = imageWidth / imageHeight >= pageWidth / pageHeight ? pageWidth / imageWidth : pageHeight / imageHeight;
-                    var width = imageWidth * ratio;
-                    var height = imageHeight * ratio;
+                var widthWithMargin = pageWidth - 2 * margin;
+                var imgHeight = canvas.height * widthWithMargin / canvas.width;
+                var heightLeft = imgHeight;
 
-                    pdf.addImage(imgData, 'PNG', 0, 0, width, height);
-                    pdf.save('sample.pdf');
+                var doc = new jsPDF('p', 'mm');
+                var position = 0;
+
+                doc.addImage(imgData, 'JPEG', margin, position, widthWithMargin, imgHeight);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'JPEG', margin, position, widthWithMargin, imgHeight);
+                    heightLeft -= pageHeight;
                 }
+                doc.save('file.pdf');
             });
         }
     </script>
