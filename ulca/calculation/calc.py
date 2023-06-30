@@ -190,7 +190,7 @@ class CalcLCA(CreateProject):
         else:
             return project[component][layer]["mass"]
 
-    def lca_rating_system(self, component, layer, phase):
+    def lca_rating_system(self, component, layer, phase, area_of_each_material):
         """Calculates the lca rating system for each material"""
 
         project = self.project_with_attr()
@@ -198,7 +198,9 @@ class CalcLCA(CreateProject):
         lca_rating_system_dic = {}
         lca_rating_gwp = project[component][layer][phase]
         for key, value in lca_rating_gwp.items():
-            lca_calculation = round(value / self.get_nett_area() * 2 / 100, 5)
+            lca_calculation = round(
+                value / self.get_nett_area() * 2 / 100 * area_of_each_material, 5
+            )
             dic.update({key: lca_calculation})
         lca_rating_system_dic.update(dic)
         return lca_rating_system_dic
@@ -213,22 +215,22 @@ class CalcLCA(CreateProject):
         for layer in project[component]:
             if isinstance(project[component][layer], dict):
                 material = self.get_material(layer)
-
+                area_of_each_material = project[component][layer]["area"]
                 multiplier = self.gets_multiplier(component, layer, material)
                 project[component][layer]["gwp"] = self.calc_for_each_balance(
-                    material.GWP, multiplier, project[component][layer]["area"]
+                    material.GWP, multiplier, area_of_each_material
                 )
                 project[component][layer]["odp"] = self.calc_for_each_balance(
-                    material.ODP, multiplier, project[component][layer]["area"]
+                    material.ODP, multiplier, area_of_each_material
                 )
                 project[component][layer]["pocp"] = self.calc_for_each_balance(
-                    material.POCP, multiplier, project[component][layer]["area"]
+                    material.POCP, multiplier, area_of_each_material
                 )
                 project[component][layer]["ap"] = self.calc_for_each_balance(
-                    material.AP, multiplier, project[component][layer]["area"]
+                    material.AP, multiplier, area_of_each_material
                 )
                 project[component][layer]["ep"] = self.calc_for_each_balance(
-                    material.EP, multiplier, project[component][layer]["area"]
+                    material.EP, multiplier, area_of_each_material
                 )
 
         # Calculate the total LCA for each material
@@ -255,15 +257,29 @@ class CalcLCA(CreateProject):
         total_ep_in_component = 0
 
         # Calculate the total LCA for each component
+        # Each value should multiply in area of the used material, Then the result is
+        # total value for this phase.
         for layer in project[component]:
             if isinstance(project[component][layer], dict):
-                total_gwp_in_component += project[component][layer]["total_lca"]["gwp"]
-                total_odp_in_component += project[component][layer]["total_lca"]["odp"]
-                total_pocp_in_component += project[component][layer]["total_lca"][
-                    "pocp"
-                ]
-                total_ap_in_component += project[component][layer]["total_lca"]["ap"]
-                total_ep_in_component += project[component][layer]["total_lca"]["ep"]
+                area_of_each_material = project[component][layer]["area"]
+                total_gwp_in_component += (
+                    project[component][layer]["total_lca"]["gwp"]
+                    * area_of_each_material
+                )
+                total_odp_in_component += (
+                    project[component][layer]["total_lca"]["odp"]
+                    * area_of_each_material
+                )
+                total_pocp_in_component += (
+                    project[component][layer]["total_lca"]["pocp"]
+                    * area_of_each_material
+                )
+                total_ap_in_component += (
+                    project[component][layer]["total_lca"]["ap"] * area_of_each_material
+                )
+                total_ep_in_component += (
+                    project[component][layer]["total_lca"]["ep"] * area_of_each_material
+                )
 
         project[component]["total_gwp_component"] = round(total_gwp_in_component, 3)
         project[component]["total_odp_component"] = round(total_odp_in_component, 3)
@@ -276,21 +292,43 @@ class CalcLCA(CreateProject):
             if isinstance(project[component][layer], dict):
                 if "lca_rating_system" not in project[component][layer]:
                     project[component][layer]["lca_rating_system"] = {}
-
+                area_of_each_material = project[component][layer]["area"]
                 project[component][layer]["lca_rating_system"].update(
-                    {"gwp": self.lca_rating_system(component, layer, "gwp")}
+                    {
+                        "gwp": (
+                            self.lca_rating_system(
+                                component, layer, "gwp", area_of_each_material
+                            )
+                        )
+                    }
                 )
                 project[component][layer]["lca_rating_system"].update(
-                    {"odp": self.lca_rating_system(component, layer, "odp")}
+                    {
+                        "odp": self.lca_rating_system(
+                            component, layer, "odp", area_of_each_material
+                        )
+                    }
                 )
                 project[component][layer]["lca_rating_system"].update(
-                    {"pocp": self.lca_rating_system(component, layer, "pocp")}
+                    {
+                        "pocp": self.lca_rating_system(
+                            component, layer, "pocp", area_of_each_material
+                        )
+                    }
                 )
                 project[component][layer]["lca_rating_system"].update(
-                    {"ap": self.lca_rating_system(component, layer, "ap")}
+                    {
+                        "ap": self.lca_rating_system(
+                            component, layer, "ap", area_of_each_material
+                        )
+                    }
                 )
                 project[component][layer]["lca_rating_system"].update(
-                    {"ep": self.lca_rating_system(component, layer, "ep")}
+                    {
+                        "ep": self.lca_rating_system(
+                            component, layer, "ep", area_of_each_material
+                        )
+                    }
                 )
 
         # Create the total lca rating system for each component
