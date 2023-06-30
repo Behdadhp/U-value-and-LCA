@@ -100,6 +100,15 @@ class MaterialTable(tables.Table):
         """,
         verbose_name="",
     )
+    GWP = tables.Column(empty_values=(), verbose_name=mark_safe("GWP<br>(kg CO2-Äqv)"))
+    ODP = tables.Column(empty_values=(), verbose_name=mark_safe("ODP<br>(kg R11-Äqv)"))
+    POCP = tables.Column(
+        empty_values=(), verbose_name=mark_safe("POCP<br>(kg Ethen-Äqv)")
+    )
+    AP = tables.Column(empty_values=(), verbose_name=mark_safe("AP<br>(kg SO2-Äqv)"))
+    EP = tables.Column(
+        empty_values=(), verbose_name=mark_safe("EP<br>(kg Phosphat-Äqv)")
+    )
     items = tables.Column(
         empty_values=(), verbose_name="", attrs={"td": {"class": "text-left"}}
     )
