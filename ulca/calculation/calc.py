@@ -646,7 +646,7 @@ class CreateScrapDataDict(ScrapData):
                 "rho": self.get_rho(
                     "j_idt62:accPanel:j_idt367:j_idt393:0:j_idt389:j_idt392:0:j_idt390_list"
                 ),
-                "lamb": 0,
+                "lamb": 0.01,
                 "type": self.get_type("j_idt62:accPanel:j_idt367:j_idt393_list"),
                 "url_to_oekobaudat": self.url_to_db,
             }
