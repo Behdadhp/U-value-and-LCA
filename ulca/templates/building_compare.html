@@ -112,10 +112,10 @@
                                     {% if material|filter_material_if_changed:wall %}
                                         <div class="image-pos img-opacity:hover">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="bold-image">
+                                                 class="bold-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% else %}
@@ -124,7 +124,8 @@
                                                  alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="transparent-image">
+                                                 class="transparent-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% endif %}
@@ -158,19 +159,19 @@
                                     {% if material|filter_material_if_changed:wall %}
                                         <div class="image-pos img-opacity:hover">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="bold-image">
+                                                 class="bold-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% else %}
                                         <div class="image-pos img-opacity img-opacity:hover">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="transparent-image">
+                                                 class="transparent-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% endif %}
@@ -202,8 +203,8 @@
                             {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
                                 <div class="image-pos">
                                     <img src="{% static material_source_image %}"
-                                         alt="{{ key }}"
-                                         width="{{ properties.thickness }}" height="150">
+                                         width="{{ properties.thickness }}" height="150"
+                                         onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                     <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                 </div>
                             {% endwith %}
@@ -221,8 +222,8 @@
                             {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
                                 <div class="image-pos">
                                     <img src="{% static material_source_image %}"
-                                         alt="{{ key }}"
-                                         width="{{ properties.thickness }}" height="150">
+                                         width="{{ properties.thickness }}" height="150"
+                                         onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                     <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                 </div>
                             {% endwith %}
@@ -382,19 +383,19 @@
                                     {% if material|filter_material_if_changed:roof %}
                                         <div class="image-pos img-opacity:hover">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="bold-image">
+                                                 class="bold-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% else %}
                                         <div class="image-pos img-opacity img-opacity:hover">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="transparent-image">
+                                                 class="transparent-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% endif %}
@@ -427,19 +428,19 @@
                                     {% if material|filter_material_if_changed:roof %}
                                         <div class="image-pos img-opacity:hover">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="bold-image">
+                                                 class="bold-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% else %}
                                         <div class="image-pos img-opacity img-opacity:hover">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="transparent-image">
+                                                 class="transparent-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% endif %}
@@ -471,8 +472,8 @@
                             {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
                                 <div class="image-pos">
                                     <img src="{% static material_source_image %}"
-                                         alt="{{ key }}"
-                                         width="{{ properties.thickness }}" height="150">
+                                         width="{{ properties.thickness }}" height="150"
+                                         onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                     <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                 </div>
                             {% endwith %}
@@ -490,8 +491,8 @@
                             {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
                                 <div class="image-pos">
                                     <img src="{% static material_source_image %}"
-                                         alt="{{ key }}"
-                                         width="{{ properties.thickness }}" height="150">
+                                         width="{{ properties.thickness }}" height="150"
+                                         onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                     <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                 </div>
                             {% endwith %}
@@ -652,19 +653,19 @@
                                     {% if material|filter_material_if_changed:floor %}
                                         <div class="image-pos img-opacity:hover">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="bold-image">
+                                                 class="bold-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% else %}
                                         <div class="image-pos img-opacity img-opacity:hover">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="transparent-image">
+                                                 class="transparent-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% endif %}
@@ -696,19 +697,19 @@
                                     {% if material|filter_material_if_changed:floor %}
                                         <div class="image-pos img-opacity:hover">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="bold-image">
+                                                 class="bold-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% else %}
                                         <div class="image-pos img-opacity img-opacity:hover">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ material }}"
                                                  width="{{ thickness }}"
                                                  height="100"
-                                                 class="transparent-image">
+                                                 class="transparent-image"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                         </div>
                                     {% endif %}
@@ -738,8 +739,9 @@
                         {% if material|floor_material:first_building %}
                             {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
                                 <div class="image-pos">
-                                    <img src="{% static material_source_image %}" alt="{{ key }}"
-                                         width="{{ properties.thickness }}" height="150">
+                                    <img src="{% static material_source_image %}"
+                                         width="{{ properties.thickness }}" height="150"
+                                         onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                     <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                 </div>
                             {% endwith %}
@@ -756,8 +758,9 @@
                         {% if material|floor_material:second_building %}
                             {% with 'material_images/'|add:material|add:'.jpg' as material_source_image %}
                                 <div class="image-pos">
-                                    <img src="{% static material_source_image %}" alt="{{ key }}"
-                                         width="{{ properties.thickness }}" height="150">
+                                    <img src="{% static material_source_image %}"
+                                         width="{{ properties.thickness }}" height="150"
+                                         onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                     <div class="centered h4 text-dark"><b>{{ properties.id }}</b></div>
                                 </div>
                             {% endwith %}

@@ -66,7 +66,7 @@
         {% endfor %}
     </div>
     <div class="col-xs-12 col-sm-12 col-md-3">
-       <h2>Materialien</h2>
+        <h2>Materialien</h2>
         {% for component in form.visible_fields %}
             {% if component.name|slice:":4" == "wall" %}
                 {% for id in form.visible_fields %}
@@ -91,8 +91,8 @@
                                 {% with 'material_images/'|add:material as material_source_image %}
                                     <div class="image-pos">
                                         <img src="{% static material_source_image %}"
-                                             alt="{{ component.name|slice:"5:" }}"
-                                             width="{{ component.value }}" height="300">
+                                             width="{{ component.value }}" height="300"
+                                             onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                         <div class="centered h4"><b>{{ id.value }}</b></div>
                                     </div>
                                 {% endwith %}
@@ -139,7 +139,7 @@
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-3">
-           <h2>Materialien</h2>
+            <h2>Materialien</h2>
             {% for component in form.visible_fields %}
                 {% if component.name|slice:":4" == "roof" %}
                     {% for id in form.visible_fields %}
@@ -164,8 +164,8 @@
                                     {% with 'material_images/'|add:material as material_source_image %}
                                         <div class="image-pos">
                                             <img src="{% static material_source_image %}"
-                                                 alt="{{ component.name|slice:"5:" }}"
-                                                 width="{{ component.value }}" height="300">
+                                                 width="{{ component.value }}" height="300"
+                                                 onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                             <div class="centered h4"><b>{{ id.value }}</b></div>
                                         </div>
                                     {% endwith %}
@@ -212,7 +212,7 @@
 
     </div>
     <div class="col-xs-12 col-sm-12 col-md-3">
-       <h2>Materialien</h2>
+        <h2>Materialien</h2>
         {% for component in form.visible_fields %}
             {% if component.name|slice:":5" == "floor" %}
                 {% for id in form.visible_fields %}
@@ -237,8 +237,8 @@
                                 {% with 'material_images/'|add:material as material_source_image %}
                                     <div class="image-pos">
                                         <img src="{% static material_source_image %}"
-                                             alt="{{ component.name|slice:"5:" }}"
-                                             width="{{ component.value }}" height="300">
+                                             width="{{ component.value }}" height="300"
+                                             onerror="this.onerror=null; this.src='{% static 'material_images/Grey.jpg' %}';">
                                         <div class="centered h4"><b>{{ id.value }}</b></div>
                                     </div>
                                 {% endwith %}
