@@ -21,11 +21,18 @@ class BuildingTable(tables.Table):
         <a class="btn btn-danger" href="{% url 'building:deleteBuilding' record.pk %}" ;">Löschen</a>
         """,
         verbose_name="",
+        attrs={"td": {"class": "text-left"}},
     )
 
-    wall = tables.Column(verbose_name="Außenwandkomponenten")
-    roof = tables.Column(verbose_name="Dachkomponenten")
-    floor = tables.Column(verbose_name="Bodenplattekomponenten")
+    wall = tables.Column(
+        verbose_name="Außenwandkomponenten", attrs={"td": {"class": "text-left"}}
+    )
+    roof = tables.Column(
+        verbose_name="Dachkomponenten", attrs={"td": {"class": "text-left"}}
+    )
+    floor = tables.Column(
+        verbose_name="Bodenplattekomponenten", attrs={"td": {"class": "text-left"}}
+    )
 
     def render_wall(self, value):
         return self.render_components(value)
@@ -75,6 +82,10 @@ class BuildingDetail(tables.Table):
         template_name = "django_tables2/bootstrap4.html"
         model = models.Building
         fields = ("wallUvalue", "roofUvalue", "floorUvalue")
+        attrs = {
+            "class": "table table-striped",
+            "td": {"class": "text-left"},
+        }
 
 
 class MaterialTable(tables.Table):
@@ -89,7 +100,9 @@ class MaterialTable(tables.Table):
         """,
         verbose_name="",
     )
-    items = tables.Column(empty_values=(), verbose_name="")
+    items = tables.Column(
+        empty_values=(), verbose_name="", attrs={"td": {"class": "text-left"}}
+    )
 
     @staticmethod
     def render_items():
@@ -143,7 +156,10 @@ class MaterialTable(tables.Table):
         exclude = ("id", "type", "url_to_oekobaudat")
         sequence = ("name", "rho", "lamb", "items")
 
-        attrs = {"class": "table table-striped"}
+        attrs = {
+            "class": "table table-striped",
+            "td": {"class": "text-left"},
+        }
 
 
 class ComponentTable(tables.Table):
@@ -200,13 +216,16 @@ class ComponentTable(tables.Table):
         template_name = "django_tables2/bootstrap4.html"
         sequence = ("layer", "thickness", "area", "volume", "mass")
 
-        attrs = {"class": "table table-striped"}
+        attrs = {
+            "class": "table table-striped",
+            "td": {"class": "text-left"},
+        }
 
 
 class LCATable(tables.Table):
     """Table for LCA"""
 
-    phase = tables.Column(empty_values=())
+    phase = tables.Column(empty_values=(), attrs={"th": {"style": "width: 30%"}})
     layer = tables.Column(
         empty_values=(), verbose_name="Material (von innen nach außen)"
     )
@@ -282,7 +301,10 @@ class LCATable(tables.Table):
         template_name = "django_tables2/bootstrap4.html"
         sequence = ("layer", "phase")
 
-        attrs = {"class": "table table-striped"}
+        attrs = {
+            "class": "table table-striped",
+            "td": {"class": "text-left"},
+        }
 
 
 class LCARatingSystemTable(tables.Table):
@@ -365,4 +387,7 @@ class LCARatingSystemTable(tables.Table):
         template_name = "django_tables2/bootstrap4.html"
         sequence = ("layer", "phase")
 
-        attrs = {"class": "table table-striped"}
+        attrs = {
+            "class": "table table-striped",
+            "td": {"class": "text-left"},
+        }
