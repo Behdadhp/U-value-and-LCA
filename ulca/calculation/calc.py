@@ -167,14 +167,16 @@ class CalcUValue(CreateProject):
 
 class CalcLCA(CreateProject):
     @staticmethod
-    def calc_for_each_balance(material, multiplier):
+    def calc_for_each_balance(material, multiplier, area):
         """Adds a dictionary containing material's balance multiply in multiplier"""
 
         return {
-            "Herstellungsphase": round(material["Herstellungsphase"] * multiplier, 3),
-            "Erneuerung": round(material["Erneuerung"] * multiplier, 3),
-            "Energiebedarf": round(material["Energiebedarf"] * multiplier, 3),
-            "Lebensendphase": round(material["Lebensendphase"] * multiplier, 3),
+            "Herstellungsphase": round(
+                material["Herstellungsphase"] * multiplier / area, 3
+            ),
+            "Erneuerung": round(material["Erneuerung"] * multiplier / area, 3),
+            "Energiebedarf": round(material["Energiebedarf"] * multiplier / area, 3),
+            "Lebensendphase": round(material["Lebensendphase"] * multiplier / area, 3),
         }
 
     def gets_multiplier(self, component, layer, material):
@@ -214,19 +216,19 @@ class CalcLCA(CreateProject):
 
                 multiplier = self.gets_multiplier(component, layer, material)
                 project[component][layer]["gwp"] = self.calc_for_each_balance(
-                    material.GWP, multiplier
+                    material.GWP, multiplier, project[component][layer]["area"]
                 )
                 project[component][layer]["odp"] = self.calc_for_each_balance(
-                    material.ODP, multiplier
+                    material.ODP, multiplier, project[component][layer]["area"]
                 )
                 project[component][layer]["pocp"] = self.calc_for_each_balance(
-                    material.POCP, multiplier
+                    material.POCP, multiplier, project[component][layer]["area"]
                 )
                 project[component][layer]["ap"] = self.calc_for_each_balance(
-                    material.AP, multiplier
+                    material.AP, multiplier, project[component][layer]["area"]
                 )
                 project[component][layer]["ep"] = self.calc_for_each_balance(
-                    material.EP, multiplier
+                    material.EP, multiplier, project[component][layer]["area"]
                 )
 
         # Calculate the total LCA for each material
