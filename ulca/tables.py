@@ -382,14 +382,14 @@ class LCARatingSystemTable(tables.Table):
         phase_value = [
             key for key in record[layer[0]]["lca_rating_system"][phase].values()
         ]
-        total = round(sum(phase_value), 4)
+        total = round(sum(phase_value), 8)
 
         if total == 0:
             total = 1
         return format_html_join(
             "",
             "<p>{} ({}%)</p>",
-            ((item, round(item / total * 100, 2)) for item in phase_value),
+            ((item, round(item / total * 100, 6)) for item in phase_value),
         )
 
     class Meta:
