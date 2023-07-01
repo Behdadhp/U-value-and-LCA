@@ -1,5 +1,4 @@
 import json
-import os
 
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
@@ -16,8 +15,6 @@ from .utils import sort_project, valid_json
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 
-import tkinter as tk
-from tkinter import filedialog
 
 from django.core import serializers
 from django.db.models.signals import post_save
@@ -171,28 +168,19 @@ class BuildingUpdate(generic.UpdateView):
 
     def save_model_to_file(self):
         current_model = self.get_object().project
+        current_model_str = str(
+            current_model
+        )  # Consider serializing this to JSON instead
 
-        # Create the Tkinter root window
-        root = tk.Tk()
-        root.withdraw()
+        # Construct an HTTP response with the serialized data as an attachment
+        response = HttpResponse(current_model_str, content_type="text/plain")
+        response["Content-Disposition"] = "attachment; filename=building.txt"
 
-        # Prompt the user to select the save location
-        save_location = filedialog.asksaveasfilename(
-            initialdir="/",
-            title="Select the path and file name to save the file",
-            filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],
-        )
-        if save_location:
-            save_location = os.path.splitext(save_location)[0] + ".txt"
-            with open(save_location, "w") as file:
-                file.write(str(current_model))
-            print(f"Model saved to {save_location}.")
-        else:
-            return reverse("building:buildings")
+        return response
 
     def post(self, request, *args, **kwargs):
         if "save_model_button" in request.POST:
-            self.save_model_to_file()
+            return self.save_model_to_file()
         return super().post(request, *args, **kwargs)
 
 
@@ -370,22 +358,11 @@ class MateriaList(FilterView, SingleTableView):
     def save_model_to_file(self):
         post_list = serializers.serialize("json", self.get_queryset())
 
-        root = tk.Tk()
-        root.withdraw()
+        # Construct an HTTP response with the serialized data as an attachment
+        response = HttpResponse(post_list, content_type="application/json")
+        response["Content-Disposition"] = "attachment; filename=materials.json"
 
-        # Prompt the user to select the save location
-        save_location = filedialog.asksaveasfilename(
-            initialdir="/",
-            title="Select the path and file name to save the file",
-            filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],
-        )
-        if save_location:
-            save_location = os.path.splitext(save_location)[0] + ".txt"
-            with open(save_location, "w") as file:
-                file.write(str(post_list))
-            print(f"Model saved to {save_location}.")
-        else:
-            return reverse("building:materials")
+        return response
 
     @staticmethod
     def import_model_from_file(file):
@@ -409,7 +386,7 @@ class MateriaList(FilterView, SingleTableView):
 
     def post(self, request, *args, **kwargs):
         if "export_material" in request.POST:
-            self.save_model_to_file()
+            return self.save_model_to_file()
         elif "import_material" in request.POST and "file" in request.FILES:
             file = request.FILES["file"]
             self.import_model_from_file(file)
