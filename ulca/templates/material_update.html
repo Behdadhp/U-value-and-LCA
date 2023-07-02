@@ -76,6 +76,9 @@
                 {% for component in form.visible_fields %}
                     {% if component.name|slice:":3" == "typ" %}
                         {% bootstrap_field component %}
+                        <p> "Type" ist ein wichtiger Bestandteil zur Berechnung der Ökobilanz und
+                            kann im Ökobaudat unter dem Begriff "Referenzfluss" gefunden werden. </p>
+
                     {% endif %}
                 {% endfor %}
             </div>
