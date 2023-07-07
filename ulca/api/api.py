@@ -26,3 +26,20 @@ def building_model_id(building_id: int):
 
     model = models.Building.objects.get(id=building_id)
     return model
+
+
+@app.get("/material-model/", tags=["material"])
+async def material_model():
+    """Endpoint to get material model"""
+
+    model = models.Building.objects.all()
+    serialized_model = serializers.serialize("json", model)
+    return serialized_model
+
+
+@app.get("/material-model/{material_id]", tags=["material"])
+def material_model_id(material_id: int):
+    """Endpoint to get one material"""
+
+    model = models.Material.objects.get(id=material_id)
+    return model
