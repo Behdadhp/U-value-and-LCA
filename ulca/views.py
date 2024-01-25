@@ -405,27 +405,30 @@ class MaterialCreate(generic.CreateView):
         return super().form_valid(form)
 
     def post(self, request, *args, **kwargs):
-        form = forms.ImportMaterial(request.POST)
-        if form.is_valid():
-            link = form.cleaned_data.get("import_material")
-            instance = calc.CreateScrapDataDict(link).create_dict_for_model()
-            name_of_imported_material = instance["name"]
-            material_in_db = False
-            try:
-                models.Material.objects.get(name=name_of_imported_material)
-                material_in_db = True
-            except:
-                pass
-            if material_in_db:
-                raise ValueError(
-                    f"{name_of_imported_material} is already saved to Database."
-                )
+        if "import_material" in request.POST:
+            form = forms.ImportMaterial(request.POST)
+            if form.is_valid():
+                link = form.cleaned_data.get("import_material")
+                instance = calc.CreateScrapDataDict(link).create_dict_for_model()
+                name_of_imported_material = instance["name"]
+                material_in_db = False
+                try:
+                    models.Material.objects.get(name=name_of_imported_material)
+                    material_in_db = True
+                except:
+                    pass
+                if material_in_db:
+                    raise ValueError(
+                        f"{name_of_imported_material} is already saved to Database."
+                    )
+                else:
+                    models.Material.objects.create(**instance)
+                    last_create_model = models.Material.objects.last()
+                    return redirect("building:updateMaterial", pk=last_create_model.id)
             else:
-                models.Material.objects.create(**instance)
-                last_create_model = models.Material.objects.last()
-                return redirect("building:updateMaterial", pk=last_create_model.id)
+                return redirect("building:createMaterial")
         else:
-            return redirect("building:createMaterial")
+            return super().post(request, *args, **kwargs)
 
 
 class MaterialDelete(generic.DeleteView):
