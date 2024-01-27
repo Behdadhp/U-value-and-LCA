@@ -115,7 +115,7 @@ class Material(models.Model):
 
     type_choices = ((MASS, "Mass"), (VOLUME, "Volume"), (AREA, "Area"))
 
-    name = models.CharField(max_length=64, blank=False, null=False, unique=True)
+    name = models.CharField(max_length=64, blank=False, null=True, unique=True)
     rho = models.FloatField(max_length=8)
     lamb = models.FloatField(
         max_length=8, blank=False, null=False, verbose_name="lambda"
@@ -150,7 +150,7 @@ class Material(models.Model):
         null=True,
         help_text="Fertilization potential",
     )
-    type = models.CharField(max_length=32, choices=type_choices, default=VOLUME)
+    type = models.CharField(max_length=32, choices=type_choices, default=VOLUME, null= True)
     url_to_oekobaudat = models.URLField(blank=True, null=True)
 
     def __str__(self):
