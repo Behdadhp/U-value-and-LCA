@@ -198,14 +198,10 @@ class CalcLCA(CreateProject):
         lca_rating_system_dic = {}
         lca_rating_gwp = project[component][layer][phase]
         for key, value in lca_rating_gwp.items():
-            if component == 'wall':
-                lca_calculation = round(
-                    value / float(project[component]['area']) * 2 / 100 * area_of_each_material, 5
-                )
-            else:
-                lca_calculation = round(
-                    value / self.get_nett_area() * 2 / 100 * area_of_each_material, 5
-                )
+
+            lca_calculation = round(
+                value / self.get_nett_area() * 2 / 100 * area_of_each_material, 5
+             )
             dic.update({key: lca_calculation})
         lca_rating_system_dic.update(dic)
         return lca_rating_system_dic
